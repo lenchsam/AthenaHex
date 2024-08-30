@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HexGrid : MonoBehaviour
 {
+    [SerializeField] GameObject TilesParent;
     [SerializeField] int mapWidth;
     [SerializeField] int mapHeight;
     [SerializeField] int tileSize = 1;
@@ -24,10 +25,10 @@ public class HexGrid : MonoBehaviour
             for (int z = 0; z < mapHeight; z++)
             {
                 Vector2 hexCoords = GetHexCoords(x, z);
-                Debug.Log(hexCoords);
+                //Debug.Log(hexCoords);
 
                 Vector3 position = new Vector3(hexCoords.x, 0, hexCoords.y);
-                var instantiated = Instantiate(tilePrefab, position, Quaternion.Euler(0, 90, 0));
+                var instantiated = Instantiate(tilePrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
 
                 var tileInstScript = instantiated.AddComponent<TileScript>();
                 tileInstScript.coords = new Vector2(hexCoords.x, hexCoords.y);
@@ -54,5 +55,11 @@ public class HexGrid : MonoBehaviour
         var tileScript = GetTileScript(coords);
         tileScript.isWalkable = true;
     }
-    
+    public GameObject GetTile(Vector2 cords){
+        Debug.Log(cords.ToString());
+        return TilesParent.transform.Find(cords.ToString()).gameObject;
+    }
+    public Vector2 GetCoordinatesFromPosition(Vector3 position){
+        return new Vector2(position.x, position.z);
+    }
 }
