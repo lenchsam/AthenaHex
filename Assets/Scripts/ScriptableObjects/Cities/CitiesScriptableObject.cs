@@ -7,6 +7,6 @@ public class CitiesScriptableObject : ScriptableObject
 {
     public string cityName;
     public int CityNumber;
-    public Dictionary<Vector2, TileScript> CityTiles = new Dictionary<Vector2, TileScript>();
+    public List<GameObject> CityTiles = new List<GameObject>();
     //public Dictionary<districts, Vector2Int> Districts = new Dictionary<districts, Vector2Int>();
 }

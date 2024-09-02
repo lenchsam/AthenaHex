@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HexGrid : MonoBehaviour
@@ -56,10 +57,35 @@ public class HexGrid : MonoBehaviour
         tileScript.isWalkable = true;
     }
     public GameObject GetTile(Vector2 cords){
-        Debug.Log(cords.ToString());
+        Debug.Log(cords.ToString() + "  asdf");
+        //Debug.Log(TilesParent.transform.Find(cords.ToString()).gameObject);
+
         return TilesParent.transform.Find(cords.ToString()).gameObject;
     }
     public Vector2 GetCoordinatesFromPosition(Vector3 position){
+        //Debug.Log(new Vector2(position.x, position.z));
         return new Vector2(position.x, position.z);
+    }
+    public List<GameObject> GetSurroundingTiles(GameObject tileGO){
+        List<GameObject> connecting = new List<GameObject>();
+        //left tile = -1
+        //right tile = + 1
+        //top tile = - map width
+        //bottom tile = + map width
+        //find tileGO index in the dictionary of tiles
+
+        List<GameObject> tileList = Tiles.Keys.ToList();
+        int tileIndex = Tiles.Keys.ToList().IndexOf(tileGO);
+
+        //do if x is less than/greater than the lengh of the dictionary
+        if(tileList[tileIndex - 1].transform.position.x == tileGO.transform.position.x){
+            Debug.Log("HAS TILE BELOW");
+            connecting.Add(tileList[tileIndex - 1]);
+        }
+        if(tileList[tileIndex + 1].transform.position.x == tileGO.transform.position.x){
+            Debug.Log("HAS TILE ON TOP");
+            connecting.Add(tileList[tileIndex + 1]);
+        }
+        return connecting;
     }
 }
