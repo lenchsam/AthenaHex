@@ -1373,7 +1373,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controls: {fileID: -944628639613478452, guid: fdc5c586210db7c4384ca3c024383008,
     type: 3}
-  moveSpeed: 50
+  Acceleration: 0.3
+  maxMoveSpeed: 25
+  minMoveSpeed: 0
 --- !u!1 &1527476384
 GameObject:
   m_ObjectHideFlags: 0

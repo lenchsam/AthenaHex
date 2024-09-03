@@ -19,6 +19,7 @@ public class Labeller : MonoBehaviour
         label = GetComponentInChildren<TextMeshPro>();
 
         DisplayCords();
+        transform.name = cords.ToString();
 
         if(!displayName){
             label.text = "";
