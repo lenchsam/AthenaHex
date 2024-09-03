@@ -4,7 +4,6 @@ using UnityEngine;
 using TMPro;
 
 //used https://www.youtube.com/watch?v=4JaHSLA2CKs for this
-[ExecuteAlways]
 public class Labeller : MonoBehaviour
 {
     [SerializeField] TextMeshPro label;
@@ -20,13 +19,17 @@ public class Labeller : MonoBehaviour
         label = GetComponentInChildren<TextMeshPro>();
 
         DisplayCords();
-    }
-    void Update(){
-        DisplayCords();
-        transform.name = cords.ToString();
-        
+
         if(!displayName){
             label.text = "";
+        }
+    }
+    void Start(){
+        if(!displayName){
+            label.text = "";
+        }else{
+            DisplayCords();
+            transform.name = cords.ToString();
         }
     }
 
