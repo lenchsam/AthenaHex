@@ -34,6 +34,6 @@ public class Settler : Units
         //if no, found the city
         var SO = ScriptableObject.CreateInstance<CitiesScriptableObject>();
         Vector2 tileCords = gridManager.GetCoordinatesFromPosition(transform.position);
-        citiesManager.initialiseCity(SO, gridManager.GetTile(new Vector2(tileCords.x, tileCords.y)));
+        citiesManager.initialiseCity(SO, gridManager.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y)));
     }
 }

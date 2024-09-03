@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
         if (hit.transform.tag == "Tile" && unitSelected){ //if hit a tile and already have a unit selected
             
-            Vector2 targetCords = new Vector2(hit.transform.GetComponent<TileScript>().coords.x, hit.transform.GetComponent<TileScript>().coords.y);
+            Vector2 targetCords = new Vector2(hit.transform.GetComponent<TileScript>().transform.position.x, hit.transform.GetComponent<TileScript>().transform.position.z);
             Vector2 startCords = new Vector2(SelectedUnit.position.x, SelectedUnit.position.z);
 
             //pass the tile node the reference to the unit that is stood on it
