@@ -85,41 +85,26 @@ public class HexGrid : MonoBehaviour
         connecting.Add(GetTileFromIntCoords(tileCords));
 
         if(tileCords.x % 2 != 0){
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1))); //Top
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1))); //Bottom
+            if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1)));} //Top
+            if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1)));} //Bottom
 
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y + 1)));//Left Top
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y)));//Left Bottom
+            if(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y + 1)));}//Left Top
+            if(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y)));}//Left Bottom
 
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y + 1)));//Right Top
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y)));//Right Bottom  
+            if(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y + 1)));} //Right Top
+            if(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y)));} //Right Bottom  
         }else{
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1))); //Top
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1))); //Bottom
+            if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1)));} //Top
+            if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1)));} //Bottom
 
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y - 1)));//Left Top
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y)));//Left Bottom
+            if(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y - 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y - 1)));} //Left Top
+            if(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y)));} //Left Bottom
 
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y - 1)));//Right Top
-            connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y)));//Right Bottom
+            if(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y - 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y - 1)));} //Right Top
+            if(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y)));} //Right Bottom
         }
+        //Debug.Log(connecting.Count);
 
-        Debug.Log(connecting.Count);
-
-
-
-        // List<GameObject> tileList = Tiles.Keys.ToList();
-        // int tileIndex = Tiles.Keys.ToList().IndexOf(tileGO);
-
-        //do if x is less than/greater than the lengh of the dictionary
-        // if(tileList[tileIndex - 1].transform.position.x == tileGO.transform.position.x){
-        //     Debug.Log("HAS TILE BELOW");
-        //     connecting.Add(tileList[tileIndex - 1]);
-        // }
-        // if(tileList[tileIndex + 1].transform.position.x == tileGO.transform.position.x){
-        //     Debug.Log("HAS TILE ON TOP");
-        //     connecting.Add(tileList[tileIndex + 1]);
-        // }
         return connecting;
     }
 }
