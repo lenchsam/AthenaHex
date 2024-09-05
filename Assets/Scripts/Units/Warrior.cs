@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Warrior : Melee
+public class Warrior : Melee, IAttacking
 {
     [SerializeField] protected float maximumHealth = 50.0f;
     protected override void Awake()
@@ -15,5 +15,9 @@ public class Warrior : Melee
     protected override void Start()
     {
         base.Start();
+    }
+    public void attack(GameObject thingToAttack){
+        //if thing is x tiles away then attack
+        thingToAttack.GetComponent<IDamageable>().takeDamage(damage);
     }
 }

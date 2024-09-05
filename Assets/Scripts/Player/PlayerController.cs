@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public UnityEvent<Vector2, GameObject> OnUnitMove = new UnityEvent<Vector2, GameObject>();
@@ -45,11 +46,22 @@ public class PlayerController : MonoBehaviour
             //if target tile is occupied by an enemy/check for attacked this turn. if true return
             if(targetUnit != null){
                 // If the target tile is occupied by an enemy, handle the attack
-                //Debug.Log("tile occupied by an enemy");
+
+                if(SelectedUnit == null){
+                    Debug.Log("no selected unit");
+                    return;
+                }
+                Debug.Log("tile occupied by an enemy");
 
                 if (targetUnit.GetComponent<AssignTeam>().defenceTeam != SelectedUnit.GetComponent<AssignTeam>().defenceTeam) {
                     // Trigger the attack event
-                    OnUnitMove.Invoke(targetCords, SelectedUnit.gameObject);
+                    
+                    Debug.Log(SelectedUnit.GetComponent<IAttacking>());
+                    SelectedUnit.GetComponent<IAttacking>().attack(targetUnit);
+
+                    SelectedUnit = null;
+                    unitSelected = false;
+                    targetUnit = null;
                 }
 
                 // Prevent movement after attacking
@@ -58,14 +70,14 @@ public class PlayerController : MonoBehaviour
                     return;  // Stop further movement
                 }
             }else if (!targetNode.isWalkable) {
-                //Debug.Log("Tile not walkable");
+                Debug.Log("Tile not walkable");
                 // If the target tile is not walkable and doesn't have an enemy, return early
 
 
             return;
             }else{
                 // If the tile is walkable and empty, move the unit
-                //Debug.Log("MOVING");
+                Debug.Log("MOVING");
                 //need to change this to lerp rather than teleport...... maybe pathfinding
                 SelectedUnit.transform.position = new Vector3(targetCords.x, SelectedUnit.position.y, targetCords.y);
 
@@ -97,7 +109,7 @@ public class PlayerController : MonoBehaviour
             if (team.defenceTeam != turnManager.playerTeam){return;}//if the defence is not on the players team
 
             SelectedUnit = hit.transform;
-            //Debug.Log("UNIT SELECTED");
+            Debug.Log("UNIT SELECTED");
             unitSelected = true;
         }
     }
