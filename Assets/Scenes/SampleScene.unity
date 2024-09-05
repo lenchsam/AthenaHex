@@ -681,6 +681,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f41b43452bdd6408ff97a6cb95c083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
+  maxHealth: 0
   movementSpeed: 1
   damage: 0
   controls: {fileID: -944628639613478452, guid: fdc5c586210db7c4384ca3c024383008,
@@ -898,7 +900,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   border: {fileID: 0}
-  SO_Cities: {fileID: 11400000, guid: ce5264350a2c20b4099566c39feb4cd9, type: 2}
+  CitiesSOBase: {fileID: 11400000, guid: ce5264350a2c20b4099566c39feb4cd9, type: 2}
+  AllCities: []
   numberOfCities: 0
 --- !u!4 &919203970
 Transform:
@@ -1374,7 +1377,7 @@ MonoBehaviour:
   controls: {fileID: -944628639613478452, guid: fdc5c586210db7c4384ca3c024383008,
     type: 3}
   Acceleration: 0.3
-  maxMoveSpeed: 25
+  maxMoveSpeed: 18
   minMoveSpeed: 0
 --- !u!1 &1527476384
 GameObject:

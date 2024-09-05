@@ -59,14 +59,14 @@ public class HexGrid : MonoBehaviour
     }
     public GameObject GetTileFromPosition(Vector2 cords){
         //Debug.Log(cords.ToString() + "  asdf");
-        //Debug.Log(TilesParent.transform.Find(cords.ToString()).gameObject);
+        Debug.Log(TilesParent.transform.Find(cords.ToString()).gameObject);
 
         return TilesParent.transform.Find(cords.ToString()).gameObject;
     }
     public GameObject GetTileFromIntCoords(Vector2 cords){
         foreach(Transform child in TilesParent.transform){
             if(child.GetComponent<TileScript>().intCoords == cords){
-                Debug.Log("Found");
+                //Debug.Log("Found");
                 return child.gameObject;
             }
         }
@@ -84,7 +84,8 @@ public class HexGrid : MonoBehaviour
 
         connecting.Add(GetTileFromIntCoords(tileCords));
 
-        if(tileCords.x % 2 != 0){
+        if(tileCords.x % 2 != 0){//if the tile is on an odd row
+            //check each possible tile surrounding it to see if its there, if it is there add it to the list
             if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1)));} //Top
             if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1)));} //Bottom
 
@@ -93,7 +94,8 @@ public class HexGrid : MonoBehaviour
 
             if(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y + 1)));} //Right Top
             if(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y)));} //Right Bottom  
-        }else{
+        }else{//if the tile is on an even row
+            //check each possible tile surrounding it to see if its there, if it is there add it to the list
             if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1)));} //Top
             if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1)));} //Bottom
 

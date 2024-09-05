@@ -1,17 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class ACDefence : MonoBehaviour
+public class ACDefence : MonoBehaviour, IDamageable
 {
-    protected float health { get; set; }
-    protected float maxHealth { get; set; }
+    [BoxGroup("Health")]
+    [SerializeField] protected float health;
+    [BoxGroup("Health")]
+    [SerializeField] protected float maxHealth;
     protected virtual void initialise(float maximumHealth)
     {
         maxHealth = maximumHealth;
         health = maxHealth;
     }
-    public virtual void TakeDamage(int damageToTake){
+    public virtual void takeDamage(int damageToTake){
         health -= damageToTake;
         Debug.Log(gameObject.name + " health = " + health);
 

@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Settler : Units
 {
+    //input variables
     [SerializeField] private InputActionAsset controls;
     private InputAction foundCity;
     private InputActionMap _inputActionMap;
+
     private CitiesManager citiesManager;
     private HexGrid gridManager;
 
@@ -22,18 +26,9 @@ public class Settler : Units
         foundCity.performed += startCity;
     }
     private void startCity(InputAction.CallbackContext obj){
-        
-        //Debug.Log("CITY IS FOUNDED");
+        citiesManager.MakeNewCity(transform.position);
+    }
+    public void takeDamage(){
 
-        //get tile unit is stood on
-
-        //check if its a city already
-
-        //if no, check tiles in a 1 tile radius to see if theyre cities;
-        
-        //if no, found the city
-        var SO = ScriptableObject.CreateInstance<CitiesScriptableObject>();
-        Vector2 tileCords = gridManager.GetCoordinatesFromPosition(transform.position);
-        citiesManager.initialiseCity(SO, gridManager.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y)));
     }
 }
