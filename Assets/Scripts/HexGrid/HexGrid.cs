@@ -59,7 +59,7 @@ public class HexGrid : MonoBehaviour
     }
     public GameObject GetTileFromPosition(Vector2 cords){
         //Debug.Log(cords.ToString() + "  asdf");
-        Debug.Log(TilesParent.transform.Find(cords.ToString()).gameObject);
+        //Debug.Log(TilesParent.transform.Find(cords.ToString()).gameObject);
 
         return TilesParent.transform.Find(cords.ToString()).gameObject;
     }
@@ -70,7 +70,7 @@ public class HexGrid : MonoBehaviour
                 return child.gameObject;
             }
         }
-        Debug.Log("not found");
+        //Debug.Log("not found");
         return null;
     }
     public Vector2 GetCoordinatesFromPosition(Vector3 position){

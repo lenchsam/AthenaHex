@@ -39,6 +39,8 @@ public class CitiesManager : MonoBehaviour
     }
     public void MakeNewCity(Vector3 positionToInstantiate){
         CitiesScriptableObject CitySO = Instantiate(CitiesSOBase); //create a new scriptable object for the city
+        CitySO.constructor(("City: " + numberOfCities).ToString(), numberOfCities);
+        numberOfCities++;
         AllCities.Add(CitySO); //add it to the list of city scriptable objects
 
         Vector2 tileCords = gridManager.GetCoordinatesFromPosition(positionToInstantiate); //get the tileCords to make the city at
