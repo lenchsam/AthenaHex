@@ -8,7 +8,7 @@ public class TileScript : MonoBehaviour, IInteractable
     public bool isWalkable;
     public GameObject occupiedUnit;
     //public Vector2 coords;
-    public Vector2 intCoords;
+    public Vector2Int intCoords;
 
     public void OnClick()
     {

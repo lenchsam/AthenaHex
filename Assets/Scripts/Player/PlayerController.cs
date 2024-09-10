@@ -48,15 +48,15 @@ public class PlayerController : MonoBehaviour
                 // If the target tile is occupied by an enemy, handle the attack
 
                 if(SelectedUnit == null){
-                    Debug.Log("no selected unit");
+                    //Debug.Log("no selected unit");
                     return;
                 }
-                Debug.Log("tile occupied by an enemy");
+                //Debug.Log("tile occupied by an enemy");
 
                 if (targetUnit.GetComponent<AssignTeam>().defenceTeam != SelectedUnit.GetComponent<AssignTeam>().defenceTeam) {
                     // Trigger the attack event
                     
-                    Debug.Log(SelectedUnit.GetComponent<IAttacking>());
+                    //Debug.Log(SelectedUnit.GetComponent<IAttacking>());
                     SelectedUnit.GetComponent<IAttacking>().attack(targetUnit);
 
                     SelectedUnit = null;
@@ -70,14 +70,14 @@ public class PlayerController : MonoBehaviour
                     return;  // Stop further movement
                 }
             }else if (!targetNode.isWalkable) {
-                Debug.Log("Tile not walkable");
+                //Debug.Log("Tile not walkable");
                 // If the target tile is not walkable and doesn't have an enemy, return early
 
 
             return;
             }else{
                 // If the tile is walkable and empty, move the unit
-                Debug.Log("MOVING");
+                //Debug.Log("MOVING");
                 //need to change this to lerp rather than teleport...... maybe pathfinding
                 SelectedUnit.transform.position = new Vector3(targetCords.x, SelectedUnit.position.y, targetCords.y);
 
@@ -87,8 +87,8 @@ public class PlayerController : MonoBehaviour
 
                 startNode.occupiedUnit = null;
                 
-                hexGrid.blockTile(targetCords);//set the tile that the unit will travel to as none walkable
-                hexGrid.unblockTile(startCords);//sets the current tile as walkable
+                hexGrid.BlockTile(targetCords);//set the tile that the unit will travel to as none walkable
+                hexGrid.UnblockTile(startCords);//sets the current tile as walkable
 
                 //reseting variables
                 SelectedUnit = null;
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
             if (team.defenceTeam != turnManager.playerTeam){return;}//if the defence is not on the players team
 
             SelectedUnit = hit.transform;
-            Debug.Log("UNIT SELECTED");
+            //Debug.Log("UNIT SELECTED");
             unitSelected = true;
         }
     }

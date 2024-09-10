@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Warrior : Melee, IAttacking
 {
+    [SerializeField] int MaxAttackDistance = 1;
     [SerializeField] protected float maximumHealth = 50.0f;
+    [SerializeField] HexGrid hexGrid;
     protected override void Awake()
     {
         base.Awake();
         initialise(maximumHealth);
+        hexGrid = FindObjectOfType<HexGrid>();
     }
 
     // Update is called once per frame
@@ -18,6 +21,18 @@ public class Warrior : Melee, IAttacking
     }
     public void attack(GameObject thingToAttack){
         //if thing is x tiles away then attack
-        thingToAttack.GetComponent<IDamageable>().takeDamage(damage);
+        Vector2Int startCords = hexGrid.GetTileScript(new Vector2(gameObject.transform.position.x, gameObject.transform.position.z)).intCoords;
+        Vector2Int targetCords = hexGrid.GetTileScript(new Vector2(thingToAttack.transform.position.x, thingToAttack.transform.position.z)).intCoords;
+
+        //Debug.Log();
+        
+
+        int tileDistance = hexGrid.DistanceBetweenTiles(startCords, targetCords);
+        if(tileDistance <= MaxAttackDistance){
+            thingToAttack.GetComponent<IDamageable>().takeDamage(damage);
+        }else{
+            Debug.Log("too far away");
+        }
+        //thingToAttack.GetComponent<IDamageable>().takeDamage(damage);
     }
 }

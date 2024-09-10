@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Melee : Units
+public class Ranged : Units
 {
     protected virtual void Awake()
     {
-        defenceType = unitTypes.Melee;
+        defenceType = unitTypes.Ranged;
     }
     protected override void Start()
     {

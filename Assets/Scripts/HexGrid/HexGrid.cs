@@ -34,13 +34,12 @@ public class HexGrid : MonoBehaviour
                 var tileInstScript = instantiated.AddComponent<TileScript>();
                 //tileInstScript.coords = new Vector2(hexCoords.x, hexCoords.y);
                 tileInstScript.isWalkable = true;
-                tileInstScript.intCoords = new Vector2(x, z);
+                tileInstScript.intCoords = new Vector2Int(x, z);
 
                 Tiles.Add(instantiated, instantiated.GetComponent<TileScript>());
             }
         }
     }
-
     public TileScript GetTileScript(Vector2 coords){
         foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
             if(new Vector2(TS.Key.transform.position.x, TS.Key.transform.position.z) == coords){
@@ -49,11 +48,11 @@ public class HexGrid : MonoBehaviour
         }
         return null;
     }
-    public void blockTile(Vector2 coords){
+    public void BlockTile(Vector2 coords){
         var tileScript = GetTileScript(coords);
         tileScript.isWalkable = false;
     }
-    public void unblockTile(Vector2 coords){
+    public void UnblockTile(Vector2 coords){
         var tileScript = GetTileScript(coords);
         tileScript.isWalkable = true;
     }
@@ -66,11 +65,11 @@ public class HexGrid : MonoBehaviour
     public GameObject GetTileFromIntCoords(Vector2 cords){
         foreach(Transform child in TilesParent.transform){
             if(child.GetComponent<TileScript>().intCoords == cords){
-                //Debug.Log("Found");
+                Debug.Log("Found");
                 return child.gameObject;
             }
         }
-        //Debug.Log("not found");
+        Debug.Log("not found");
         return null;
     }
     public Vector2 GetCoordinatesFromPosition(Vector3 position){
@@ -108,5 +107,26 @@ public class HexGrid : MonoBehaviour
         //Debug.Log(connecting.Count);
 
         return connecting;
+    }
+    public int DistanceBetweenTiles(Vector2Int startCoords, Vector2Int targetCoords) {
+        // Convert offset coordinates to cube coordinates
+        Vector3Int startCube = OffsetToCube(startCoords);
+        Vector3Int targetCube = OffsetToCube(targetCoords);
+
+        // Calculate distance using cube coordinates
+        int distance = (Mathf.Abs(startCube.x - targetCube.x) + Mathf.Abs(startCube.y - targetCube.y) + Mathf.Abs(startCube.z - targetCube.z)) / 2;
+
+        //Debug.Log("the distance is: " + distance);
+        return distance;
+    }
+    private Vector3Int OffsetToCube(Vector2Int offsetCoords) {
+        int col = offsetCoords.x;
+        int row = offsetCoords.y;
+
+        int x = col;
+        int z = row - (col - (col & 1)) / 2;
+        int y = -x - z;
+
+        return new Vector3Int(x, y, z);
     }
 }

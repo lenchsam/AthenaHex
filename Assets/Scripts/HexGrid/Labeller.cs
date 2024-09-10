@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.Burst.Intrinsics;
 
 //used https://www.youtube.com/watch?v=4JaHSLA2CKs for this
 public class Labeller : MonoBehaviour
 {
     [SerializeField] TextMeshPro label;
-    public Vector2 cords = new Vector2Int();
+    public Vector2 cords = new Vector2();
+    public Vector2Int intCords = new Vector2Int();
     HexGrid gridManager;
 
     [SerializeField] private bool displayName = false;
@@ -32,6 +34,10 @@ public class Labeller : MonoBehaviour
             DisplayCords();
             transform.name = cords.ToString();
         }
+
+        intCords = gridManager.GetTileScript(cords).intCoords;
+        //Debug.Log(intCords);
+        label.text = $"{intCords.x}, {intCords.y}";
     }
 
     private void DisplayCords()
@@ -40,6 +46,6 @@ public class Labeller : MonoBehaviour
         cords.x = transform.position.x;
         cords.y = transform.position.z;
 
-        label.text = $"{cords.x}, {cords.y}";
+        //label.text = $"{cords.x}, {cords.y}";
     }
 }

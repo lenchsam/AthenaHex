@@ -13,13 +13,11 @@ public class Settler : Units
     private InputActionMap _inputActionMap;
 
     private CitiesManager citiesManager;
-    private HexGrid gridManager;
 
     protected override void Start(){
         base.Start();
 
         citiesManager = FindObjectOfType<CitiesManager>();
-        gridManager = FindObjectOfType<HexGrid>();
 
         _inputActionMap = controls.FindActionMap("Player");
         foundCity = _inputActionMap.FindAction("Ability");
@@ -27,8 +25,5 @@ public class Settler : Units
     }
     private void startCity(InputAction.CallbackContext obj){
         citiesManager.MakeNewCity(transform.position);
-    }
-    public void takeDamage(){
-
     }
 }
