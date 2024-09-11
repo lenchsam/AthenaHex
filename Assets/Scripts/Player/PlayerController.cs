@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
-using Unity.VisualScripting;
-using UnityEngine.WSA;
 public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public UnityEvent<Vector2, GameObject> OnUnitMove = new UnityEvent<Vector2, GameObject>();
     TurnManager turnManager;
-    Transform SelectedUnit;
-    bool unitSelected = false;
+    [SerializeField] Transform SelectedUnit;
+    [SerializeField] bool unitSelected = false;
     [HideInInspector] public bool attackedThisTurn = false;
+    [SerializeField] int LM;
 
     //private variables
     private HexGrid hexGrid;
@@ -19,6 +18,8 @@ public class PlayerController : MonoBehaviour
     {
         turnManager = FindAnyObjectByType<TurnManager>();
         hexGrid = FindAnyObjectByType<HexGrid>();
+
+        LM = LayerMask.GetMask("Tile");
     }
     public void Clicked(InputAction.CallbackContext context){
         if (!context.performed){return;}
@@ -26,16 +27,16 @@ public class PlayerController : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
+        bool hasHit = Physics.Raycast(ray, out hit, Mathf.Infinity, LM);
         
-        bool hasHit = Physics.Raycast(ray, out hit);
-        
+
         if(!hasHit){return;} //return if its hit nothing
+
         unitController(hasHit, hit);
         cityCheck(hasHit, hit);
     }
     private void unitController(bool hasHit, RaycastHit hit){
         if (hit.transform.tag == "Tile" && unitSelected){ //if hit a tile and already have a unit selected
-            
             Vector2 targetCords = new Vector2(hit.transform.GetComponent<TileScript>().transform.position.x, hit.transform.GetComponent<TileScript>().transform.position.z);
             Vector2 startCords = new Vector2(SelectedUnit.position.x, SelectedUnit.position.z);
 
@@ -101,21 +102,23 @@ public class PlayerController : MonoBehaviour
 
             //Debug.Log(SelectedUnit.GetComponent<AssignTeam>().defenceTeam + " selected unit");
             //Debug.Log(targetUnit.GetComponent<AssignTeam>().defenceTeam + " target unit");
-        }else if(hit.transform.tag == "Unit"){
+        }else if(hit.transform.gameObject.GetComponent<TileScript>().occupiedUnit != null){ //if the tile has a unit on
             //-----------------------------------------------------------------------------------------------------------------------------------------------
             //select the unit clicked
-            AssignTeam team = hit.transform.gameObject.GetComponent<AssignTeam>();
+            //if(hit.transform.gameObject.GetComponent<TileScript>().occupiedUnit == null){return;}//if the tile doesnt have a unit on it
 
-            if (team.defenceTeam != turnManager.playerTeam){return;}//if the defence is not on the players team
+            AssignTeam team = hit.transform.gameObject.GetComponent<TileScript>().occupiedUnit.GetComponent<AssignTeam>();
 
-            SelectedUnit = hit.transform;
+            if (team.defenceTeam != turnManager.playerTeam){return;}//if the defence is not on the players team then return
+
+            SelectedUnit = team.gameObject.transform;
             //Debug.Log("UNIT SELECTED");
             unitSelected = true;
         }
     }
     private void cityCheck(bool hasHit, RaycastHit hit){
         if(hit.transform.tag != "Tile"){return;}
-        
+
         if(hit.transform.gameObject.GetComponent<TileScript>().isCityCentre == true){
             Debug.Log("trueeeeee");
         }

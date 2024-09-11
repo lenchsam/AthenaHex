@@ -538,6 +538,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   attackedThisTurn: 0
+  LM: 0
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
