@@ -6,11 +6,13 @@ public class CitiesManager : MonoBehaviour
 {
     public GameObject border;
     HexGrid gridManager;
+    TurnManager turnManager;
     public CitiesScriptableObject CitiesSOBase;
     [SerializeField] List<CitiesScriptableObject> AllCities = new List<CitiesScriptableObject>();
     public int numberOfCities;
     void Start(){
         gridManager = FindObjectOfType<HexGrid>();
+        turnManager = FindObjectOfType<TurnManager>();
     }
     public void expandBorder(GameObject tileToExpand, CitiesScriptableObject SO_Cities){
         //add the tile to the list of tiles inside of the citiesscriptable object
@@ -38,15 +40,22 @@ public class CitiesManager : MonoBehaviour
         rend.material.color = Color.black;
     }
     public void MakeNewCity(Vector3 positionToInstantiate){
+        Vector2 tileCords = gridManager.GetCoordinatesFromPosition(positionToInstantiate); //get the tileCords to make the city at
         CitiesScriptableObject CitySO = Instantiate(CitiesSOBase); //create a new scriptable object for the city
-        CitySO.constructor(("City: " + numberOfCities).ToString(), numberOfCities);
+        CitySO.constructor(("City: " + numberOfCities).ToString(), numberOfCities, turnManager.playerTeam, tileCords);
         numberOfCities++;
         AllCities.Add(CitySO); //add it to the list of city scriptable objects
 
-        Vector2 tileCords = gridManager.GetCoordinatesFromPosition(positionToInstantiate); //get the tileCords to make the city at
+        //get tile script, then assign the city centre
+        var tileScript = gridManager.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y)).GetComponent<TileScript>();
+        tileScript.isCityCentre = true;
+        tileScript.districts = district.CityCentre;
+
         initialiseCity(CitySO, gridManager.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y))); //make the city
     }
 }
-public enum districts{
-    
+public enum district{
+    None,
+    CityCentre,
+    Barrack
 }

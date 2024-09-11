@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using Unity.VisualScripting;
+using UnityEngine.WSA;
 public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public UnityEvent<Vector2, GameObject> OnUnitMove = new UnityEvent<Vector2, GameObject>();
@@ -21,9 +22,6 @@ public class PlayerController : MonoBehaviour
     }
     public void Clicked(InputAction.CallbackContext context){
         if (!context.performed){return;}
-        
-        //-----------------------------------------------------------------------------------------------------------------------------------------------
-        //raycast
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -32,8 +30,10 @@ public class PlayerController : MonoBehaviour
         bool hasHit = Physics.Raycast(ray, out hit);
         
         if(!hasHit){return;} //return if its hit nothing
-        //-----------------------------------------------------------------------------------------------------------------------------------------------
-
+        unitController(hasHit, hit);
+        cityCheck(hasHit, hit);
+    }
+    private void unitController(bool hasHit, RaycastHit hit){
         if (hit.transform.tag == "Tile" && unitSelected){ //if hit a tile and already have a unit selected
             
             Vector2 targetCords = new Vector2(hit.transform.GetComponent<TileScript>().transform.position.x, hit.transform.GetComponent<TileScript>().transform.position.z);
@@ -111,6 +111,13 @@ public class PlayerController : MonoBehaviour
             SelectedUnit = hit.transform;
             //Debug.Log("UNIT SELECTED");
             unitSelected = true;
+        }
+    }
+    private void cityCheck(bool hasHit, RaycastHit hit){
+        if(hit.transform.tag != "Tile"){return;}
+        
+        if(hit.transform.gameObject.GetComponent<TileScript>().isCityCentre == true){
+            Debug.Log("trueeeeee");
         }
     }
 }

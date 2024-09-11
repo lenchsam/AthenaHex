@@ -57,7 +57,7 @@ public class HexGrid : MonoBehaviour
         tileScript.isWalkable = true;
     }
     public GameObject GetTileFromPosition(Vector2 cords){
-        //Debug.Log(cords.ToString() + "  asdf");
+        Debug.Log(cords.ToString() + "  asdf");
         //Debug.Log(TilesParent.transform.Find(cords.ToString()).gameObject);
 
         return TilesParent.transform.Find(cords.ToString()).gameObject;
@@ -65,7 +65,7 @@ public class HexGrid : MonoBehaviour
     public GameObject GetTileFromIntCoords(Vector2 cords){
         foreach(Transform child in TilesParent.transform){
             if(child.GetComponent<TileScript>().intCoords == cords){
-                Debug.Log("Found");
+                //Debug.Log("Found");
                 return child.gameObject;
             }
         }
@@ -116,7 +116,8 @@ public class HexGrid : MonoBehaviour
         // Calculate distance using cube coordinates
         int distance = (Mathf.Abs(startCube.x - targetCube.x) + Mathf.Abs(startCube.y - targetCube.y) + Mathf.Abs(startCube.z - targetCube.z)) / 2;
 
-        //Debug.Log("the distance is: " + distance);
+        Debug.Log(distance + " THIS IS THE DISTANCE");
+
         return distance;
     }
     private Vector3Int OffsetToCube(Vector2Int offsetCoords) {
@@ -124,9 +125,12 @@ public class HexGrid : MonoBehaviour
         int row = offsetCoords.y;
 
         int x = col;
-        int z = row - (col - (col & 1)) / 2;
+        int z = row - (col - (col & 1)) / 2; // handles the shift in ofset tiles
+
+        //y is the negative of x and z. cube coordinated needs this
         int y = -x - z;
 
         return new Vector3Int(x, y, z);
     }
+
 }

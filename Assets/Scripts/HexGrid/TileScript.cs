@@ -7,14 +7,15 @@ public class TileScript : MonoBehaviour, IInteractable
 {
     public bool isWalkable;
     public GameObject occupiedUnit;
-    //public Vector2 coords;
     public Vector2Int intCoords;
+    public bool isCityCentre = false;
+    public district districts;
 
     public void OnClick()
     {
         Debug.Log("I AM CLICKED + " + gameObject.name);
         if(isWalkable){
-
+            
         }
     }
 }
