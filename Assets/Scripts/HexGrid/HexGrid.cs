@@ -57,7 +57,7 @@ public class HexGrid : MonoBehaviour
         tileScript.isWalkable = true;
     }
     public GameObject GetTileFromPosition(Vector2 cords){
-        Debug.Log(cords.ToString() + "  asdf");
+        //Debug.Log(cords.ToString() + "  asdf");
         //Debug.Log(TilesParent.transform.Find(cords.ToString()).gameObject);
 
         return TilesParent.transform.Find(cords.ToString()).gameObject;

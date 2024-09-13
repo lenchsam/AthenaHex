@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class CitiesManager : MonoBehaviour
 {
-    public GameObject border;
     HexGrid gridManager;
     TurnManager turnManager;
     public CitiesScriptableObject CitiesSOBase;
     [SerializeField] List<CitiesScriptableObject> AllCities = new List<CitiesScriptableObject>();
     public int numberOfCities;
+    private Barracks selectedCity;
     void Start(){
         gridManager = FindObjectOfType<HexGrid>();
         turnManager = FindObjectOfType<TurnManager>();
@@ -17,18 +17,17 @@ public class CitiesManager : MonoBehaviour
     public void expandBorder(GameObject tileToExpand, CitiesScriptableObject SO_Cities){
         //add the tile to the list of tiles inside of the citiesscriptable object
         SO_Cities.CityTiles.Add(tileToExpand);
-
-
+        tileToExpand.GetComponent<TileScript>().SO_Cities = SO_Cities;
         //Debug.Log(tileToExpand);
     }
-    public void initialiseCity(CitiesScriptableObject citiesCO, GameObject CityCentre){
+    public void initialiseCity(CitiesScriptableObject citiesSO, GameObject CityCentre){
         List<GameObject> tiles = gridManager.GetSurroundingTiles(CityCentre); //creates a list of every connecting tile
         //Debug.Log(tiles.Count);
 
         //loop through the list and add them to the city scriptable object
         foreach(GameObject GO in tiles){
             //Debug.Log("asdfasdf");
-            expandBorder(GO, citiesCO);
+            expandBorder(GO, citiesSO);
             changeTileColour(GO);
         }
     }
@@ -50,12 +49,18 @@ public class CitiesManager : MonoBehaviour
         var tileScript = gridManager.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y)).GetComponent<TileScript>();
         tileScript.isCityCentre = true;
         tileScript.districts = district.CityCentre;
+        tileScript.transform.gameObject.AddComponent<CityCentre>();
 
         initialiseCity(CitySO, gridManager.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y))); //make the city
     }
-}
-public enum district{
-    None,
-    CityCentre,
-    Barrack
+    public CitiesScriptableObject GetCitySOFromTile(GameObject tile){
+        foreach(CitiesScriptableObject SO_Cities in AllCities){
+            foreach(GameObject CityTiles in SO_Cities.CityTiles){
+                if (CityTiles == tile){
+                    return SO_Cities;
+                }
+            }
+        }
+        return null;
+    }
 }

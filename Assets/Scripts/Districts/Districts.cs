@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Districts : MonoBehaviour, IInteractable
+public class Districts : MonoBehaviour
 {
-    [SerializeField] private GameObject UIToEnable;
-    public void OnClick(){
-        UIToEnable.SetActive(true);
+    [SerializeField] protected TileScript tileScript;
+    [SerializeField] protected DistrictManager districtManager;
+    public void Start(){
+        tileScript = gameObject.GetComponent<TileScript>();
+        districtManager = FindObjectOfType<DistrictManager>();
     }
 }
