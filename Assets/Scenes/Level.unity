@@ -349,8 +349,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.471858, y: -0.000000032804582, z: 0.00000001755648, w: 0.8816746}
-  m_LocalPosition: {x: 0, y: 15, z: -10}
+  m_LocalRotation: {x: 0.3826835, y: -0.000000027533755, z: 0.000000011404856, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 5, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1002,8 +1002,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 893672762}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.47185794, y: -0.000000032804575, z: 0.000000017556475, w: 0.88167465}
-  m_LocalPosition: {x: 0, y: 15, z: -10}
+  m_LocalRotation: {x: 0.38268346, y: -0.00000002753375, z: 0.000000011404852, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 5, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1042,6 +1042,8 @@ MonoBehaviour:
   CitiesSOBase: {fileID: 11400000, guid: ce5264350a2c20b4099566c39feb4cd9, type: 2}
   AllCities: []
   numberOfCities: 0
+  CityCentrePrefab: {fileID: 919132149155446097, guid: f060fe87691e374418754c0020286150,
+    type: 3}
 --- !u!4 &919203970
 Transform:
   m_ObjectHideFlags: 0
@@ -1450,7 +1452,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 15, z: -10}
+  m_FollowOffset: {x: 0, y: 5, z: -5}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
@@ -1596,6 +1598,8 @@ MonoBehaviour:
   UI_CityCentre: {fileID: 1716337098}
   UI_Barracks: {fileID: 1813165769}
   waitingForClick: 0
+  BarracksPrefab: {fileID: 919132149155446097, guid: cb714685977dcd7478d6cda7beede31d,
+    type: 3}
 --- !u!1 &1417880795
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class CitiesManager : MonoBehaviour
     [SerializeField] List<CitiesScriptableObject> AllCities = new List<CitiesScriptableObject>();
     public int numberOfCities;
     private Barracks selectedCity;
+    [SerializeField] GameObject CityCentrePrefab;
     void Start(){
         gridManager = FindObjectOfType<HexGrid>();
         turnManager = FindObjectOfType<TurnManager>();
@@ -50,6 +52,8 @@ public class CitiesManager : MonoBehaviour
         tileScript.isCityCentre = true;
         tileScript.districts = district.CityCentre;
         tileScript.transform.gameObject.AddComponent<CityCentre>();
+
+        Instantiate(CityCentrePrefab,tileScript.gameObject.transform.position, Quaternion.Euler(0, 90, 0));//instantiate castle.
 
         initialiseCity(CitySO, gridManager.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y))); //make the city
     }

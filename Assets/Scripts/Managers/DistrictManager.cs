@@ -11,7 +11,8 @@ public class DistrictManager : MonoBehaviour
     public GameObject UI_Barracks;
     private GameObject currentlyEnabled;
     private Barracks selectedBarracks;
-    public bool waitingForClick = false;
+    [HideInInspector] public bool waitingForClick = false;
+        [SerializeField] GameObject BarracksPrefab;
 //-------------------------------------------------------------------------
     void Start(){
         citiesManager = FindObjectOfType<CitiesManager>();
@@ -29,6 +30,9 @@ public class DistrictManager : MonoBehaviour
         if(tileScript.SO_Cities == citiesManager.GetCitySOFromTile(hit.transform.gameObject)){
             Debug.Log("IS PART OF THE CITY");
             tileScript.gameObject.AddComponent<Barracks>();
+            Instantiate(BarracksPrefab,tileScript.gameObject.transform.position, Quaternion.Euler(0, 90, 0));//instantiate barracks.
+
+            //instantiate the barracks GO
         }
     }
     public void UIToggle(GameObject uiToEnable){
