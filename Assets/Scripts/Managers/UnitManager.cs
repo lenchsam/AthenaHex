@@ -104,12 +104,17 @@ public class UnitManager : MonoBehaviour
     }
     private IEnumerator lerpToPosition(Vector3 startPosition, List<GameObject> targetPositions, float unitMovementSpeed, GameObject gameObjectToMove){
         // Set initial position
-        gameObjectToMove.transform.position = startPosition;
+        //startPosition.y += 1f;
+        //gameObjectToMove.transform.position = startPosition;
 
         // Iterate through each target position in the list
         foreach (GameObject targetPosition in targetPositions)
         {
-            float distance = Vector3.Distance(gameObjectToMove.transform.position, targetPosition.transform.position);
+            // Offset the target position by 1 on the y-axis
+            Vector3 adjustedTarget = new Vector3(targetPosition.transform.position.x, targetPosition.transform.position.y + 1f, targetPosition.transform.position.z);
+
+            
+            float distance = Vector3.Distance(gameObjectToMove.transform.position, adjustedTarget);
             float duration = distance / unitMovementSpeed;  // Calculate duration based on speed
 
             float timeElapsed = 0f;
@@ -117,7 +122,7 @@ public class UnitManager : MonoBehaviour
             // Move towards the current target position
             while (timeElapsed < duration)
             {
-                gameObjectToMove.transform.position = Vector3.Lerp(gameObjectToMove.transform.position, targetPosition.transform.position, timeElapsed / duration);
+                gameObjectToMove.transform.position = Vector3.Lerp(gameObjectToMove.transform.position, adjustedTarget, timeElapsed / duration);
 
                 timeElapsed += Time.deltaTime;
 
@@ -125,7 +130,7 @@ public class UnitManager : MonoBehaviour
             }
 
             // Ensure the object reaches the target position exactly
-            gameObjectToMove.transform.position = targetPosition.transform.position;
+            gameObjectToMove.transform.position = adjustedTarget;
         }
     }
 }
