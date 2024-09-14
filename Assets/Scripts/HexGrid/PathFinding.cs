@@ -5,6 +5,7 @@ using UnityEngine;
 public class PathFinding : MonoBehaviour
 {
     private HexGrid hexGrid;
+    public int unitMovementSpeed;
     void Start(){
         hexGrid = FindAnyObjectByType<HexGrid>();
     }

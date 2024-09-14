@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UnitManager : MonoBehaviour
@@ -21,12 +22,10 @@ public class UnitManager : MonoBehaviour
             Vector2 targetCords = new Vector2(hit.transform.GetComponent<TileScript>().transform.position.x, hit.transform.GetComponent<TileScript>().transform.position.z);
             Vector2 startCords = new Vector2(SelectedUnit.position.x, SelectedUnit.position.z);
             
+            //get the path to the target position
             Vector2Int startCoords = hexGrid.GetIntCordsFromPosition(startCords);
             Vector2Int targetCoords = hexGrid.GetIntCordsFromPosition(targetCords);
             List<GameObject> path = pathFinding.FindPath(startCoords, targetCoords);
-            foreach(GameObject GO in path){
-                Debug.Log(GO);
-            }
 
             //pass the tile node the reference to the unit that is stood on it
             TileScript targetNode = hit.transform.gameObject.GetComponent<TileScript>();
@@ -68,7 +67,8 @@ public class UnitManager : MonoBehaviour
                 // If the tile is walkable and empty, move the unit
                 //Debug.Log("MOVING");
                 //need to change this to lerp rather than teleport...... maybe pathfinding
-                SelectedUnit.transform.position = new Vector3(targetCords.x, SelectedUnit.position.y, targetCords.y);
+                StartCoroutine(lerpToPosition(SelectedUnit.transform.position, path, pathFinding.unitMovementSpeed, SelectedUnit.gameObject));
+                //SelectedUnit.transform.position = new Vector3(targetCords.x, SelectedUnit.position.y, targetCords.y);
 
                 targetNode.occupiedUnit = SelectedUnit.gameObject; //set the node you moved to as occupied
 
@@ -83,13 +83,6 @@ public class UnitManager : MonoBehaviour
                 SelectedUnit = null;
                 unitSelected = false;
             }
-
-            //if attackedThisTurn == false then trigger the event, dont move
-
-            //if tile is not occupied by an enemy, check if the tile is walkable
-
-            //Debug.Log(SelectedUnit.GetComponent<AssignTeam>().defenceTeam + " selected unit");
-            //Debug.Log(targetUnit.GetComponent<AssignTeam>().defenceTeam + " target unit");
         }else if(hit.transform.gameObject.GetComponent<TileScript>().occupiedUnit != null){ //if the tile has a unit on
             //-----------------------------------------------------------------------------------------------------------------------------------------------
             //select the unit clicked
@@ -109,7 +102,30 @@ public class UnitManager : MonoBehaviour
             unitSelected = true;
         }
     }
-    private void lerpToPosition(Vector3 startPosition, Vector3 TargetPosition){
+    private IEnumerator lerpToPosition(Vector3 startPosition, List<GameObject> targetPositions, float unitMovementSpeed, GameObject gameObjectToMove){
+        // Set initial position
+        gameObjectToMove.transform.position = startPosition;
 
+        // Iterate through each target position in the list
+        foreach (GameObject targetPosition in targetPositions)
+        {
+            float distance = Vector3.Distance(gameObjectToMove.transform.position, targetPosition.transform.position);
+            float duration = distance / unitMovementSpeed;  // Calculate duration based on speed
+
+            float timeElapsed = 0f;
+
+            // Move towards the current target position
+            while (timeElapsed < duration)
+            {
+                gameObjectToMove.transform.position = Vector3.Lerp(gameObjectToMove.transform.position, targetPosition.transform.position, timeElapsed / duration);
+
+                timeElapsed += Time.deltaTime;
+
+                yield return null;  // Wait until the next frame
+            }
+
+            // Ensure the object reaches the target position exactly
+            gameObjectToMove.transform.position = targetPosition.transform.position;
+        }
     }
 }
