@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class HexGrid : MonoBehaviour
@@ -20,7 +19,7 @@ public class HexGrid : MonoBehaviour
 
         return new Vector2(xPos, zPos);
     }
-    void MakeMapGrid(){
+    private void MakeMapGrid(){
         for (int x = 0; x < mapWidth; x++)
         {
             for (int z = 0; z < mapHeight; z++)
@@ -116,10 +115,11 @@ public class HexGrid : MonoBehaviour
         // Calculate distance using cube coordinates
         int distance = (Mathf.Abs(startCube.x - targetCube.x) + Mathf.Abs(startCube.y - targetCube.y) + Mathf.Abs(startCube.z - targetCube.z)) / 2;
 
-        Debug.Log(distance + " THIS IS THE DISTANCE");
+        //Debug.Log(distance + " THIS IS THE DISTANCE");
 
         return distance;
     }
+    //only needed for DistanceBetweenTiles function
     private Vector3Int OffsetToCube(Vector2Int offsetCoords) {
         int col = offsetCoords.x;
         int row = offsetCoords.y;
@@ -132,5 +132,8 @@ public class HexGrid : MonoBehaviour
 
         return new Vector3Int(x, y, z);
     }
-
+    public Vector2Int GetIntCordsFromPosition(Vector2 pos){
+        TileScript TS = GetTileScript(pos);
+        return TS.intCoords;
+    }
 }

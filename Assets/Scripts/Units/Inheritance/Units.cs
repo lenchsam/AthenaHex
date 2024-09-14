@@ -10,6 +10,7 @@ public class Units : ACDefence
     protected PlayerController playerController;
     protected unitTypes defenceType;
     [SerializeField] public int damage;
+    [HideInInspector] public bool tookTurn;
 
     protected virtual void Start(){
         playerController = FindObjectOfType<PlayerController>();

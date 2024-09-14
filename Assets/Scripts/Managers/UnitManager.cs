@@ -9,15 +9,24 @@ public class UnitManager : MonoBehaviour
     [HideInInspector] public bool attackedThisTurn = false;
     private HexGrid hexGrid;
     TurnManager turnManager;
+    PathFinding pathFinding;
     void Start()
     {
         turnManager = FindAnyObjectByType<TurnManager>();
         hexGrid = FindAnyObjectByType<HexGrid>();
+        pathFinding = FindAnyObjectByType<PathFinding>();
     }
     public void unitController(bool hasHit, RaycastHit hit){
         if (hit.transform.tag == "Tile" && unitSelected){ //if hit a tile and already have a unit selected
             Vector2 targetCords = new Vector2(hit.transform.GetComponent<TileScript>().transform.position.x, hit.transform.GetComponent<TileScript>().transform.position.z);
             Vector2 startCords = new Vector2(SelectedUnit.position.x, SelectedUnit.position.z);
+            
+            Vector2Int startCoords = hexGrid.GetIntCordsFromPosition(startCords);
+            Vector2Int targetCoords = hexGrid.GetIntCordsFromPosition(targetCords);
+            List<GameObject> path = pathFinding.FindPath(startCoords, targetCoords);
+            foreach(GameObject GO in path){
+                Debug.Log(GO);
+            }
 
             //pass the tile node the reference to the unit that is stood on it
             TileScript targetNode = hit.transform.gameObject.GetComponent<TileScript>();
@@ -88,11 +97,19 @@ public class UnitManager : MonoBehaviour
 
             AssignTeam team = hit.transform.gameObject.GetComponent<TileScript>().occupiedUnit.GetComponent<AssignTeam>();
 
+            if(team.gameObject.GetComponent<Units>().tookTurn){
+                Debug.Log("unit has moved this turn");
+                return;
+            }
+
             if (team.defenceTeam != turnManager.playerTeam){return;}//if the defence is not on the players team then return
 
             SelectedUnit = team.gameObject.transform;
             //Debug.Log("UNIT SELECTED");
             unitSelected = true;
         }
+    }
+    private void lerpToPosition(Vector3 startPosition, Vector3 TargetPosition){
+
     }
 }
