@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using UnityEditor.Experimental.GraphView;
 public class PlayerController : MonoBehaviour
 {
     [HideInInspector] public UnityEvent<Vector2, GameObject> OnUnitMove = new UnityEvent<Vector2, GameObject>();
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] int LM;
     private UnitManager unitManager;
     private DistrictManager districtManager;
+    private Building building;
 
     //private variables
     private HexGrid hexGrid;
@@ -19,6 +21,7 @@ public class PlayerController : MonoBehaviour
         unitManager = FindObjectOfType<UnitManager>();
         hexGrid = FindAnyObjectByType<HexGrid>();
         districtManager = FindAnyObjectByType<DistrictManager>();
+        building = FindAnyObjectByType<Building>();
 
         LM = LayerMask.GetMask("Tile");
     }
@@ -40,12 +43,16 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        //if waiting to build
+        //  place
+        //  return
+        
         if(hit.transform.gameObject.GetComponent<IInteractable>() != null){ //if the hit object is clickable
             hit.transform.gameObject.GetComponent<IInteractable>().OnClick();
-            
         }
 
-        unitManager.unitController(hasHit, hit);
+        unitManager.unitController(hit);
+        building.PlaceDown(hit);
         //cityCheck(hasHit, hit);
     }
     

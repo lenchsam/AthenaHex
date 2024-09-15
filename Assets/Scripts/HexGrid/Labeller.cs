@@ -28,16 +28,16 @@ public class Labeller : MonoBehaviour
         }
     }
     void Start(){
-        if(!displayName){
+
+        intCords = gridManager.GetTileScript(cords).intCoords;
+        //Debug.Log(intCords);
+        label.text = $"{intCords.x}, {intCords.y}";
+                if(!displayName){
             label.text = "";
         }else{
             DisplayCords();
             transform.name = cords.ToString();
         }
-
-        intCords = gridManager.GetTileScript(cords).intCoords;
-        //Debug.Log(intCords);
-        label.text = $"{intCords.x}, {intCords.y}";
     }
 
     private void DisplayCords()

@@ -20,7 +20,7 @@ public class UnitManager : MonoBehaviour
 
         SetupStartUnits(StartUnit, new Vector2Int(0,0));
     }
-    public void unitController(bool hasHit, RaycastHit hit){
+    public void unitController(RaycastHit hit){
         if (hit.transform.tag == "Tile" && unitSelected){ //if hit a tile and already have a unit selected
             Vector2 targetCords = new Vector2(hit.transform.GetComponent<TileScript>().transform.position.x, hit.transform.GetComponent<TileScript>().transform.position.z);
             Vector2 startCords = new Vector2(SelectedUnit.position.x, SelectedUnit.position.z);

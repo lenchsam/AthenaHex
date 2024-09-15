@@ -20,7 +20,7 @@ public class DistrictManager : MonoBehaviour
         waitingForClick = true;
     }
     public void BuildBarracks(RaycastHit hit){
-        Debug.Log("RAN");
+        //Debug.Log("RAN");
         TileScript tileScript = hit.transform.gameObject.GetComponent<TileScript>();
         //if isnt part of the
         if(tileScript.SO_Cities == null){
