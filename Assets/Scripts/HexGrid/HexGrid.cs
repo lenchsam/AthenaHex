@@ -10,7 +10,7 @@ public class HexGrid : MonoBehaviour
     [SerializeField] int tileSize = 1;
     [SerializeField] GameObject tilePrefab;
     [SerializeField] Dictionary<GameObject, TileScript> Tiles = new Dictionary<GameObject, TileScript>();
-    void Start(){
+    void Awake(){
         MakeMapGrid();
     }
     private Vector2 GetHexCoords(int x, int z){
@@ -68,7 +68,7 @@ public class HexGrid : MonoBehaviour
                 return child.gameObject;
             }
         }
-        Debug.Log("not found");
+        //Debug.Log("not found");
         return null;
     }
     public Vector2 GetCoordinatesFromPosition(Vector3 position){

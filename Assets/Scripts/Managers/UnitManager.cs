@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class UnitManager : MonoBehaviour
 {
+    [SerializeField] GameObject StartUnit;
     [SerializeField] Transform SelectedUnit;
     [SerializeField] bool unitSelected = false;
     [HideInInspector] public bool attackedThisTurn = false;
@@ -16,6 +17,8 @@ public class UnitManager : MonoBehaviour
         turnManager = FindAnyObjectByType<TurnManager>();
         hexGrid = FindAnyObjectByType<HexGrid>();
         pathFinding = FindAnyObjectByType<PathFinding>();
+
+        SetupStartUnits(StartUnit, new Vector2Int(0,0));
     }
     public void unitController(bool hasHit, RaycastHit hit){
         if (hit.transform.tag == "Tile" && unitSelected){ //if hit a tile and already have a unit selected
@@ -132,5 +135,10 @@ public class UnitManager : MonoBehaviour
             // Ensure the object reaches the target position exactly
             gameObjectToMove.transform.position = adjustedTarget;
         }
+    }
+    private void SetupStartUnits(GameObject unitPrefab, Vector2Int TilePosition){
+        TileScript tileScript = hexGrid.GetTileFromIntCoords(TilePosition).GetComponent<TileScript>();
+        tileScript.isWalkable = false;
+        tileScript.occupiedUnit = Instantiate(unitPrefab, tileScript.gameObject.transform.position, Quaternion.identity);
     }
 }

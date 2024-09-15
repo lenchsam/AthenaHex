@@ -15,6 +15,7 @@ MonoBehaviour:
   sceneDatas_byGuid:
     keys:
     - 99c9720ab356a0642a771bea13969a05
+    - ba1c9f0ca99dcc942b48f58ed97b8190
     values:
     - goDatas_byGlobalId:
         keys:
@@ -28,3 +29,9 @@ MonoBehaviour:
           iconNameOrGuid: 
         - colorIndex: 2
           iconNameOrGuid: 
+    - goDatas_byGlobalId:
+        keys:
+        - globalObjectIdString: GlobalObjectId_V1-2-ba1c9f0ca99dcc942b48f58ed97b8190-582249399-0
+        values:
+        - colorIndex: 0
+          iconNameOrGuid: Canvas Icon
