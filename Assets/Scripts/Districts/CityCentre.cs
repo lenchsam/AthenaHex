@@ -6,6 +6,6 @@ public class CityCentre : Districts, IInteractable
 {
     public void OnClick(){
         districtManager.UIToggle(districtManager.UI_CityCentre);
-        Debug.Log("clicked cityCentre");
+        //Debug.Log("clicked cityCentre");
     }
 }

@@ -59,13 +59,13 @@ public class CitiesManager : MonoBehaviour
     }
     public CitiesScriptableObject GetCitySOFromTile(GameObject tile){
         if(tile.GetComponent<TileScript>().SO_Cities == null){
-            Debug.Log("returned");
+            //Debug.Log("returned");
             return null;
         }
         foreach(CitiesScriptableObject SO_Cities in AllCities){
-            Debug.Log("next SO");
+            //Debug.Log("next SO");
             foreach(GameObject CityTiles in SO_Cities.CityTiles){
-                Debug.Log("next tile");
+                //Debug.Log("next tile");
                 if (CityTiles == tile){
                     return SO_Cities;
                 }

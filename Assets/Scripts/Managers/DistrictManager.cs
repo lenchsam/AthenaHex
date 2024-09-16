@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class DistrictManager : MonoBehaviour
 {
@@ -21,18 +22,15 @@ public class DistrictManager : MonoBehaviour
         waitingForClick = true;
     }
     public void BuildBarracks(RaycastHit hit){
-        Debug.Log(hit.transform.gameObject.name);
         TileScript tileScript = hit.transform.gameObject.GetComponent<TileScript>();
-        //if isnt part of the
-        // if(tileScript.SO_Cities == null){
-        //     Debug.Log("not part of a city");
-        // }
+
+        if(checkCitiesSOForDistrict(citiesScriptableObject, district.Barrack)){return;}
         
         if(citiesScriptableObject == citiesManager.GetCitySOFromTile(hit.transform.gameObject)){
-            Debug.Log("IS PART OF THE CITY");
+            //Debug.Log("IS PART OF THE CITY");
             tileScript.gameObject.AddComponent<Barracks>();
             Instantiate(BarracksPrefab,tileScript.gameObject.transform.position, Quaternion.Euler(0, 90, 0));//instantiate barracks.
-
+            citiesScriptableObject.containedDistricts.Add(district.Barrack);
             //instantiate the barracks GO
         }
     }
@@ -56,6 +54,14 @@ public class DistrictManager : MonoBehaviour
         if(selectedBarracks.gameObject.GetComponent<TileScript>().occupiedUnit == null){
             selectedBarracks.SpawnEnemy(enemyPrefab);  // Only spawn enemy at the selected barracks
         }
+    }
+    private bool checkCitiesSOForDistrict(CitiesScriptableObject citiesScriptableObject, district _district){
+        foreach(district dist in citiesScriptableObject.containedDistricts){
+            if(dist == _district){
+                return true;
+            }
+        }
+        return false;
     }
 }
 public enum district{
