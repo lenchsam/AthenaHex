@@ -136,5 +136,11 @@ public class HexGrid : MonoBehaviour
         TileScript TS = GetTileScript(pos);
         return TS.intCoords;
     }
+}
 
+public enum OccupiedBy{
+    None,
+    wall,
+    farm,
+    barracks
 }

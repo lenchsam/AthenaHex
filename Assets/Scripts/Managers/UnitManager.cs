@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class UnitManager : MonoBehaviour
 {
+    private PlayerController playerController;
     [SerializeField] GameObject StartUnit;
     [SerializeField] Transform SelectedUnit;
     [SerializeField] bool unitSelected = false;
@@ -17,6 +17,7 @@ public class UnitManager : MonoBehaviour
         turnManager = FindAnyObjectByType<TurnManager>();
         hexGrid = FindAnyObjectByType<HexGrid>();
         pathFinding = FindAnyObjectByType<PathFinding>();
+        playerController = FindAnyObjectByType<PlayerController>();
 
         SetupStartUnits(StartUnit, new Vector2Int(0,0));
     }
@@ -85,25 +86,25 @@ public class UnitManager : MonoBehaviour
                 //reseting variables
                 SelectedUnit = null;
                 unitSelected = false;
+                playerController.selectedTile = null;
+                playerController.tileUI.SetActive(false);
             }
-        }else if(hit.transform.gameObject.GetComponent<TileScript>().occupiedUnit != null){ //if the tile has a unit on
-            //-----------------------------------------------------------------------------------------------------------------------------------------------
-            //select the unit clicked
-            //if(hit.transform.gameObject.GetComponent<TileScript>().occupiedUnit == null){return;}//if the tile doesnt have a unit on it
-
-            AssignTeam team = hit.transform.gameObject.GetComponent<TileScript>().occupiedUnit.GetComponent<AssignTeam>();
-
-            if(team.gameObject.GetComponent<Units>().tookTurn){
-                Debug.Log("unit has moved this turn");
-                return;
-            }
-
-            if (team.defenceTeam != turnManager.playerTeam){return;}//if the defence is not on the players team then return
-
-            SelectedUnit = team.gameObject.transform;
-            //Debug.Log("UNIT SELECTED");
-            unitSelected = true;
         }
+    }
+    public void SelectUnit(){
+        //checks if the tile has a unit on it
+        if(playerController.selectedTile.GetComponent<TileScript>().occupiedUnit == null){
+            playerController.selectedTile = null;
+            return;
+        }
+        
+        //check its part of the correct team
+        if(playerController.selectedTile.GetComponent<TileScript>().occupiedUnit.GetComponent<AssignTeam>().defenceTeam != turnManager.playerTeam){return;}
+
+        //selectes the unit
+        //Debug.Log("selected Unit");
+        SelectedUnit = playerController.selectedTile.GetComponent<TileScript>().occupiedUnit.transform;
+        unitSelected = true;
     }
     private IEnumerator lerpToPosition(Vector3 startPosition, List<GameObject> targetPositions, float unitMovementSpeed, GameObject gameObjectToMove){
         // Set initial position

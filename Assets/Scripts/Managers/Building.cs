@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Building : MonoBehaviour
 {
     [SerializeField] GameObject objectToInstantiate;
     [SerializeField] bool isBuilding = false;
-
     private HexSnap hexSnap;
     void Start(){
         hexSnap = FindAnyObjectByType<HexSnap>();
