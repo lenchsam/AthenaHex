@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
 public class PlayerController : MonoBehaviour
 {
     public GameObject tileUI;
@@ -22,7 +23,6 @@ public class PlayerController : MonoBehaviour
     private HexGrid hexGrid;
     void Start()
     {
-
         turnManager = FindAnyObjectByType<TurnManager>();
         unitManager = FindObjectOfType<UnitManager>();
         hexGrid = FindAnyObjectByType<HexGrid>();
@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
         }
 
         //--------------------------------------------------------------------------------------------------
+        //raycast
+
         tileUI.SetActive(false);
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -65,15 +67,23 @@ public class PlayerController : MonoBehaviour
         tileUI.SetActive(true);
 
         //--------------------------------------------------------------------------------------------------
+        //if waiting for placing barracks placement
+
         if(districtManager.waitingForClick){
             districtManager.BuildBarracks(hit);
             districtManager.waitingForClick = false;
             return;
         }
+        
+        //assigns the correct scriptable object for the district manager. used for checking placing defences in the correct city
+        if(hit.transform.gameObject.GetComponent<TileScript>().districts == district.CityCentre){
+            districtManager.citiesScriptableObject = hit.transform.gameObject.GetComponent<TileScript>().SO_Cities;
+        }else{
+            districtManager.citiesScriptableObject = null;
+        }
 
-        //if waiting to build
-        //  place
-        //  return
+        //--------------------------------------------------------------------------------------------------
+
         
         if(hit.transform.gameObject.GetComponent<IInteractable>() != null){ //if the hit object is clickable
             hit.transform.gameObject.GetComponent<IInteractable>().OnClick();

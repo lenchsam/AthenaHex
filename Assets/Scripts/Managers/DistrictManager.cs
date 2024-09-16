@@ -11,8 +11,9 @@ public class DistrictManager : MonoBehaviour
     private GameObject currentlyEnabled;
     private Barracks selectedBarracks;
     [HideInInspector] public bool waitingForClick = false;
-        [SerializeField] GameObject BarracksPrefab;
-//-------------------------------------------------------------------------
+    [SerializeField] GameObject BarracksPrefab;
+    [HideInInspector] public CitiesScriptableObject citiesScriptableObject;
+    //-------------------------------------------------------------------------
     void Start(){
         citiesManager = FindObjectOfType<CitiesManager>();
     }
@@ -20,13 +21,14 @@ public class DistrictManager : MonoBehaviour
         waitingForClick = true;
     }
     public void BuildBarracks(RaycastHit hit){
-        //Debug.Log("RAN");
+        Debug.Log(hit.transform.gameObject.name);
         TileScript tileScript = hit.transform.gameObject.GetComponent<TileScript>();
         //if isnt part of the
-        if(tileScript.SO_Cities == null){
-            Debug.Log("not part of a city");
-        }
-        if(tileScript.SO_Cities == citiesManager.GetCitySOFromTile(hit.transform.gameObject)){
+        // if(tileScript.SO_Cities == null){
+        //     Debug.Log("not part of a city");
+        // }
+        
+        if(citiesScriptableObject == citiesManager.GetCitySOFromTile(hit.transform.gameObject)){
             Debug.Log("IS PART OF THE CITY");
             tileScript.gameObject.AddComponent<Barracks>();
             Instantiate(BarracksPrefab,tileScript.gameObject.transform.position, Quaternion.Euler(0, 90, 0));//instantiate barracks.
@@ -55,8 +57,6 @@ public class DistrictManager : MonoBehaviour
             selectedBarracks.SpawnEnemy(enemyPrefab);  // Only spawn enemy at the selected barracks
         }
     }
-
-
 }
 public enum district{
     None,

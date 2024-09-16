@@ -11,4 +11,5 @@ public class TileScript : MonoBehaviour
     public district districts;
     public CitiesScriptableObject SO_Cities;
     public OccupiedBy occupiedBy;
+    public GameObject occupiedBuilding;
 }

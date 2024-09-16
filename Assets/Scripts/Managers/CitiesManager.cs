@@ -58,8 +58,14 @@ public class CitiesManager : MonoBehaviour
         initialiseCity(CitySO, gridManager.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y))); //make the city
     }
     public CitiesScriptableObject GetCitySOFromTile(GameObject tile){
+        if(tile.GetComponent<TileScript>().SO_Cities == null){
+            Debug.Log("returned");
+            return null;
+        }
         foreach(CitiesScriptableObject SO_Cities in AllCities){
+            Debug.Log("next SO");
             foreach(GameObject CityTiles in SO_Cities.CityTiles){
+                Debug.Log("next tile");
                 if (CityTiles == tile){
                     return SO_Cities;
                 }
