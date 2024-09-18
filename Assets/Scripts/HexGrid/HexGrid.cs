@@ -9,6 +9,7 @@ public class HexGrid : MonoBehaviour
     [SerializeField] int mapHeight;
     [SerializeField] int tileSize = 1;
     [SerializeField] GameObject tilePrefab;
+    [SerializeField] GameObject fogOfWarPrefab;
     [SerializeField] Dictionary<GameObject, TileScript> Tiles = new Dictionary<GameObject, TileScript>();
     void Awake(){
         MakeMapGrid();
@@ -36,6 +37,7 @@ public class HexGrid : MonoBehaviour
                 tileInstScript.intCoords = new Vector2Int(x, z);
 
                 Tiles.Add(instantiated, instantiated.GetComponent<TileScript>());
+                AddFogOfWar(tileInstScript);
             }
         }
     }
@@ -135,6 +137,20 @@ public class HexGrid : MonoBehaviour
     public Vector2Int GetIntCordsFromPosition(Vector2 pos){
         TileScript TS = GetTileScript(pos);
         return TS.intCoords;
+    }
+    public void AddFogOfWar(TileScript tile){
+        GameObject fow = Instantiate(fogOfWarPrefab, transform);
+        fow.name = "FOW " + tile.gameObject.name;
+        fow.transform.position = tile.transform.position;
+        fow.GetComponent<TileScript>().intCoords = tile.intCoords;
+        tile.fow = fow;
+        tile.gameObject.layer = LayerMask.NameToLayer("Hidden");
+    }
+    public void RevealTile(TileScript tile){
+        tile.Reveal();
+        foreach(GameObject neighbour in GetSurroundingTiles(tile.gameObject)){
+            neighbour.GetComponent<TileScript>().Reveal();
+        }
     }
 }
 

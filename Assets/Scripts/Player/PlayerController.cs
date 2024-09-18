@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
+using Unity.VisualScripting;
 public class PlayerController : MonoBehaviour
 {
     public GameObject tileUI;
@@ -37,7 +39,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Clicked(InputAction.CallbackContext context){
         if (!context.performed){return;}
-
+        
         //--------------------------------------------------------------------------------------------------
         //CHECKING IF PLAYER CLICKED UI
 
@@ -60,6 +62,12 @@ public class PlayerController : MonoBehaviour
 
         if(!hasHit){return;} //return if its hit nothing
 
+        //handles the movement if the tile is hidden
+        if(hit.transform.gameObject.GetComponent<TileScript>().isFog){
+            //Debug.Log("IS FOG");
+            unitManager.unitController(hit);
+            return;
+        }
         
         // Debug.Log("reset tile");
         selectedTile = hit.transform.gameObject;

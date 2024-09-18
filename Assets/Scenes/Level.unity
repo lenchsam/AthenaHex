@@ -182,7 +182,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &100759700
 RectTransform:
   m_ObjectHideFlags: 0
@@ -586,7 +586,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 119
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1836,6 +1836,8 @@ MonoBehaviour:
   mapHeight: 20
   tileSize: 1
   tilePrefab: {fileID: 6800110071247460452, guid: da59bc17a0cd49841ba16834534f06c3,
+    type: 3}
+  fogOfWarPrefab: {fileID: 6800110071247460452, guid: 7d158406bc589424a950d205bf446044,
     type: 3}
 --- !u!4 &1379350119
 Transform:

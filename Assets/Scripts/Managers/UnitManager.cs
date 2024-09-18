@@ -69,10 +69,17 @@ public class UnitManager : MonoBehaviour
             return;
             }else{
                 // If the tile is walkable and empty, move the unit
+
+                //reveales the tile where the unit moved
+                if(hit.transform.gameObject.GetComponent<TileScript>().isFog){
+                    hexGrid.RevealTile(hexGrid.GetTileFromIntCoords(new Vector2(targetCoords.x, targetCoords.y)).GetComponent<TileScript>());
+                    targetNode = hexGrid.GetTileFromIntCoords(targetNode.intCoords).GetComponent<TileScript>();
+                }
                 //Debug.Log("MOVING");
                 //need to change this to lerp rather than teleport...... maybe pathfinding
                 StartCoroutine(lerpToPosition(SelectedUnit.transform.position, path, pathFinding.unitMovementSpeed, SelectedUnit.gameObject));
                 //SelectedUnit.transform.position = new Vector3(targetCords.x, SelectedUnit.position.y, targetCords.y);
+                Debug.Log(targetNode);
 
                 targetNode.occupiedUnit = SelectedUnit.gameObject; //set the node you moved to as occupied
 
@@ -141,5 +148,7 @@ public class UnitManager : MonoBehaviour
         TileScript tileScript = hexGrid.GetTileFromIntCoords(TilePosition).GetComponent<TileScript>();
         tileScript.isWalkable = false;
         tileScript.occupiedUnit = Instantiate(unitPrefab, tileScript.gameObject.transform.position, Quaternion.identity);
+
+        hexGrid.RevealTile(tileScript);
     }
 }
