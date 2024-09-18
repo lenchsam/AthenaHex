@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UnitManager : MonoBehaviour
@@ -33,6 +34,7 @@ public class UnitManager : MonoBehaviour
 
             //pass the tile node the reference to the unit that is stood on it
             TileScript targetNode = hit.transform.gameObject.GetComponent<TileScript>();
+            targetNode = hexGrid.GetTileFromIntCoords(targetNode.intCoords).GetComponent<TileScript>();
             GameObject targetUnit = targetNode.occupiedUnit; 
 
             //if target tile is occupied by an enemy/check for attacked this turn. if true return
@@ -69,28 +71,24 @@ public class UnitManager : MonoBehaviour
             return;
             }else{
                 // If the tile is walkable and empty, move the unit
-
+                if(hexGrid.DistanceBetweenTiles(startCoords, targetCoords) > SelectedUnit.GetComponent<Units>().maxMovement){return;}
                 //reveales the tile where the unit moved
-                if(hit.transform.gameObject.GetComponent<TileScript>().isFog){
-                    hexGrid.RevealTile(hexGrid.GetTileFromIntCoords(new Vector2(targetCoords.x, targetCoords.y)).GetComponent<TileScript>());
-                    targetNode = hexGrid.GetTileFromIntCoords(targetNode.intCoords).GetComponent<TileScript>();
-                }
-                //Debug.Log("MOVING");
-                //need to change this to lerp rather than teleport...... maybe pathfinding
+
+                //reveal tiles
+                hexGrid.RevealTile(hexGrid.GetTileFromIntCoords(new Vector2(targetCoords.x, targetCoords.y)).GetComponent<TileScript>());
+
+                //pathfinding
                 StartCoroutine(lerpToPosition(SelectedUnit.transform.position, path, pathFinding.unitMovementSpeed, SelectedUnit.gameObject));
-                //SelectedUnit.transform.position = new Vector3(targetCords.x, SelectedUnit.position.y, targetCords.y);
-                Debug.Log(targetNode);
 
-                targetNode.occupiedUnit = SelectedUnit.gameObject; //set the node you moved to as occupied
-
-                TileScript startNode = hexGrid.GetTileScript(startCords);
-
-                startNode.occupiedUnit = null;
+                //set the node you moved to as occupied
+                targetNode.occupiedUnit = SelectedUnit.gameObject; 
                 
                 hexGrid.BlockTile(targetCords);//set the tile that the unit will travel to as none walkable
                 hexGrid.UnblockTile(startCords);//sets the current tile as walkable
 
                 //reseting variables
+                TileScript startNode = hexGrid.GetTileScript(startCords);
+                startNode.occupiedUnit = null;
                 SelectedUnit = null;
                 unitSelected = false;
                 playerController.selectedTile = null;
