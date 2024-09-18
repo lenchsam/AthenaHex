@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Warrior : Melee, IAttacking
 {
-    [SerializeField] int MaxAttackDistance = 1;
     [SerializeField] protected float maximumHealth = 50.0f;
     [SerializeField] HexGrid hexGrid;
     protected override void Awake()

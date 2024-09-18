@@ -1902,6 +1902,7 @@ MonoBehaviour:
   waitingForClick: 0
   BarracksPrefab: {fileID: 919132149155446097, guid: cb714685977dcd7478d6cda7beede31d,
     type: 3}
+  citiesScriptableObject: {fileID: 0}
 --- !u!1 &1417880795
 GameObject:
   m_ObjectHideFlags: 0

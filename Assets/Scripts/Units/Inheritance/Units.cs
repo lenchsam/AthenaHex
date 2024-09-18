@@ -5,7 +5,8 @@ using UnityEngine.Events;
 
 public class Units : ACDefence
 {
-    public float movementSpeed = 1f; 
+    public float maxMovement = 1f; 
+    [SerializeField] protected int MaxAttackDistance = 1;
 
     protected PlayerController playerController;
     protected unitTypes defenceType;

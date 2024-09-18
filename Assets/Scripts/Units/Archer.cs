@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Archer : Ranged, IAttacking
 {
-    [SerializeField] int MaxAttackDistance = 3;
     [SerializeField] protected float maximumHealth = 25.0f;
     [SerializeField] HexGrid hexGrid;
     protected override void Awake()
