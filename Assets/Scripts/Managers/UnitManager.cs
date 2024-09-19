@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class UnitManager : MonoBehaviour
@@ -13,6 +12,8 @@ public class UnitManager : MonoBehaviour
     private HexGrid hexGrid;
     TurnManager turnManager;
     PathFinding pathFinding;
+
+    [SerializeField] Vector2Int[] startPositions;
     void Start()
     {
         turnManager = FindAnyObjectByType<TurnManager>();
@@ -20,7 +21,7 @@ public class UnitManager : MonoBehaviour
         pathFinding = FindAnyObjectByType<PathFinding>();
         playerController = FindAnyObjectByType<PlayerController>();
 
-        SetupStartUnits(StartUnit, new Vector2Int(0,0));
+        SetupStartUnits(StartUnit, startPositions);
     }
     public void unitController(RaycastHit hit){
         if (hit.transform.tag == "Tile" && unitSelected){ //if hit a tile and already have a unit selected
@@ -142,11 +143,19 @@ public class UnitManager : MonoBehaviour
             gameObjectToMove.transform.position = adjustedTarget;
         }
     }
-    private void SetupStartUnits(GameObject unitPrefab, Vector2Int TilePosition){
-        TileScript tileScript = hexGrid.GetTileFromIntCoords(TilePosition).GetComponent<TileScript>();
-        tileScript.isWalkable = false;
-        tileScript.occupiedUnit = Instantiate(unitPrefab, tileScript.gameObject.transform.position, Quaternion.identity);
+    private void SetupStartUnits(GameObject unitPrefab, Vector2Int[] TilePositions){
+        Team currentTeam = Team.Team1;
+        foreach(Vector2Int tilePos in TilePositions){
+            TileScript tileScript = hexGrid.GetTileFromIntCoords(tilePos).GetComponent<TileScript>();
+            tileScript.isWalkable = false;
+            tileScript.occupiedUnit = Instantiate(unitPrefab, tileScript.gameObject.transform.position, Quaternion.identity);
 
-        hexGrid.RevealTile(tileScript);
+            //assign the team
+            AssignTeam unitTeam = tileScript.occupiedUnit.GetComponent<AssignTeam>();
+            unitTeam.defenceTeam = currentTeam;
+            currentTeam += 1;
+        
+            hexGrid.RevealTile(tileScript);
+        }
     }
 }

@@ -25,5 +25,7 @@ public class TurnManager : MonoBehaviour
                 break;
         }
     }
-    
+    private void ChangeCamera(){
+        
+    }
 }

@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Settler : Units
+public class Settler : Units, IAttacking
 {
     //input variables
     [SerializeField] private InputActionAsset controls;
@@ -25,5 +23,8 @@ public class Settler : Units
     }
     private void startCity(InputAction.CallbackContext obj){
         citiesManager.MakeNewCity(transform.position);
+    }
+    public void attack(GameObject thingToAttack){
+        Debug.Log("This unit cannot attack");
     }
 }

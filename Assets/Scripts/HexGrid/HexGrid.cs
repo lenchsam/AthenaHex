@@ -153,7 +153,6 @@ public class HexGrid : MonoBehaviour
         }
     }
 }
-
 public enum OccupiedBy{
     None,
     wall,
