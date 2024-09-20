@@ -11,17 +11,23 @@ public class Settler : Units, IAttacking
     private InputActionMap _inputActionMap;
 
     private CitiesManager citiesManager;
+    private UnitManager unitManager;
 
     protected override void Start(){
         base.Start();
 
         citiesManager = FindObjectOfType<CitiesManager>();
+        unitManager = FindObjectOfType<UnitManager>();
 
         _inputActionMap = controls.FindActionMap("Player");
         foundCity = _inputActionMap.FindAction("Ability");
         foundCity.performed += startCity;
     }
     private void startCity(InputAction.CallbackContext obj){
+        if(unitManager.SelectedUnit != gameObject.transform){
+            Debug.Log(unitManager.SelectedUnit);
+            return;
+        }
         citiesManager.MakeNewCity(transform.position);
     }
     public void attack(GameObject thingToAttack){

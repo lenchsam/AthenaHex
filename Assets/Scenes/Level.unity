@@ -2077,7 +2077,7 @@ GameObject:
   - component: {fileID: 1527476387}
   - component: {fileID: 1527476386}
   m_Layer: 5
-  m_Name: Button
+  m_Name: End Turn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2840,6 +2840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTeam: 0
+  cameraTransform: {fileID: 1484089483}
 --- !u!1 &2056489521
 GameObject:
   m_ObjectHideFlags: 0
