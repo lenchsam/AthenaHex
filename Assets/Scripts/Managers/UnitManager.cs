@@ -76,7 +76,7 @@ public class UnitManager : MonoBehaviour
                 //reveales the tile where the unit moved
 
                 //reveal tiles
-                hexGrid.RevealTile(hexGrid.GetTileFromIntCoords(new Vector2(targetCoords.x, targetCoords.y)).GetComponent<TileScript>());
+                if(hexGrid.showFOW){hexGrid.RevealTile(hexGrid.GetTileFromIntCoords(new Vector2(targetCoords.x, targetCoords.y)).GetComponent<TileScript>());}
 
                 //pathfinding
                 StartCoroutine(lerpToPosition(SelectedUnit.transform.position, path, pathFinding.unitMovementSpeed, SelectedUnit.gameObject));
@@ -154,8 +154,8 @@ public class UnitManager : MonoBehaviour
             AssignTeam unitTeam = tileScript.occupiedUnit.GetComponent<AssignTeam>();
             unitTeam.defenceTeam = currentTeam;
             currentTeam += 1;
-        
-            hexGrid.RevealTile(tileScript);
+
+            if(hexGrid.showFOW){hexGrid.RevealTile(tileScript);}
         }
     }
 }

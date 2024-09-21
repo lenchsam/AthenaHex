@@ -11,6 +11,7 @@ public class HexGrid : MonoBehaviour
     [SerializeField] GameObject tilePrefab;
     [SerializeField] GameObject fogOfWarPrefab;
     [SerializeField] Dictionary<GameObject, TileScript> Tiles = new Dictionary<GameObject, TileScript>();
+    public bool showFOW;
     void Awake(){
         MakeMapGrid();
     }
@@ -37,7 +38,8 @@ public class HexGrid : MonoBehaviour
                 tileInstScript.intCoords = new Vector2Int(x, z);
 
                 Tiles.Add(instantiated, instantiated.GetComponent<TileScript>());
-                AddFogOfWar(tileInstScript);
+
+                if(showFOW){AddFogOfWar(tileInstScript);}
             }
         }
     }

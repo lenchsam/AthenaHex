@@ -24,10 +24,9 @@ public class Settler : Units, IAttacking
         foundCity.performed += startCity;
     }
     private void startCity(InputAction.CallbackContext obj){
-        if(unitManager.SelectedUnit != gameObject.transform){
-            Debug.Log(unitManager.SelectedUnit);
-            return;
-        }
+        if(unitManager.SelectedUnit != gameObject.transform){return;} //if they havent selected this settler return
+        //if this tile is already part of a city
+
         citiesManager.MakeNewCity(transform.position);
     }
     public void attack(GameObject thingToAttack){
