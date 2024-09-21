@@ -1,18 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 
 public class HexGrid : MonoBehaviour
 {
+    [BoxGroup("Assignables")]
     [SerializeField] GameObject TilesParent;
-    [SerializeField] int mapWidth;
-    [SerializeField] int mapHeight;
-    [SerializeField] int tileSize = 1;
+    [BoxGroup("Assignables")]
     [SerializeField] GameObject tilePrefab;
+    [BoxGroup("Assignables")]
     [SerializeField] GameObject fogOfWarPrefab;
-    [SerializeField] Dictionary<GameObject, TileScript> Tiles = new Dictionary<GameObject, TileScript>();
+    [BoxGroup("Map Settings")]
+    [SerializeField] int mapWidth;
+    [BoxGroup("Map Settings")]
+    [SerializeField] int mapHeight;
+    [BoxGroup("Map Settings")]
+    [SerializeField] int tileSize = 1;
+    [BoxGroup("Map Settings")]
     public bool showFOW;
+    [SerializeField] Dictionary<GameObject, TileScript> Tiles = new Dictionary<GameObject, TileScript>();
+
+    //perlin noise
+    [BoxGroup("Procedural Generation")]
+    [SerializeField] float noiseScale = 0.1f;
+    [BoxGroup("Procedural Generation")]
+    [SerializeField] float heightThreshold = 0.5f; // Threshold to decide when it will go to a new layer
+    [BoxGroup("Procedural Generation")]
+    [SerializeField] float lowerLayerHeight = 0;
+    [BoxGroup("Procedural Generation")]
+    [SerializeField] float upperLayerHeight = 0.5f;
+    [BoxGroup("Procedural Generation")]
+    Vector2 seedOffset;  // Random offset for noise generation
     void Awake(){
+        seedOffset = new Vector2(Random.Range(0f, 1000f), Random.Range(0f, 1000f)); //generates a random seed for procedural generation
         MakeMapGrid();
     }
     private Vector2 GetHexCoords(int x, int z){
@@ -27,13 +49,11 @@ public class HexGrid : MonoBehaviour
             for (int z = 0; z < mapHeight; z++)
             {
                 Vector2 hexCoords = GetHexCoords(x, z);
-                //Debug.Log(hexCoords);
+                Vector3 position = new Vector3(hexCoords.x, GetHeightFromPerlinNoise(x, z), hexCoords.y);
 
-                Vector3 position = new Vector3(hexCoords.x, 0, hexCoords.y);
                 var instantiated = Instantiate(tilePrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
 
                 var tileInstScript = instantiated.AddComponent<TileScript>();
-                //tileInstScript.coords = new Vector2(hexCoords.x, hexCoords.y);
                 tileInstScript.isWalkable = true;
                 tileInstScript.intCoords = new Vector2Int(x, z);
 
@@ -43,6 +63,13 @@ public class HexGrid : MonoBehaviour
             }
         }
     }
+private float GetHeightFromPerlinNoise(int x, int z) {
+    // Add the seedOffset to introduce randomness
+    float noiseValue = Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale);
+
+    // Use the threshold to decide between two layers
+    return noiseValue > heightThreshold ? upperLayerHeight : lowerLayerHeight;
+}
     public TileScript GetTileScript(Vector2 coords){
         foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
             if(new Vector2(TS.Key.transform.position.x, TS.Key.transform.position.z) == coords){
