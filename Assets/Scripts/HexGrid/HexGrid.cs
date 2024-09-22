@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
+using System.Threading.Tasks;
+using UnityEngine.Events;
 
 public class HexGrid : MonoBehaviour
 {
     [BoxGroup("Assignables")]
     [SerializeField] GameObject TilesParent;
-    [BoxGroup("Assignables")]
-    [SerializeField] GameObject tilePrefab;
     [BoxGroup("Assignables")]
     [SerializeField] GameObject fogOfWarPrefab;
     [BoxGroup("Map Settings")]
@@ -28,30 +27,62 @@ public class HexGrid : MonoBehaviour
     [BoxGroup("Procedural Generation")]
     [SerializeField] float heightThreshold = 0.5f; // Threshold to decide when it will go to a new layer
     [BoxGroup("Procedural Generation")]
-    [SerializeField] float lowerLayerHeight = 0;
-    [BoxGroup("Procedural Generation")]
-    [SerializeField] float upperLayerHeight = 0.5f;
-    [BoxGroup("Procedural Generation")]
+    [SerializeField] float oceanThreshold = 0.2f; 
+    float lowerLayerHeight = 0;
+    float upperLayerHeight = 0.5f;
+    [BoxGroup("Procedural Generation/Prefabs")]
+    [SerializeField] GameObject GrassPrefab;
+    [BoxGroup("Procedural Generation/Prefabs")]
+    [SerializeField] GameObject oceanPrefab;
+    [BoxGroup("Procedural Generation/Prefabs")]
+    [SerializeField] GameObject TopBasePrefab;
+
+    
+    
     Vector2 seedOffset;  // Random offset for noise generation
+    [HideInInspector] public UnityEvent OnMapGenerated = new UnityEvent();
     void Awake(){
         seedOffset = new Vector2(Random.Range(0f, 1000f), Random.Range(0f, 1000f)); //generates a random seed for procedural generation
-        MakeMapGrid();
     }
+    private async void Start()
+    {
+        await MakeMapGrid();
+    }
+
+    // Call this function to start generating the map asynchronously
     private Vector2 GetHexCoords(int x, int z){
         float xPos = x * tileSize * Mathf.Cos(Mathf.Deg2Rad * 30);
         float zPos = z * tileSize + ((x % 2 == 1) ? tileSize * 0.5f : 0);
 
         return new Vector2(xPos, zPos);
     }
-    private void MakeMapGrid(){
+    private async Task MakeMapGrid(){
         for (int x = 0; x < mapWidth; x++)
         {
             for (int z = 0; z < mapHeight; z++)
             {
+                await Task.Yield();
                 Vector2 hexCoords = GetHexCoords(x, z);
-                Vector3 position = new Vector3(hexCoords.x, GetHeightFromPerlinNoise(x, z), hexCoords.y);
+                float height = GetHeightFromPerlinNoise(x, z);
+                Vector3 position = new Vector3(hexCoords.x, height, hexCoords.y);
 
-                var instantiated = Instantiate(tilePrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                //var instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+
+                GameObject instantiated;
+
+                // If the tile is an ocean (at the lower layer), instantiate the ocean prefab
+                if (GetHeightFromPerlinNoise(x, z) == lowerLayerHeight && Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale) < oceanThreshold) {
+                    instantiated = Instantiate(oceanPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                } else if (height == upperLayerHeight) {
+                    // Instantiate the upper layer tile
+                    instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+
+                    // Instantiate a base object under the upper layer at the lower layer's height
+                    Vector3 basePosition = new Vector3(hexCoords.x, lowerLayerHeight, hexCoords.y);
+                    Instantiate(TopBasePrefab, basePosition, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                } else {
+                    instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                }
 
                 var tileInstScript = instantiated.AddComponent<TileScript>();
                 tileInstScript.isWalkable = true;
@@ -62,14 +93,20 @@ public class HexGrid : MonoBehaviour
                 if(showFOW){AddFogOfWar(tileInstScript);}
             }
         }
+        // Fire the UnityEvent once the map is generated
+        OnMapGenerated?.Invoke();
     }
-private float GetHeightFromPerlinNoise(int x, int z) {
-    // Add the seedOffset to introduce randomness
-    float noiseValue = Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale);
+    private float GetHeightFromPerlinNoise(int x, int z) {
+        float noiseValue = Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale);
+        
+        // Check for ocean first (if the noise is very low, it becomes an ocean)
+        if (noiseValue < oceanThreshold) {
+            return lowerLayerHeight;  // Ocean tiles are at the lower layer
+        }
 
-    // Use the threshold to decide between two layers
-    return noiseValue > heightThreshold ? upperLayerHeight : lowerLayerHeight;
-}
+        // Use the threshold to decide between two layers
+        return noiseValue > heightThreshold ? upperLayerHeight : lowerLayerHeight;
+    }
     public TileScript GetTileScript(Vector2 coords){
         foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
             if(new Vector2(TS.Key.transform.position.x, TS.Key.transform.position.z) == coords){

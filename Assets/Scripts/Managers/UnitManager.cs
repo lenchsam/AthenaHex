@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class UnitManager : MonoBehaviour
 {
@@ -20,8 +21,8 @@ public class UnitManager : MonoBehaviour
         hexGrid = FindAnyObjectByType<HexGrid>();
         pathFinding = FindAnyObjectByType<PathFinding>();
         playerController = FindAnyObjectByType<PlayerController>();
-
-        SetupStartUnits(StartUnit, startPositions);
+        hexGrid.OnMapGenerated.AddListener(startUnits);
+        //SetupStartUnits(StartUnit, startPositions);
     }
     public void unitController(RaycastHit hit){
         if (hit.transform.tag == "Tile" && unitSelected){ //if hit a tile and already have a unit selected
@@ -142,6 +143,9 @@ public class UnitManager : MonoBehaviour
             // Ensure the object reaches the target position exactly
             gameObjectToMove.transform.position = adjustedTarget;
         }
+    }
+    private void startUnits(){
+        SetupStartUnits(StartUnit, startPositions);
     }
     private void SetupStartUnits(GameObject unitPrefab, Vector2Int[] TilePositions){
         Team currentTeam = Team.Team1;
