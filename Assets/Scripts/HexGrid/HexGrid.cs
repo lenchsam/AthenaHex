@@ -4,11 +4,14 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Threading.Tasks;
 using UnityEngine.Events;
+using Unity.VisualScripting;
 
 public class HexGrid : MonoBehaviour
 {
     [BoxGroup("Assignables")]
     [SerializeField] GameObject TilesParent;
+    [BoxGroup("Assignables")]
+    [SerializeField] GameObject LowerBaseTileParent;
     [BoxGroup("Assignables")]
     [SerializeField] GameObject fogOfWarPrefab;
     [BoxGroup("Map Settings")]
@@ -33,9 +36,13 @@ public class HexGrid : MonoBehaviour
     [BoxGroup("Procedural Generation/Prefabs")]
     [SerializeField] GameObject GrassPrefab;
     [BoxGroup("Procedural Generation/Prefabs")]
-    [SerializeField] GameObject oceanPrefab;
+    [SerializeField] GameObject OceanPrefab;
     [BoxGroup("Procedural Generation/Prefabs")]
     [SerializeField] GameObject TopBasePrefab;
+    [BoxGroup("Procedural Generation/Prefabs")]
+    [SerializeField] GameObject[] CoastalPrefabs;
+    [BoxGroup("Procedural Generation")]
+    [SerializeField] Material[] biomeMaterials;
 
     
     
@@ -72,7 +79,7 @@ public class HexGrid : MonoBehaviour
 
                 // If the tile is an ocean (at the lower layer), instantiate the ocean prefab
                 if (GetHeightFromPerlinNoise(x, z) == lowerLayerHeight && Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale) < oceanThreshold) {
-                    instantiated = Instantiate(oceanPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                    instantiated = Instantiate(OceanPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
                 } else if (height == upperLayerHeight) {
                     // Instantiate the upper layer tile
                     instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
@@ -95,6 +102,34 @@ public class HexGrid : MonoBehaviour
         }
         // Fire the UnityEvent once the map is generated
         OnMapGenerated?.Invoke();
+    }
+    private int CountWaterNeighbors(int x, int z) {
+        int waterCount = 0;
+
+        Vector2Int[] neighborOffsets = new Vector2Int[] {
+            new Vector2Int(1, 0), new Vector2Int(-1, 0),
+            new Vector2Int(0, 1), new Vector2Int(0, -1),
+            new Vector2Int(1, -1), new Vector2Int(-1, 1)
+        };
+
+        foreach (Vector2Int offset in neighborOffsets) {
+            int neighborX = x + offset.x;
+            int neighborZ = z + offset.y;
+
+            if (neighborX >= 0 && neighborX < mapWidth && neighborZ >= 0 && neighborZ < mapHeight) {
+                if (GetHeightFromPerlinNoise(neighborX, neighborZ) == lowerLayerHeight) {
+                    waterCount++;
+                }
+            }
+        }
+
+        return waterCount;
+    }
+
+    private GameObject GetCoastalPrefab(int waterNeighbors) {
+        // Return the appropriate coastal prefab based on the number of water neighbors
+        // Customize this based on your coastal prefab setup (e.g., coastalPrefabs[0] for 1 water, coastalPrefabs[1] for 2 water, etc.)
+        return CoastalPrefabs[Mathf.Clamp(waterNeighbors - 1, 0, CoastalPrefabs.Length - 1)];
     }
     private float GetHeightFromPerlinNoise(int x, int z) {
         float noiseValue = Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale);
