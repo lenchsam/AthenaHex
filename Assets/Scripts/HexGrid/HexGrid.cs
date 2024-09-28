@@ -4,7 +4,6 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Threading.Tasks;
 using UnityEngine.Events;
-using Unity.VisualScripting;
 
 public class HexGrid : MonoBehaviour
 {
@@ -44,7 +43,7 @@ public class HexGrid : MonoBehaviour
     [BoxGroup("Procedural Generation")]
     [SerializeField] Material[] biomeMaterials;
 
-    
+    public List<GameObject> potentialCoastTiles = new List<GameObject>();
     
     Vector2 seedOffset;  // Random offset for noise generation
     [HideInInspector] public UnityEvent OnMapGenerated = new UnityEvent();
@@ -69,63 +68,83 @@ public class HexGrid : MonoBehaviour
             for (int z = 0; z < mapHeight; z++)
             {
                 await Task.Yield();
+
+                //calculate height from perlin noise
                 Vector2 hexCoords = GetHexCoords(x, z);
                 float height = GetHeightFromPerlinNoise(x, z);
                 Vector3 position = new Vector3(hexCoords.x, height, hexCoords.y);
 
-                //var instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
-
                 GameObject instantiated;
+                TileType tileType;
 
                 // If the tile is an ocean (at the lower layer), instantiate the ocean prefab
-                if (GetHeightFromPerlinNoise(x, z) == lowerLayerHeight && Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale) < oceanThreshold) {
+                if (height == lowerLayerHeight && Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale) < oceanThreshold) {
                     instantiated = Instantiate(OceanPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
-                } else if (height == upperLayerHeight) {
-                    // Instantiate the upper layer tile
+                    tileType = TileType.Ocean;
+                } else if (height == upperLayerHeight) {//if its the upper layer
                     instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                    tileType = TileType.Grass;
 
                     // Instantiate a base object under the upper layer at the lower layer's height
                     Vector3 basePosition = new Vector3(hexCoords.x, lowerLayerHeight, hexCoords.y);
                     Instantiate(TopBasePrefab, basePosition, Quaternion.Euler(0, 90, 0), TilesParent.transform);
-                } else {
+                }else {//if not ocean, or upper layer, it must be the normal grass layer
                     instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                    tileType = TileType.Grass;
+                    potentialCoastTiles.Add(instantiated);
                 }
 
                 var tileInstScript = instantiated.AddComponent<TileScript>();
-                tileInstScript.isWalkable = true;
-                tileInstScript.intCoords = new Vector2Int(x, z);
+                tileInstScript.Constructor(true, new Vector2Int(x, z), tileType);
 
                 Tiles.Add(instantiated, instantiated.GetComponent<TileScript>());
 
                 if(showFOW){AddFogOfWar(tileInstScript);}
             }
         }
+        ConvertGrassToCoastTiles();
         // Fire the UnityEvent once the map is generated
         OnMapGenerated?.Invoke();
     }
-    private int CountWaterNeighbors(int x, int z) {
-        int waterCount = 0;
+    private int CountOceanNeighbors(GameObject tileGO) {
+        int oceanNeighbors = 0;
+    
+        // Get surrounding tiles
+        List<GameObject> surroundingTiles = GetSurroundingTiles(tileGO);
 
-        Vector2Int[] neighborOffsets = new Vector2Int[] {
-            new Vector2Int(1, 0), new Vector2Int(-1, 0),
-            new Vector2Int(0, 1), new Vector2Int(0, -1),
-            new Vector2Int(1, -1), new Vector2Int(-1, 1)
-        };
+        // Loop through the surrounding tiles and count how many are ocean
+        foreach (GameObject neighbor in surroundingTiles) {
+            if (neighbor != null) {
+                TileScript tileScript = neighbor.GetComponent<TileScript>();
 
-        foreach (Vector2Int offset in neighborOffsets) {
-            int neighborX = x + offset.x;
-            int neighborZ = z + offset.y;
-
-            if (neighborX >= 0 && neighborX < mapWidth && neighborZ >= 0 && neighborZ < mapHeight) {
-                if (GetHeightFromPerlinNoise(neighborX, neighborZ) == lowerLayerHeight) {
-                    waterCount++;
-                }
+            if (tileScript != null && tileScript.tileType == TileType.Ocean) {
+                oceanNeighbors++;
+            }
             }
         }
 
-        return waterCount;
+        return oceanNeighbors;
     }
+    private void ConvertGrassToCoastTiles() {
+            for(int i = 0; i < potentialCoastTiles.Count; i++){
+                var tile = potentialCoastTiles[i];
+                int oceanNeighbors = CountOceanNeighbors(tile);
+                // If the tile has water neighbors, convert it to a coast tile
+                if (oceanNeighbors > 0 && oceanNeighbors < 6) {
+                    Vector3 position = tile.transform.position;
+                    potentialCoastTiles.Remove(tile);
+                    Destroy(tile); // Remove the grass tile
+                    var gameObject = Instantiate(GetCoastalPrefab(oceanNeighbors), position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                    gameObject.AddComponent<TileScript>();
+                    gameObject.GetComponent<TileScript>().Constructor(true, GetIntCordsFromPosition(new Vector2(position.x, position.z)), TileType.Coast);
+                    //gameObject.GetComponent<TileScript>().tileType = TileType.Coast;
 
+                }
+            }
+    
+        // Clear the list after conversion
+        potentialCoastTiles.Clear();
+    }
     private GameObject GetCoastalPrefab(int waterNeighbors) {
         // Return the appropriate coastal prefab based on the number of water neighbors
         // Customize this based on your coastal prefab setup (e.g., coastalPrefabs[0] for 1 water, coastalPrefabs[1] for 2 water, etc.)
@@ -164,14 +183,15 @@ public class HexGrid : MonoBehaviour
 
         return TilesParent.transform.Find(cords.ToString()).gameObject;
     }
-    public GameObject GetTileFromIntCoords(Vector2 cords){
-        foreach(Transform child in TilesParent.transform){
-            if(child.GetComponent<TileScript>().intCoords == cords){
-                //Debug.Log("Found");
+    public GameObject GetTileFromIntCoords(Vector2 cords) {
+        foreach (Transform child in TilesParent.transform) {
+            TileScript tileScript = child.GetComponent<TileScript>();
+            if (tileScript != null && tileScript.intCoords == cords) {
+                // Debug.Log("Found");
                 return child.gameObject;
             }
         }
-        //Debug.Log("not found");
+        // Debug.Log("not found");
         return null;
     }
     public Vector2 GetCoordinatesFromPosition(Vector3 position){
@@ -259,4 +279,10 @@ public enum OccupiedBy{
     wall,
     farm,
     barracks
+}
+public enum TileType{
+    Ocean,
+    Grass,
+    Coast,
+    Mountain
 }

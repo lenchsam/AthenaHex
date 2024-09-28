@@ -1853,12 +1853,17 @@ MonoBehaviour:
     type: 3}
   TopBasePrefab: {fileID: 919132149155446097, guid: 37f437d77b8257042a8e8769cc202174,
     type: 3}
-  CoastalPrefabs: []
+  CoastalPrefabs:
+  - {fileID: 919132149155446097, guid: 3f83eba5773429d4489672974dba9d01, type: 3}
+  - {fileID: 919132149155446097, guid: afdf4eb6dcb079242a123745cbc52650, type: 3}
+  - {fileID: 919132149155446097, guid: 1d11055430c72424e82b21d3697842a5, type: 3}
+  - {fileID: 919132149155446097, guid: 2afcf3b0f7f31f34bbcb246d77428b12, type: 3}
   biomeMaterials:
   - {fileID: 2100000, guid: 55e6e9d4e1e9701409e76f8921510254, type: 2}
   - {fileID: 2100000, guid: 01b1bc802f97dc24090a9c98c7929c4b, type: 2}
   - {fileID: 2100000, guid: 958ae798dc002f743b86fc6da43e9c83, type: 2}
   - {fileID: 2100000, guid: 7d450b3ecd35a814c98d1cc0207cc250, type: 2}
+  potentialCoastTiles: []
   OnMapGenerated:
     m_PersistentCalls:
       m_Calls: []
