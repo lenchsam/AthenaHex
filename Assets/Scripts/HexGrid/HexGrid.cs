@@ -105,6 +105,7 @@ public class HexGrid : MonoBehaviour
         ConvertGrassToCoastTiles();
         // Fire the UnityEvent once the map is generated
         OnMapGenerated?.Invoke();
+        return;
     }
     private int CountOceanNeighbors(GameObject tileGO) {
         int oceanNeighbors = 0;
@@ -117,9 +118,9 @@ public class HexGrid : MonoBehaviour
             if (neighbor != null) {
                 TileScript tileScript = neighbor.GetComponent<TileScript>();
 
-            if (tileScript != null && tileScript.tileType == TileType.Ocean) {
-                oceanNeighbors++;
-            }
+                if (tileScript != null && tileScript.tileType == TileType.Ocean) {
+                    oceanNeighbors++;
+                }
             }
         }
 
@@ -132,19 +133,20 @@ public class HexGrid : MonoBehaviour
                 // If the tile has water neighbors, convert it to a coast tile
                 if (oceanNeighbors > 0 && oceanNeighbors < 6) {
                     Vector3 position = tile.transform.position;
-                    potentialCoastTiles.Remove(tile);
-                    Destroy(tile); // Remove the grass tile
                     var gameObject = Instantiate(GetCoastalPrefab(oceanNeighbors), position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
                     gameObject.AddComponent<TileScript>();
                     gameObject.GetComponent<TileScript>().Constructor(true, GetIntCordsFromPosition(new Vector2(position.x, position.z)), TileType.Coast);
-                    //gameObject.GetComponent<TileScript>().tileType = TileType.Coast;
-
+                    //potentialCoastTiles.Remove(tile);
+                    Tiles.Remove(tile);
+                    Destroy(tile); // Remove the grass tile
+                    Tiles.Add(gameObject, gameObject.GetComponent<TileScript>());
                 }
             }
     
         // Clear the list after conversion
         potentialCoastTiles.Clear();
     }
+    
     private GameObject GetCoastalPrefab(int waterNeighbors) {
         // Return the appropriate coastal prefab based on the number of water neighbors
         // Customize this based on your coastal prefab setup (e.g., coastalPrefabs[0] for 1 water, coastalPrefabs[1] for 2 water, etc.)
