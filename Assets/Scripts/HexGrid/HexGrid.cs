@@ -10,8 +10,6 @@ public class HexGrid : MonoBehaviour
     [BoxGroup("Assignables")]
     [SerializeField] GameObject TilesParent;
     [BoxGroup("Assignables")]
-    [SerializeField] GameObject LowerBaseTileParent;
-    [BoxGroup("Assignables")]
     [SerializeField] GameObject fogOfWarPrefab;
     [BoxGroup("Map Settings")]
     [SerializeField] int mapWidth;
@@ -102,7 +100,7 @@ public class HexGrid : MonoBehaviour
                 if(showFOW){AddFogOfWar(tileInstScript);}
             }
         }
-        ConvertGrassToCoastTiles();
+        //ConvertGrassToCoastTiles();
         // Fire the UnityEvent once the map is generated
         OnMapGenerated?.Invoke();
         return;
@@ -146,7 +144,6 @@ public class HexGrid : MonoBehaviour
         // Clear the list after conversion
         potentialCoastTiles.Clear();
     }
-    
     private GameObject GetCoastalPrefab(int waterNeighbors) {
         // Return the appropriate coastal prefab based on the number of water neighbors
         // Customize this based on your coastal prefab setup (e.g., coastalPrefabs[0] for 1 water, coastalPrefabs[1] for 2 water, etc.)

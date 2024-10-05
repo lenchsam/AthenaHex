@@ -15,11 +15,47 @@ public class TileScript : MonoBehaviour
     public GameObject occupiedUnit;
     public GameObject fow;
     public TileType tileType;
+    public TurnManager turnManager;
+    private void Awake(){
+        turnManager = FindObjectOfType<TurnManager>();
+    }
 
     public void Reveal(){
         gameObject.layer = LayerMask.NameToLayer("Tile");
+
+        //if it isnt already in the revealed list, add it to the list
+        switch (turnManager.playerTeam)
+        {
+            case Team.Team1:
+                if(!turnManager.RevealedTilesP1.Contains(intCoords)){
+                    turnManager.RevealedTilesP1.Add(intCoords);
+                }
+                break;
+            case Team.Team2:
+                    if(!turnManager.RevealedTilesP2.Contains(intCoords)){
+                    turnManager.RevealedTilesP2.Add(intCoords);
+                }
+                break;
+
+            case Team.Team3:
+                if(!turnManager.RevealedTilesP3.Contains(intCoords)){
+                    turnManager.RevealedTilesP3.Add(intCoords);
+                }
+                break;
+
+            case Team.Team4:
+                if(!turnManager.RevealedTilesP4.Contains(intCoords)){
+                    turnManager.RevealedTilesP4.Add(intCoords);
+                }
+                break;
+        }
         
         fow.gameObject.SetActive(false);
+    }
+    public void ReBlock(){
+        gameObject.layer = LayerMask.NameToLayer("Hidden");
+
+        fow.gameObject.SetActive(true);
     }
     public void Constructor(bool _isWalkable, Vector2Int _intCords, TileType _tileType){
         isWalkable = _isWalkable;

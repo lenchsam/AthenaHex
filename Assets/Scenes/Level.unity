@@ -1001,7 +1001,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 788511299}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1213,7 +1213,10 @@ MonoBehaviour:
   unitSelected: 0
   attackedThisTurn: 0
   startPositions:
-  - {x: 0, y: 0}
+  - {x: 5, y: 5}
+  - {x: 5, y: 42}
+  - {x: 42, y: 5}
+  - {x: 42, y: 42}
 --- !u!4 &946201873
 Transform:
   m_ObjectHideFlags: 0
@@ -1834,13 +1837,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TilesParent: {fileID: 788511299}
-  LowerBaseTileParent: {fileID: 0}
   fogOfWarPrefab: {fileID: 7825728450542590104, guid: 6b1f1a2907845974dbe0f80fc5310369,
     type: 3}
   mapWidth: 50
   mapHeight: 50
   tileSize: 1
-  showFOW: 0
+  showFOW: 1
   noiseScale: 0.08
   heightThreshold: 0.6
   oceanThreshold: 0.35
@@ -2861,6 +2863,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTeam: 0
   cameraTransform: {fileID: 1484089483}
+  RevealedTilesP1: []
+  RevealedTilesP2: []
+  RevealedTilesP3: []
+  RevealedTilesP4: []
 --- !u!1 &2056489521
 GameObject:
   m_ObjectHideFlags: 0

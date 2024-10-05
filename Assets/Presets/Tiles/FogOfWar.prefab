@@ -197,7 +197,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1afeaa5e8c9bf9949b0977d796d9e545,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1afeaa5e8c9bf9949b0977d796d9e545,
         type: 3}
@@ -207,7 +207,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1afeaa5e8c9bf9949b0977d796d9e545,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1afeaa5e8c9bf9949b0977d796d9e545,
         type: 3}
@@ -222,7 +222,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 1afeaa5e8c9bf9949b0977d796d9e545,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1afeaa5e8c9bf9949b0977d796d9e545,
         type: 3}
@@ -310,6 +310,7 @@ MonoBehaviour:
   occupiedBuilding: {fileID: 0}
   occupiedUnit: {fileID: 0}
   fow: {fileID: 0}
+  tileType: 0
 --- !u!64 &2643234727053867593
 MeshCollider:
   m_ObjectHideFlags: 0

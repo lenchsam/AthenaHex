@@ -9,6 +9,10 @@ public class TurnManager : MonoBehaviour
     private UnitManager unitManager;
     private HexGrid hexGrid;
     [SerializeField] Transform cameraTransform;
+    public List<Vector2Int> RevealedTilesP1 = new List<Vector2Int>();
+    public List<Vector2Int> RevealedTilesP2 = new List<Vector2Int>();
+    public List<Vector2Int> RevealedTilesP3 = new List<Vector2Int>();
+    public List<Vector2Int> RevealedTilesP4 = new List<Vector2Int>();
     private void Start(){
         unitManager = FindAnyObjectByType<UnitManager>();
         hexGrid = FindAnyObjectByType<HexGrid>();
@@ -20,20 +24,24 @@ public class TurnManager : MonoBehaviour
             case Team.Team1:
                 playerTeam = Team.Team2;
                 ChangeCamera(1);
+                ChangeFOW(RevealedTilesP2, RevealedTilesP1);
                 break;
             case Team.Team2:
                 playerTeam = Team.Team3;
                 ChangeCamera(2);
+                ChangeFOW(RevealedTilesP3, RevealedTilesP2);
                 break;
 
             case Team.Team3:
                 playerTeam = Team.Team4;
                 ChangeCamera(3);
+                ChangeFOW(RevealedTilesP4, RevealedTilesP3);
                 break;
 
             case Team.Team4:
                 playerTeam = Team.Team1;
                 ChangeCamera(0);
+                ChangeFOW(RevealedTilesP1, RevealedTilesP4);
                 break;
         }
     }
@@ -41,5 +49,13 @@ public class TurnManager : MonoBehaviour
         Vector2Int Cords = unitManager.startPositions[team];
         Vector3 pos = new Vector3(hexGrid.GetTileFromIntCoords(Cords).transform.position.x,cameraTransform.position.y, hexGrid.GetTileFromIntCoords(Cords).transform.position.z);
         cameraTransform.position = pos;
+    }
+    private void ChangeFOW(List<Vector2Int> RevealedTiles, List<Vector2Int> TilesToBlock){
+        foreach(Vector2Int tileCords in RevealedTiles){
+            hexGrid.GetTileFromIntCoords(tileCords).GetComponent<TileScript>().Reveal();
+        }
+        foreach(Vector2Int tileCords in TilesToBlock){
+            hexGrid.GetTileFromIntCoords(tileCords).GetComponent<TileScript>().ReBlock();
+        }
     }
 }

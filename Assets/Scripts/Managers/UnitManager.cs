@@ -149,6 +149,7 @@ public class UnitManager : MonoBehaviour
     }
     private void SetupStartUnits(GameObject unitPrefab, Vector2Int[] TilePositions){
         Team currentTeam = Team.Team1;
+        turnManager.playerTeam = Team.Team1;
         foreach(Vector2Int tilePos in TilePositions){
             TileScript tileScript = hexGrid.GetTileFromIntCoords(tilePos).GetComponent<TileScript>();
             tileScript.isWalkable = false;
@@ -160,6 +161,10 @@ public class UnitManager : MonoBehaviour
             currentTeam += 1;
 
             if(hexGrid.showFOW){hexGrid.RevealTile(tileScript);}
+            //Debug.Log(turnManager.playerTeam);
+            turnManager.playerTeam += 1;
+            //Debug.Log(turnManager.playerTeam + " asdfasdf");
         }
+        turnManager.playerTeam = Team.Team1;
     }
 }
