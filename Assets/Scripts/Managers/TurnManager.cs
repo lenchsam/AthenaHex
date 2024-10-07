@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public Team playerTeam;
+    [HideInInspector] public Team playerTeam;
     private UnitManager unitManager;
     private HexGrid hexGrid;
     [SerializeField] Transform cameraTransform;

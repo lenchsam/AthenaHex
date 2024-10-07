@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
     public GameObject tileUI;
     [HideInInspector] public UnityEvent<Vector2, GameObject> OnUnitMove = new UnityEvent<Vector2, GameObject>();
     TurnManager turnManager;
-    [SerializeField] int LM;
+    int LM;
     private UnitManager unitManager;
     private DistrictManager districtManager;
     private Building building;

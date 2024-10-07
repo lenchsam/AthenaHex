@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class DistrictManager : MonoBehaviour
 {
-    [SerializeField] List<CitiesScriptableObject> AllCities = new List<CitiesScriptableObject>();
+    List<CitiesScriptableObject> AllCities = new List<CitiesScriptableObject>();
     private CitiesManager citiesManager;
     public GameObject UI_CityCentre;
     public GameObject UI_Barracks;

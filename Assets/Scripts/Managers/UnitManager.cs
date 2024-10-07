@@ -6,13 +6,13 @@ public class UnitManager : MonoBehaviour
 {
     private PlayerController playerController;
     [SerializeField] GameObject StartUnit;
-    public Transform SelectedUnit;
-    [SerializeField] bool unitSelected = false;
+    [HideInInspector] public Transform SelectedUnit;
+    bool unitSelected = false;
     [HideInInspector] public bool attackedThisTurn = false;
     private HexGrid hexGrid;
     TurnManager turnManager;
     PathFinding pathFinding;
-    public List<PlayerScriptableObject> SO_Players = new List<PlayerScriptableObject>();
+    [HideInInspector] public List<PlayerScriptableObject> SO_Players = new List<PlayerScriptableObject>();
     [SerializeField] PlayerScriptableObject playerSO;
 
     public Vector2Int[] startPositions;

@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09edae8cc8f87284482bfa5b2630738f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitMovementSpeed: 10
+  unitMovementSpeed: 2
 --- !u!4 &10382277
 Transform:
   m_ObjectHideFlags: 0
@@ -500,7 +500,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdb29122c281d5b47bf61a028a1c5ef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileSize: 1
   hexLayerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -795,7 +794,6 @@ MonoBehaviour:
   OnUnitMove:
     m_PersistentCalls:
       m_Calls: []
-  LM: 0
   selectedTile: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
@@ -1158,7 +1156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2056e2c1cbce5458089030342532b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CitiesSOBase: {fileID: 11400000, guid: ce5264350a2c20b4099566c39feb4cd9, type: 2}
   AllCities: []
   numberOfCities: 0
   CityCentrePrefab: {fileID: 919132149155446097, guid: 78c8e027b1c5f694aa8919568361933d,
@@ -1210,7 +1207,6 @@ MonoBehaviour:
   StartUnit: {fileID: 7490754498245591511, guid: 047a6d85c0b4a44448b62e0378943f81,
     type: 3}
   SelectedUnit: {fileID: 0}
-  unitSelected: 0
   attackedThisTurn: 0
   SO_Players: []
   playerSO: {fileID: 11400000, guid: 5545720bf46ef964cbb1c2a0f744b52a, type: 2}
@@ -1927,7 +1923,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a268efa704354774f967ec09175f8c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllCities: []
   UI_CityCentre: {fileID: 1716337098}
   UI_Barracks: {fileID: 1813165769}
   waitingForClick: 0

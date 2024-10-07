@@ -52,7 +52,6 @@ public class HexGrid : MonoBehaviour
     {
         await MakeMapGrid();
     }
-
     // Call this function to start generating the map asynchronously
     private Vector2 GetHexCoords(int x, int z){
         float xPos = x * tileSize * Mathf.Cos(Mathf.Deg2Rad * 30);

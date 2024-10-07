@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 public class HexSnap : MonoBehaviour
 {
-    [SerializeField] private float tileSize = 1f;
+    private float tileSize = 1f;
     [SerializeField] private LayerMask hexLayerMask;
 
     private GameObject snappedHex;

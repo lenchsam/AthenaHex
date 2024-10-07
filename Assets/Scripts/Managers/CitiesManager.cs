@@ -7,9 +7,9 @@ public class CitiesManager : MonoBehaviour
 {
     HexGrid gridManager;
     TurnManager turnManager;
-    public CitiesScriptableObject CitiesSOBase;
+    private CitiesScriptableObject CitiesSOBase;
     [SerializeField] List<CitiesScriptableObject> AllCities = new List<CitiesScriptableObject>();
-    public int numberOfCities;
+    [HideInInspector] public int numberOfCities;
     private Barracks selectedCity;
     [SerializeField] GameObject CityCentrePrefab;
     void Start(){

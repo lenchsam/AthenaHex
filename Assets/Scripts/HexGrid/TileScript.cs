@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TileScript : MonoBehaviour
@@ -54,11 +53,13 @@ public class TileScript : MonoBehaviour
         }
         
         fow.gameObject.SetActive(false);
+        if(occupiedUnit){occupiedUnit.SetActive(true);}
     }
     public void ReBlock(){
         gameObject.layer = LayerMask.NameToLayer("Hidden");
 
         fow.gameObject.SetActive(true);
+        if(occupiedUnit){occupiedUnit.SetActive(false);}
     }
     public void Constructor(bool _isWalkable, Vector2Int _intCords, TileType _tileType){
         isWalkable = _isWalkable;
