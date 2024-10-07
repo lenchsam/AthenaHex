@@ -12,6 +12,8 @@ public class UnitManager : MonoBehaviour
     private HexGrid hexGrid;
     TurnManager turnManager;
     PathFinding pathFinding;
+    public List<PlayerScriptableObject> SO_Players = new List<PlayerScriptableObject>();
+    [SerializeField] PlayerScriptableObject playerSO;
 
     public Vector2Int[] startPositions;
     void Start()
@@ -154,17 +156,28 @@ public class UnitManager : MonoBehaviour
             TileScript tileScript = hexGrid.GetTileFromIntCoords(tilePos).GetComponent<TileScript>();
             tileScript.isWalkable = false;
             tileScript.occupiedUnit = Instantiate(unitPrefab, tileScript.gameObject.transform.position, Quaternion.identity);
+            PlayerScriptableObject SO = Instantiate(playerSO);
+            SO.Team = currentTeam;
+            SO_Players.Add(SO);
 
             //assign the team
             AssignTeam unitTeam = tileScript.occupiedUnit.GetComponent<AssignTeam>();
             unitTeam.defenceTeam = currentTeam;
             currentTeam += 1;
 
+            //reveal the tiles around the unit
             if(hexGrid.showFOW){hexGrid.RevealTile(tileScript);}
-            //Debug.Log(turnManager.playerTeam);
             turnManager.playerTeam += 1;
-            //Debug.Log(turnManager.playerTeam + " asdfasdf");
         }
         turnManager.playerTeam = Team.Team1;
+
+        //reblock all tiles that arent team 1
+        foreach(PlayerScriptableObject SO in SO_Players){
+            if(SO.Team != Team.Team1){
+                foreach(Vector2Int vInt in SO.RevealedTiles){
+                    hexGrid.GetTileFromIntCoords(vInt).GetComponent<TileScript>().ReBlock();
+                }
+            }
+        }
     }
 }

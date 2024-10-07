@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TileScript : MonoBehaviour
@@ -16,8 +17,10 @@ public class TileScript : MonoBehaviour
     public GameObject fow;
     public TileType tileType;
     public TurnManager turnManager;
+    public UnitManager unitManager;
     private void Awake(){
         turnManager = FindObjectOfType<TurnManager>();
+        unitManager = FindObjectOfType<UnitManager>();
     }
 
     public void Reveal(){
@@ -27,25 +30,25 @@ public class TileScript : MonoBehaviour
         switch (turnManager.playerTeam)
         {
             case Team.Team1:
-                if(!turnManager.RevealedTilesP1.Contains(intCoords)){
-                    turnManager.RevealedTilesP1.Add(intCoords);
+                if(!unitManager.SO_Players[0].RevealedTiles.Contains(intCoords)){
+                    unitManager.SO_Players[0].RevealedTiles.Add(intCoords);
                 }
                 break;
             case Team.Team2:
-                    if(!turnManager.RevealedTilesP2.Contains(intCoords)){
-                    turnManager.RevealedTilesP2.Add(intCoords);
+                if(!unitManager.SO_Players[1].RevealedTiles.Contains(intCoords)){
+                    unitManager.SO_Players[1].RevealedTiles.Add(intCoords);
                 }
                 break;
 
             case Team.Team3:
-                if(!turnManager.RevealedTilesP3.Contains(intCoords)){
-                    turnManager.RevealedTilesP3.Add(intCoords);
+                if(!unitManager.SO_Players[2].RevealedTiles.Contains(intCoords)){
+                    unitManager.SO_Players[2].RevealedTiles.Add(intCoords);
                 }
                 break;
 
             case Team.Team4:
-                if(!turnManager.RevealedTilesP4.Contains(intCoords)){
-                    turnManager.RevealedTilesP4.Add(intCoords);
+                if(!unitManager.SO_Players[3].RevealedTiles.Contains(intCoords)){
+                    unitManager.SO_Players[3].RevealedTiles.Add(intCoords);
                 }
                 break;
         }

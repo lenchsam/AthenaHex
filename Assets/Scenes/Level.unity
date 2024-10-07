@@ -1212,6 +1212,8 @@ MonoBehaviour:
   SelectedUnit: {fileID: 0}
   unitSelected: 0
   attackedThisTurn: 0
+  SO_Players: []
+  playerSO: {fileID: 11400000, guid: 5545720bf46ef964cbb1c2a0f744b52a, type: 2}
   startPositions:
   - {x: 5, y: 5}
   - {x: 5, y: 42}
@@ -2863,10 +2865,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTeam: 0
   cameraTransform: {fileID: 1484089483}
-  RevealedTilesP1: []
-  RevealedTilesP2: []
-  RevealedTilesP3: []
-  RevealedTilesP4: []
 --- !u!1 &2056489521
 GameObject:
   m_ObjectHideFlags: 0
