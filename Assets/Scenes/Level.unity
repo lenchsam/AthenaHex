@@ -1840,7 +1840,7 @@ MonoBehaviour:
   mapWidth: 50
   mapHeight: 50
   tileSize: 1
-  showFOW: 1
+  showFOW: 0
   noiseScale: 0.08
   heightThreshold: 0.6
   oceanThreshold: 0.35
