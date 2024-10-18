@@ -16,8 +16,8 @@ public class Settler : Units, IAttacking
     protected override void Start(){
         base.Start();
 
-        citiesManager = FindObjectOfType<CitiesManager>();
-        unitManager = FindObjectOfType<UnitManager>();
+        citiesManager = FindAnyObjectByType<CitiesManager>();
+        unitManager = FindAnyObjectByType<UnitManager>();
 
         _inputActionMap = controls.FindActionMap("Player");
         foundCity = _inputActionMap.FindAction("Ability");

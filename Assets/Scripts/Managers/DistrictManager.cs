@@ -15,7 +15,7 @@ public class DistrictManager : MonoBehaviour
     [HideInInspector] public CitiesScriptableObject citiesScriptableObject;
     //-------------------------------------------------------------------------
     void Start(){
-        citiesManager = FindObjectOfType<CitiesManager>();
+        citiesManager = FindAnyObjectByType<CitiesManager>();
     }
     public void waitForClick(){
         waitingForClick = true;

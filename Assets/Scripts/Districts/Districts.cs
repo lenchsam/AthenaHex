@@ -8,6 +8,6 @@ public class Districts : MonoBehaviour
     [SerializeField] protected DistrictManager districtManager;
     public void Start(){
         tileScript = gameObject.GetComponent<TileScript>();
-        districtManager = FindObjectOfType<DistrictManager>();
+        districtManager = FindAnyObjectByType<DistrictManager>();
     }
 }

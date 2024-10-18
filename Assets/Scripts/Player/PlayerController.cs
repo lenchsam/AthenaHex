@@ -22,7 +22,7 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
     void Start()
     {
         turnManager = FindAnyObjectByType<TurnManager>();
-        unitManager = FindObjectOfType<UnitManager>();
+        unitManager = FindAnyObjectByType<UnitManager>();
         hexGrid = FindAnyObjectByType<HexGrid>();
         districtManager = FindAnyObjectByType<DistrictManager>();
         building = FindAnyObjectByType<Building>();

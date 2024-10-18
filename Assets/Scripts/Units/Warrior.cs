@@ -10,7 +10,7 @@ public class Warrior : Melee, IAttacking
     {
         base.Awake();
         initialise(maximumHealth);
-        hexGrid = FindObjectOfType<HexGrid>();
+        hexGrid = FindAnyObjectByType<HexGrid>();
     }
 
     // Update is called once per frame

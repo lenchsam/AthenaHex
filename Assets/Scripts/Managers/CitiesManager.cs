@@ -13,8 +13,8 @@ public class CitiesManager : MonoBehaviour
     private Barracks selectedCity;
     [SerializeField] GameObject CityCentrePrefab;
     void Start(){
-        gridManager = FindObjectOfType<HexGrid>();
-        turnManager = FindObjectOfType<TurnManager>();
+        gridManager = FindAnyObjectByType<HexGrid>();
+        turnManager = FindAnyObjectByType<TurnManager>();
     }
     public void expandBorder(GameObject tileToExpand, CitiesScriptableObject SO_Cities){
         //add the tile to the list of tiles inside of the citiesscriptable object

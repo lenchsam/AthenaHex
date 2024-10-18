@@ -31,9 +31,9 @@ public class UnitManager : MonoBehaviour
             Vector2 startCords = new Vector2(SelectedUnit.position.x, SelectedUnit.position.z);
             //get the path to the target position
             Vector2Int startCoords = hexGrid.GetIntCordsFromPosition(startCords);
-            Debug.Log(startCoords + " start Cords");
+            //Debug.Log(startCoords + " start Cords");
             Vector2Int targetCoords = hexGrid.GetIntCordsFromPosition(targetCords);
-            Debug.Log(targetCoords + " target Cords");
+            //Debug.Log(targetCoords + " target Cords");
             List<GameObject> path = pathFinding.FindPath(startCoords, targetCoords);
 
             //pass the tile node the reference to the unit that is stood on it

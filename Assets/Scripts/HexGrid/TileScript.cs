@@ -18,8 +18,8 @@ public class TileScript : MonoBehaviour
     public TurnManager turnManager;
     public UnitManager unitManager;
     private void Awake(){
-        turnManager = FindObjectOfType<TurnManager>();
-        unitManager = FindObjectOfType<UnitManager>();
+        turnManager = FindAnyObjectByType<TurnManager>();
+        unitManager = FindAnyObjectByType<UnitManager>();
     }
 
     public void Reveal(){

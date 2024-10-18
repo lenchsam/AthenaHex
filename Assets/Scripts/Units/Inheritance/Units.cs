@@ -14,7 +14,7 @@ public class Units : ACDefence
     [HideInInspector] public bool tookTurn;
 
     protected virtual void Start(){
-        playerController = FindObjectOfType<PlayerController>();
+        playerController = FindAnyObjectByType<PlayerController>();
     }
     protected UnityEvent<int> DamagedEvent  = new UnityEvent<int>();
 }

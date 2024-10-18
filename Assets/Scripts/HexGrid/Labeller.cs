@@ -16,7 +16,7 @@ public class Labeller : MonoBehaviour
 
     void Awake()
     {
-        gridManager = FindObjectOfType<HexGrid>();
+        gridManager = FindAnyObjectByType<HexGrid>();
         
         label = GetComponentInChildren<TextMeshPro>();
 
