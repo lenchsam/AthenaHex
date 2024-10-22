@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Unity.Burst.Intrinsics;
 
 //used https://www.youtube.com/watch?v=4JaHSLA2CKs for this
 public class Labeller : MonoBehaviour
