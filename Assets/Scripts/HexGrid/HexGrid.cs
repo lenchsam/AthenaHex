@@ -99,14 +99,15 @@ public class HexGrid : MonoBehaviour
 
                 Tiles.Add(instantiated, instantiated.GetComponent<TileScript>());
 
-                if(showFOW){AddFogOfWar(tileInstScript);}
+                //if(showFOW){AddFogOfWar(tileInstScript);}
             }
         }
         //ConvertGrassToCoastTiles();
         // Fire the UnityEvent once the map is generated
         OnMapGenerated?.Invoke();
 
-        StaticBatchingUtility.Combine(TilesParent);
+        Debug.Log("RANANNANS");
+        StaticBatchingUtility.Combine(TilesParent);//enables static batching for optimisation
         return;
     }
     private int CountOceanNeighbors(GameObject tileGO) {
