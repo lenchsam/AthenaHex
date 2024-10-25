@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7163536097779628323}
   - component: {fileID: 7269193896503923595}
   m_Layer: 0
-  m_Name: Unit
+  m_Name: Settler
   m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,6 +61,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -134,8 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f41b43452bdd6408ff97a6cb95c083, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  maxHealth: 25
+  health: 50
+  maxHealth: 50
   maxMovement: 1
   MaxAttackDistance: 0
   damage: 0

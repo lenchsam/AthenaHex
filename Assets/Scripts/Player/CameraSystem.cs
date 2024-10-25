@@ -13,6 +13,8 @@ public class CameraSystem : MonoBehaviour
     [SerializeField] float minMoveSpeed = 10f;
     [SerializeField] CinemachineCamera virtualCamera;
     [BoxGroup("Zoom")]
+    [SerializeField] bool activateZoom = false;
+    [BoxGroup("Zoom")]
     [SerializeField][Range(1, 10)] float zoomSpeed;
     [BoxGroup("Zoom")]
     [SerializeField] int minFOV;
@@ -31,7 +33,7 @@ public class CameraSystem : MonoBehaviour
         cameraZoom = _inputActionMap.FindAction("CameraZoom");
 
         cameraMovement.canceled += resetMovement;
-         targetFOV = virtualCamera.Lens.FieldOfView;
+        targetFOV = virtualCamera.Lens.FieldOfView;
     }
     void Update()
     {
@@ -42,7 +44,7 @@ public class CameraSystem : MonoBehaviour
             transform.position += new Vector3(inputVector.x, 0, inputVector.y)  * moveSpeed * Time.deltaTime;
         }
 
-        if (cameraZoom.IsPressed())//when the use uses scroll wheel
+        if (cameraZoom.IsPressed() && activateZoom)//when the use uses scroll wheel
         {
             Vector2 scrollInput = cameraZoom.ReadValue<Vector2>();
             AdjustCameraZoom(scrollInput.y);
@@ -59,17 +61,11 @@ public class CameraSystem : MonoBehaviour
         targetFOV -= increment * zoomSpeed;
         targetFOV = Mathf.Clamp(targetFOV, minFOV, maxFOV);
     }
-    private void adjustCameraPositionZoom(){
-        
-    }
 
     private void LateUpdate()
     {
+
         // Smoothly interpolate to the target FOV using Lerp
-        virtualCamera.Lens.FieldOfView = Mathf.Lerp(
-            virtualCamera.Lens.FieldOfView,
-            targetFOV,
-            Time.deltaTime * zoomSpeed
-        );
+        virtualCamera.Lens.FieldOfView = Mathf.Lerp(virtualCamera.Lens.FieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
     }
 }

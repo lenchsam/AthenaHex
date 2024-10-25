@@ -60,13 +60,11 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
         if(!hasHit){return;} //return if its hit nothing
 
         //handles the movement if the tile is hidden
-        if(hit.transform.gameObject.GetComponent<TileScript>().isFog){
-            //Debug.Log("IS FOG");
-            unitManager.unitController(hit);
-            return;
-        }
+        // if(hit.transform.gameObject.GetComponent<TileScript>().isFog){
+        //     unitManager.unitController(hit);
+        //     return;
+        // }
         
-        // Debug.Log("reset tile");
         selectedTile = hit.transform.gameObject;
         tileUI.SetActive(true);
 
@@ -88,7 +86,6 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
 
         //--------------------------------------------------------------------------------------------------
 
-        
         if(hit.transform.gameObject.GetComponent<IInteractable>() != null){ //if the hit object is clickable
             hit.transform.gameObject.GetComponent<IInteractable>().OnClick();
         }

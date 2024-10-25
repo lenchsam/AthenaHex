@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4
   m_IsActive: 1
 --- !u!224 &6719968424114821371
 RectTransform:
@@ -54,6 +54,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -142,15 +145,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 0
   m_isCullingEnabled: 0
@@ -232,7 +237,12 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 652a8086019dbda40b426a0e76dc8c64,
         type: 3}
       propertyPath: m_Name
-      value: hex_water 1
+      value: hex_water
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 652a8086019dbda40b426a0e76dc8c64,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -249,7 +259,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 652a8086019dbda40b426a0e76dc8c64,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6462955897038074198}
+      addedObject: {fileID: 6606179884031082319}
   m_SourcePrefab: {fileID: 100100000, guid: 652a8086019dbda40b426a0e76dc8c64, type: 3}
 --- !u!4 &8138197008192563535 stripped
 Transform:
@@ -279,8 +289,8 @@ MonoBehaviour:
   cords: {x: 0, y: 0}
   intCords: {x: 0, y: 0}
   displayName: 0
---- !u!64 &6462955897038074198
-MeshCollider:
+--- !u!65 &6606179884031082319
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -297,7 +307,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1477051960566787356, guid: 652a8086019dbda40b426a0e76dc8c64, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.5000002, z: 1.1487753}
+  m_Center: {x: 0, y: -0.25000003, z: -0.013392568}

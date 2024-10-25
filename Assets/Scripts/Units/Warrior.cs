@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class Warrior : Melee, IAttacking
 {
+    [BoxGroup("Health")]
     [SerializeField] protected float maximumHealth = 50.0f;
-    [SerializeField] HexGrid hexGrid;
+    HexGrid hexGrid;
     protected override void Awake()
     {
         base.Awake();

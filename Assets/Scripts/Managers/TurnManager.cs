@@ -50,6 +50,8 @@ public class TurnManager : MonoBehaviour
                 //reveal all p1 units
                 break;
         }
+        unitManager.SelectedUnit = null;
+        unitManager.unitSelected = false;
     }
     private void ChangeCamera(int team){
         Vector2Int Cords = unitManager.startPositions[team];

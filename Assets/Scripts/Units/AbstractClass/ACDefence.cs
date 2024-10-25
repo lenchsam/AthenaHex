@@ -8,11 +8,9 @@ public class ACDefence : MonoBehaviour, IDamageable
     [BoxGroup("Health")]
     [SerializeField] protected float health;
     [BoxGroup("Health")]
-    [SerializeField] protected float maxHealth;
     protected virtual void initialise(float maximumHealth)
     {
-        maxHealth = maximumHealth;
-        health = maxHealth;
+        health = maximumHealth;
     }
     public virtual void takeDamage(int damageToTake){
         health -= damageToTake;

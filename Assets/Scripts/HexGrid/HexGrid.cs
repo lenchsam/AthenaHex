@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using Sirenix.OdinInspector;
 using System.Threading.Tasks;
 using UnityEngine.Events;
@@ -84,12 +85,14 @@ public class HexGrid : MonoBehaviour
 
                     // Instantiate a base object under the upper layer at the lower layer's height
                     Vector3 basePosition = new Vector3(hexCoords.x, lowerLayerHeight, hexCoords.y);
-                    Instantiate(TopBasePrefab, basePosition, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                    //var baseInst = Instantiate(TopBasePrefab, basePosition, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                    //GameObjectUtility.SetStaticEditorFlags(baseInst, StaticEditorFlags.BatchingStatic);
                 }else {//if not ocean, or upper layer, it must be the normal grass layer
                     instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
                     tileType = TileType.Grass;
-                    potentialCoastTiles.Add(instantiated);
+                    //potentialCoastTiles.Add(instantiated);
                 }
+                GameObjectUtility.SetStaticEditorFlags(instantiated, StaticEditorFlags.BatchingStatic);
 
                 var tileInstScript = instantiated.AddComponent<TileScript>();
                 tileInstScript.Constructor(true, new Vector2Int(x, z), tileType);
@@ -102,6 +105,8 @@ public class HexGrid : MonoBehaviour
         //ConvertGrassToCoastTiles();
         // Fire the UnityEvent once the map is generated
         OnMapGenerated?.Invoke();
+
+        StaticBatchingUtility.Combine(TilesParent);
         return;
     }
     private int CountOceanNeighbors(GameObject tileGO) {

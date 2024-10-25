@@ -37,6 +37,9 @@ public class Labeller : MonoBehaviour
             DisplayCords();
             transform.name = cords.ToString();
         }
+
+        Destroy(label.gameObject);
+        Destroy(this);
     }
 
     private void DisplayCords()
