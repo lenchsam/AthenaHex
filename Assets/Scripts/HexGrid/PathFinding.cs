@@ -11,6 +11,7 @@ public class PathFinding : MonoBehaviour
     }
     public List<GameObject> FindPath(Vector2Int startCoords, Vector2Int targetCoords)
     {
+        List<GameObject> path;
         // Open list to track nodes to be evaluated
         List<TileScript> openList = new List<TileScript>();
 
@@ -46,7 +47,17 @@ public class PathFinding : MonoBehaviour
             // If we've reached the target, reconstruct the path
             if (currentTile == targetTile)
             {
-                return ReconstructPath(cameFrom, currentTile);
+                Debug.Log("RAN123123123");
+                path = ReconstructPath(cameFrom, currentTile);
+
+                // Check if targetTile is already in the path; if not, add it at the end
+                if (path[path.Count - 1] != targetTile.gameObject)
+                {
+                    Debug.Log("RAN1");
+                    path.Add(targetTile.gameObject);
+                }
+
+                return path;
             }
 
             // Move current tile from open to closed list
@@ -81,9 +92,19 @@ public class PathFinding : MonoBehaviour
                     }
                 }
             }
+            path = ReconstructPath(cameFrom, currentTile);
+
+            // Check if targetTile is already in the path; if not, add it at the end
+            if (path[path.Count - 1] != targetTile.gameObject)
+            {
+                Debug.Log("RAN1");
+                path.Add(targetTile.gameObject);
+                return path;
+            }
         }
 
         // Return null if no path is found
+        Debug.Log("no path found");
         return null;
     }
     private List<GameObject> ReconstructPath(Dictionary<TileScript, TileScript> cameFrom, TileScript currentTile)
@@ -98,6 +119,7 @@ public class PathFinding : MonoBehaviour
         }
 
         totalPath.Reverse(); // Reverse to get the path from start to goal
+
         return totalPath;
     }
 }

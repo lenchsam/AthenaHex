@@ -78,20 +78,21 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
         }
         
         //assigns the correct scriptable object for the district manager. used for checking placing defences in the correct city
-        if(hit.transform.gameObject.GetComponent<TileScript>().districts == district.CityCentre){
-            districtManager.citiesScriptableObject = hit.transform.gameObject.GetComponent<TileScript>().SO_Cities;
+        var tileScript = hit.transform.gameObject.GetComponent<TileScript>();
+        if(tileScript.districts == district.CityCentre){
+            districtManager.citiesScriptableObject = tileScript.SO_Cities;
         }else{
             districtManager.citiesScriptableObject = null;
         }
 
         //--------------------------------------------------------------------------------------------------
-
-        if(hit.transform.gameObject.GetComponent<IInteractable>() != null){ //if the hit object is clickable
-            hit.transform.gameObject.GetComponent<IInteractable>().OnClick();
+        var interactable = hit.transform.gameObject.GetComponent<IInteractable>();
+        if(interactable != null){ //if the hit object is clickable
+            interactable.OnClick();
         }
 
         unitManager.unitController(hit);
-        building.PlaceDown(hit);
+        //building.PlaceDown(hit);
         //cityCheck(hasHit, hit);
     }
     

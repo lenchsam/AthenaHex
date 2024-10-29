@@ -1,11 +1,11 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Sirenix.OdinInspector;
 using System.Threading.Tasks;
 using UnityEngine.Events;
-
 public class HexGrid : MonoBehaviour
 {
     [BoxGroup("Assignables")]
@@ -47,7 +47,7 @@ public class HexGrid : MonoBehaviour
     Vector2 seedOffset;  // Random offset for noise generation
     [HideInInspector] public UnityEvent OnMapGenerated = new UnityEvent();
     void Awake(){
-        seedOffset = new Vector2(Random.Range(0f, 1000f), Random.Range(0f, 1000f)); //generates a random seed for procedural generation
+        seedOffset = new Vector2(UnityEngine.Random.Range(0f, 1000f), UnityEngine.Random.Range(0f, 1000f)); //generates a random seed for procedural generation
     }
     private async void Start()
     {
@@ -165,6 +165,14 @@ public class HexGrid : MonoBehaviour
         // Use the threshold to decide between two layers
         return noiseValue > heightThreshold ? upperLayerHeight : lowerLayerHeight;
     }
+    private void biomes(){
+        //get centre of map, split map into 4 quarters.
+        Vector2 mapCentre = new Vector2(MathF.Round(mapWidth / 2), MathF.Round(mapHeight / 2));
+        Debug.Log(mapCentre);
+        //select a random spot in each of the 4 quarters.
+        //top right = < mapCentre.x && > mapCentre.y
+        
+    }
     public TileScript GetTileScript(Vector2 coords){
         foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
             if(new Vector2(TS.Key.transform.position.x, TS.Key.transform.position.z) == coords){
@@ -278,7 +286,6 @@ public class HexGrid : MonoBehaviour
         }
     }
 }
-
 public enum OccupiedBy{
     None,
     wall,

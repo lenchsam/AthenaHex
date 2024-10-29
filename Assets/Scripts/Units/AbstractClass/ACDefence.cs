@@ -25,5 +25,6 @@ public class ACDefence : MonoBehaviour, IDamageable
     {
         //current node stood on set back to walkable
         Debug.Log("UNIT DEADDDDD");
+        Destroy(gameObject);
     }   
 }

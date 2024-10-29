@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class UnitManager : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class UnitManager : MonoBehaviour
         //SetupStartUnits(StartUnit, startPositions);
     }
     public void unitController(RaycastHit hit){
+        
         if (hit.transform.tag == "Tile" && unitSelected){ //if hit a tile and already have a unit selected
             Vector2 targetCords = new Vector2(hit.transform.GetComponent<TileScript>().transform.position.x, hit.transform.GetComponent<TileScript>().transform.position.z);
             Vector2 startCords = new Vector2(SelectedUnit.position.x, SelectedUnit.position.z);
@@ -34,22 +36,27 @@ public class UnitManager : MonoBehaviour
             //Debug.Log(startCoords + " start Cords");
             Vector2Int targetCoords = hexGrid.GetIntCordsFromPosition(targetCords);
             //Debug.Log(targetCoords + " target Cords");
-            List<GameObject> path = pathFinding.FindPath(startCoords, targetCoords);
-
+            List<GameObject> path;// = pathFinding.FindPath(startCoords, targetCoords);
             //pass the tile node the reference to the unit that is stood on it
             TileScript targetNode = hit.transform.gameObject.GetComponent<TileScript>();
             targetNode = hexGrid.GetTileFromIntCoords(targetNode.intCoords).GetComponent<TileScript>();
             GameObject targetUnit = targetNode.occupiedUnit; 
             //if target tile is occupied by an enemy/check for attacked this turn. if true return
             if(targetUnit != null){
+                
                 // If the target tile is occupied by an enemy, handle the attack
 
                 if(SelectedUnit == null){return;}
 
                 if (targetUnit.GetComponent<AssignTeam>().defenceTeam != SelectedUnit.GetComponent<AssignTeam>().defenceTeam) {
-                    // Trigger the attack event
+                    
                     
                     SelectedUnit.GetComponent<IAttacking>().attack(targetUnit);
+
+                    path = pathFinding.FindPath(startCoords, targetCoords);
+                    if(path[path.Count - 1] == hexGrid.GetTileFromIntCoords(targetCoords)){
+                        StartCoroutine(lerpToPosition(SelectedUnit.transform.position, path, pathFinding.unitMovementSpeed, SelectedUnit.gameObject));
+                    }
 
                     SelectedUnit = null;
                     unitSelected = false;
@@ -61,6 +68,7 @@ public class UnitManager : MonoBehaviour
                     attackedThisTurn = false;
                     return;  // Stop further movement
                 }
+                
             }else if (!targetNode.isWalkable) {
                 //Debug.Log("Tile not walkable");
                 // If the target tile is not walkable and doesn't have an enemy, return early
@@ -75,6 +83,7 @@ public class UnitManager : MonoBehaviour
                 if(hexGrid.showFOW){hexGrid.RevealTile(hexGrid.GetTileFromIntCoords(new Vector2(targetCoords.x, targetCoords.y)).GetComponent<TileScript>());}
 
                 //pathfinding
+                path = pathFinding.FindPath(startCoords, targetCoords);
                 StartCoroutine(lerpToPosition(SelectedUnit.transform.position, path, pathFinding.unitMovementSpeed, SelectedUnit.gameObject));
 
                 //set the node you moved to as occupied
@@ -92,6 +101,7 @@ public class UnitManager : MonoBehaviour
                 playerController.tileUI.SetActive(false);
             }
         }
+        
     }
     public void SelectUnit(){
         //checks if the tile has a unit on it
