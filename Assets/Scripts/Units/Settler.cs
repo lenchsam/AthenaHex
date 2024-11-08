@@ -11,13 +11,11 @@ public class Settler : Units, IAttacking
     private InputActionMap _inputActionMap;
 
     private CitiesManager citiesManager;
-    private UnitManager unitManager;
 
     protected override void Start(){
         base.Start();
 
         citiesManager = FindAnyObjectByType<CitiesManager>();
-        unitManager = FindAnyObjectByType<UnitManager>();
 
         _inputActionMap = controls.FindActionMap("Player");
         foundCity = _inputActionMap.FindAction("Ability");

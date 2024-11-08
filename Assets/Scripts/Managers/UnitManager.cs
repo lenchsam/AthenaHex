@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Profiling;
+using UnityEngine.Tilemaps;
 
 public class UnitManager : MonoBehaviour
 {
@@ -182,5 +185,50 @@ public class UnitManager : MonoBehaviour
                 }
             }
         }
+    }
+    public List<GameObject> GetAllWalkableTiles(Vector3 pos, int maxMovementDistance){
+        
+        List<GameObject> walkable = new List<GameObject>(); //list for all tiles the unit will be able to walk on
+        GameObject homeTile = hexGrid.GetTileFromPosition(new Vector2(pos.x, pos.z)); //get the tile gameobject
+        Debug.Log(homeTile);
+        TileScript homeTileScript = homeTile.GetComponent<TileScript>();
+        Debug.Log(homeTileScript);
+
+        Queue<GameObject> analysingQueue = new Queue<GameObject>();//queue list for all tiles that need to be analysed
+
+        List<GameObject> Completed = new List<GameObject>();
+
+        Completed.Add(homeTile);
+
+
+        //add neighbours of hometile to the 
+        foreach (GameObject neighbor in hexGrid.GetSurroundingTiles(homeTile))
+        {
+            analysingQueue.Enqueue(neighbor);
+        }
+        //runs until all walkable tiles have been found
+        while(analysingQueue.Count > 0){
+            //assign a new currentTile
+            TileScript currentTile = analysingQueue.Peek().GetComponent<TileScript>();
+            
+            //if the unit can move onto the tile
+            if(currentTile.isWalkable && hexGrid.DistanceBetweenTiles(homeTileScript.intCoords, currentTile.intCoords) <= maxMovementDistance){
+                walkable.Add(currentTile.gameObject);
+                analysingQueue.Dequeue();
+                Completed.Add(currentTile.gameObject);
+
+                //make sure we dont revisit tiles. this is adding all the tile neighbours to the analysing queue
+                foreach (GameObject GO in hexGrid.GetSurroundingTiles(currentTile.gameObject)){
+                    if(!Completed.Contains(GO)){
+                        analysingQueue.Enqueue(GO);
+                    }
+                }
+            }else{
+                analysingQueue.Dequeue();
+                Completed.Add(currentTile.gameObject);
+            }
+        }
+
+        return walkable;
     }
 }

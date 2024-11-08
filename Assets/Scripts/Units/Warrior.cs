@@ -19,6 +19,14 @@ public class Warrior : Melee, IAttacking
     protected override void Start()
     {
         base.Start();
+        walkableTiles = unitManager.GetAllWalkableTiles(gameObject.transform.position, maxMovement);
+
+        foreach(GameObject GO in walkableTiles){
+            var meshRenderer = GO.GetComponent<Renderer>();
+
+            meshRenderer.material.SetColor("_BaseColor", Color.red);
+        }
+        
     }
     public void attack(GameObject thingToAttack){
         //if thing is x tiles away then attack
