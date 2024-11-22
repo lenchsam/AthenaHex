@@ -27,7 +27,7 @@ public class UnitManager : MonoBehaviour
         playerController = FindAnyObjectByType<PlayerController>();
         proceduralGeneration = FindAnyObjectByType<ProceduralGeneration>();
 
-        hexGrid.OnMapGenerated.AddListener(startUnits);
+        proceduralGeneration.OnMapGenerated.AddListener(startUnits);
         //SetupStartUnits(StartUnit, startPositions);
     }
     public void unitController(RaycastHit hit){

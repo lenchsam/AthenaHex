@@ -1808,23 +1808,7 @@ MonoBehaviour:
     type: 3}
   mapWidth: 30
   mapHeight: 30
-  tileSize: 1
   showFOW: 0
-  noiseScale: 0.1
-  heightThreshold: 0.5
-  oceanThreshold: 0.3
-  GrassPrefab: {fileID: 1507458499070482203, guid: 7fab3dd7e3a172847aef60dc7422a2b9,
-    type: 3}
-  OceanPrefab: {fileID: 8915860225429779445, guid: ab9401ec53655714e96c10afe411568e,
-    type: 3}
-  TopBasePrefab: {fileID: 919132149155446097, guid: 37f437d77b8257042a8e8769cc202174,
-    type: 3}
-  CoastalPrefabs: []
-  biomeMaterials: []
-  potentialCoastTiles: []
-  OnMapGenerated:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &1379350119
 Transform:
   m_ObjectHideFlags: 0
@@ -1852,8 +1836,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 190eda872a4c3f843a6479662f831264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TilesParent: {fileID: 788511299}
+  OceanPrefab: {fileID: 8915860225429779445, guid: ab9401ec53655714e96c10afe411568e,
+    type: 3}
+  GrassPrefab: {fileID: 1507458499070482203, guid: 7fab3dd7e3a172847aef60dc7422a2b9,
+    type: 3}
   PoissonRadius: 14
   points: []
+  noiseScale: 0.1
+  heightThreshold: 0.5
+  oceanThreshold: 0.3
+  biomeMaterials: []
+  potentialCoastTiles: []
+  OnMapGenerated:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1399497292
 GameObject:
   m_ObjectHideFlags: 0
