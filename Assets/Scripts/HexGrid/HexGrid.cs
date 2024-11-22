@@ -13,9 +13,9 @@ public class HexGrid : MonoBehaviour
     [BoxGroup("Assignables")]
     [SerializeField] GameObject fogOfWarPrefab;
     [BoxGroup("Map Settings")]
-    [SerializeField] int mapWidth;
+    public int mapWidth;
     [BoxGroup("Map Settings")]
-    [SerializeField] int mapHeight;
+    public int mapHeight;
     [BoxGroup("Map Settings")]
     [SerializeField] int tileSize = 1;
     [BoxGroup("Map Settings")]
@@ -23,12 +23,12 @@ public class HexGrid : MonoBehaviour
     [SerializeField] Dictionary<GameObject, TileScript> Tiles = new Dictionary<GameObject, TileScript>();
 
     //perlin noise
-    [BoxGroup("Procedural Generation")]
+    [BoxGroup("Procedural Generation/Noise")]
     [SerializeField] float noiseScale = 0.1f;
-    [BoxGroup("Procedural Generation")]
+    [BoxGroup("Procedural Generation/Noise")]
     [SerializeField] float heightThreshold = 0.5f; // Threshold to decide when it will go to a new layer
-    [BoxGroup("Procedural Generation")]
-    [SerializeField] float oceanThreshold = 0.2f; 
+    [BoxGroup("Procedural Generation/Noise")]
+    public  float oceanThreshold = 0.2f; 
     float lowerLayerHeight = 0;
     float upperLayerHeight = 0.5f;
     [BoxGroup("Procedural Generation/Prefabs")]
@@ -76,7 +76,7 @@ public class HexGrid : MonoBehaviour
                 TileType tileType;
 
                 // If the tile is an ocean (at the lower layer), instantiate the ocean prefab
-                if (height == lowerLayerHeight && Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale) < oceanThreshold) {
+                if (height == lowerLayerHeight && getPerlinNoiseHeight(x, z) < oceanThreshold) {
                     instantiated = Instantiate(OceanPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
                     tileType = TileType.Ocean;
                 } else if (height == upperLayerHeight) {//if its the upper layer
@@ -95,6 +95,7 @@ public class HexGrid : MonoBehaviour
                 GameObjectUtility.SetStaticEditorFlags(instantiated, StaticEditorFlags.BatchingStatic);
 
                 var tileInstScript = instantiated.AddComponent<TileScript>();
+
                 tileInstScript.Constructor(true, new Vector2Int(x, z), tileType);
 
                 Tiles.Add(instantiated, instantiated.GetComponent<TileScript>());
@@ -106,9 +107,12 @@ public class HexGrid : MonoBehaviour
         // Fire the UnityEvent once the map is generated
         OnMapGenerated?.Invoke();
 
-        Debug.Log("RANANNANS");
+        //Debug.Log("RANANNANS");
         StaticBatchingUtility.Combine(TilesParent);//enables static batching for optimisation
         return;
+    }
+    public float getPerlinNoiseHeight(int x, int z){
+        return Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale);
     }
     private int CountOceanNeighbors(GameObject tileGO) {
         int oceanNeighbors = 0;
@@ -154,24 +158,16 @@ public class HexGrid : MonoBehaviour
         // Customize this based on your coastal prefab setup (e.g., coastalPrefabs[0] for 1 water, coastalPrefabs[1] for 2 water, etc.)
         return CoastalPrefabs[Mathf.Clamp(waterNeighbors - 1, 0, CoastalPrefabs.Length - 1)];
     }
-    private float GetHeightFromPerlinNoise(int x, int z) {
+    public float GetHeightFromPerlinNoise(int x, int z) {
         float noiseValue = Mathf.PerlinNoise((x + seedOffset.x) * noiseScale, (z + seedOffset.y) * noiseScale);
         
         // Check for ocean first (if the noise is very low, it becomes an ocean)
         if (noiseValue < oceanThreshold) {
-            return lowerLayerHeight;  // Ocean tiles are at the lower layer
+            return lowerLayerHeight;
         }
 
         // Use the threshold to decide between two layers
         return noiseValue > heightThreshold ? upperLayerHeight : lowerLayerHeight;
-    }
-    private void biomes(){
-        //get centre of map, split map into 4 quarters.
-        Vector2 mapCentre = new Vector2(MathF.Round(mapWidth / 2), MathF.Round(mapHeight / 2));
-        Debug.Log(mapCentre);
-        //select a random spot in each of the 4 quarters.
-        //top right = < mapCentre.x && > mapCentre.y
-        
     }
     public TileScript GetTileScript(Vector2 coords){
         foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){

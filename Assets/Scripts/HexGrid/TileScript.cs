@@ -65,5 +65,8 @@ public class TileScript : MonoBehaviour
         isWalkable = _isWalkable;
         intCoords = _intCords;
         tileType = _tileType;
+        if(tileType == TileType.Ocean){
+            isWalkable = false;
+        }
     }
 }

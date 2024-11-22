@@ -143,6 +143,7 @@ MonoBehaviour:
   MaxAttackDistance: 1
   damage: 50
   tookTurn: 0
+  walkableTiles: []
   maximumHealth: 50
 --- !u!1001 &7569976993912177737
 PrefabInstance:

@@ -47,13 +47,13 @@ public class PathFinding : MonoBehaviour
             // If we've reached the target, reconstruct the path
             if (currentTile == targetTile)
             {
-                Debug.Log("RAN123123123");
+                //Debug.Log("RAN123123123");
                 path = ReconstructPath(cameFrom, currentTile);
 
                 // Check if targetTile is already in the path; if not, add it at the end
                 if (path[path.Count - 1] != targetTile.gameObject)
                 {
-                    Debug.Log("RAN1");
+                    //Debug.Log("RAN1");
                     path.Add(targetTile.gameObject);
                 }
 
@@ -97,7 +97,7 @@ public class PathFinding : MonoBehaviour
             // Check if targetTile is already in the path; if not, add it at the end
             if (path[path.Count - 1] != targetTile.gameObject)
             {
-                Debug.Log("RAN1");
+                //Debug.Log("RAN1");
                 path.Add(targetTile.gameObject);
                 return path;
             }

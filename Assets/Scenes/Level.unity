@@ -1268,6 +1268,7 @@ MonoBehaviour:
   attackedThisTurn: 0
   SO_Players: []
   playerSO: {fileID: 11400000, guid: 5545720bf46ef964cbb1c2a0f744b52a, type: 2}
+  proceduralGeneration: {fileID: 0}
   startPositions:
   - {x: 5, y: 5}
   - {x: 8, y: 8}
@@ -1782,6 +1783,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1379350119}
   - component: {fileID: 1379350118}
+  - component: {fileID: 1379350120}
   m_Layer: 0
   m_Name: ----GridManager----
   m_TagString: Untagged
@@ -1838,6 +1840,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1379350120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379350117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 190eda872a4c3f843a6479662f831264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PoissonRadius: 14
+  points: []
 --- !u!1 &1399497292
 GameObject:
   m_ObjectHideFlags: 0

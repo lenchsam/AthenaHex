@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Profiling;
-using UnityEngine.Tilemaps;
-
+using UnityEngine.Rendering.VirtualTexturing;
 public class UnitManager : MonoBehaviour
 {
     private PlayerController playerController;
@@ -18,6 +16,7 @@ public class UnitManager : MonoBehaviour
     PathFinding pathFinding;
     [HideInInspector] public List<PlayerScriptableObject> SO_Players = new List<PlayerScriptableObject>();
     [SerializeField] PlayerScriptableObject playerSO;
+    [SerializeField] ProceduralGeneration proceduralGeneration;
 
     public Vector2Int[] startPositions;
     void Start()
@@ -26,6 +25,8 @@ public class UnitManager : MonoBehaviour
         hexGrid = FindAnyObjectByType<HexGrid>();
         pathFinding = FindAnyObjectByType<PathFinding>();
         playerController = FindAnyObjectByType<PlayerController>();
+        proceduralGeneration = FindAnyObjectByType<ProceduralGeneration>();
+
         hexGrid.OnMapGenerated.AddListener(startUnits);
         //SetupStartUnits(StartUnit, startPositions);
     }
@@ -77,7 +78,7 @@ public class UnitManager : MonoBehaviour
                 // If the target tile is not walkable and doesn't have an enemy, return early
 
 
-            return;
+                return;
             }else{
                 // If the tile is walkable and empty, move the unit
                 if(hexGrid.DistanceBetweenTiles(startCoords, targetCoords) > SelectedUnit.GetComponent<Units>().maxMovement){return;}
@@ -107,6 +108,8 @@ public class UnitManager : MonoBehaviour
         
     }
     public void SelectUnit(){
+        //currently called on UI button press
+
         //checks if the tile has a unit on it
         if(playerController.selectedTile.GetComponent<TileScript>().occupiedUnit == null){
             playerController.selectedTile = null;
@@ -120,6 +123,15 @@ public class UnitManager : MonoBehaviour
         //Debug.Log("selected Unit");
         SelectedUnit = playerController.selectedTile.GetComponent<TileScript>().occupiedUnit.transform;
         unitSelected = true;
+
+        var walkableTiles = GetAllWalkableTiles(playerController.selectedTile.GetComponent<TileScript>().occupiedUnit.transform.position, playerController.selectedTile.GetComponent<TileScript>().occupiedUnit.GetComponent<Units>().maxMovement);
+        
+        //for testing, just changes the color of the tiles detected by walkable tiles
+        foreach(GameObject GO in walkableTiles){
+            var meshRenderer = GO.GetComponent<Renderer>();
+
+            meshRenderer.material.SetColor("_BaseColor", Color.red);
+        }
     }
     private IEnumerator lerpToPosition(Vector3 startPosition, List<GameObject> targetPositions, float unitMovementSpeed, GameObject gameObjectToMove){
         // Set initial position
@@ -153,7 +165,7 @@ public class UnitManager : MonoBehaviour
         }
     }
     private void startUnits(){
-        SetupStartUnits(StartUnit, startPositions);
+        SetupStartUnits(StartUnit, proceduralGeneration.points.ToArray());
     }
     private void SetupStartUnits(GameObject unitPrefab, Vector2Int[] TilePositions){
         Team currentTeam = Team.Team1;
@@ -190,9 +202,9 @@ public class UnitManager : MonoBehaviour
         
         List<GameObject> walkable = new List<GameObject>(); //list for all tiles the unit will be able to walk on
         GameObject homeTile = hexGrid.GetTileFromPosition(new Vector2(pos.x, pos.z)); //get the tile gameobject
-        Debug.Log(homeTile);
+        //Debug.Log(homeTile);
         TileScript homeTileScript = homeTile.GetComponent<TileScript>();
-        Debug.Log(homeTileScript);
+        //Debug.Log(homeTileScript);
 
         Queue<GameObject> analysingQueue = new Queue<GameObject>();//queue list for all tiles that need to be analysed
 
