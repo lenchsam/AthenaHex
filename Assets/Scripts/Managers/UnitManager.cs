@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
 public class UnitManager : MonoBehaviour
 {
     private PlayerController playerController;
@@ -17,6 +15,7 @@ public class UnitManager : MonoBehaviour
     [HideInInspector] public List<PlayerScriptableObject> SO_Players = new List<PlayerScriptableObject>();
     [SerializeField] PlayerScriptableObject playerSO;
     [SerializeField] ProceduralGeneration proceduralGeneration;
+    List<Renderer> colouredTiles = new List<Renderer>();
 
     public Vector2Int[] startPositions;
     void Start()
@@ -31,7 +30,6 @@ public class UnitManager : MonoBehaviour
         //SetupStartUnits(StartUnit, startPositions);
     }
     public void unitController(RaycastHit hit){
-        
         if (hit.transform.tag == "Tile" && unitSelected){ //if hit a tile and already have a unit selected
             Vector2 targetCords = new Vector2(hit.transform.GetComponent<TileScript>().transform.position.x, hit.transform.GetComponent<TileScript>().transform.position.z);
             Vector2 startCords = new Vector2(SelectedUnit.position.x, SelectedUnit.position.z);
@@ -53,7 +51,6 @@ public class UnitManager : MonoBehaviour
                 if(SelectedUnit == null){return;}
 
                 if (targetUnit.GetComponent<AssignTeam>().defenceTeam != SelectedUnit.GetComponent<AssignTeam>().defenceTeam) {
-                    
                     
                     SelectedUnit.GetComponent<IAttacking>().attack(targetUnit);
 
@@ -105,7 +102,6 @@ public class UnitManager : MonoBehaviour
                 playerController.tileUI.SetActive(false);
             }
         }
-        
     }
     public void SelectUnit(){
         //currently called on UI button press
@@ -126,10 +122,20 @@ public class UnitManager : MonoBehaviour
 
         var walkableTiles = GetAllWalkableTiles(playerController.selectedTile.GetComponent<TileScript>().occupiedUnit.transform.position, playerController.selectedTile.GetComponent<TileScript>().occupiedUnit.GetComponent<Units>().maxMovement);
         
+        foreach(Renderer meshRenderer in colouredTiles){
+            meshRenderer.material.SetColor("_BaseColor", Color.white);
+        }
+        colouredTiles.Clear();
         //for testing, just changes the color of the tiles detected by walkable tiles
         foreach(GameObject GO in walkableTiles){
+            
             var meshRenderer = GO.GetComponent<Renderer>();
 
+            colouredTiles.Add(meshRenderer);
+
+            //meshRenderer.material.SetColor("_BaseColor", Color.red);
+        }
+        foreach(Renderer meshRenderer in colouredTiles){
             meshRenderer.material.SetColor("_BaseColor", Color.red);
         }
     }

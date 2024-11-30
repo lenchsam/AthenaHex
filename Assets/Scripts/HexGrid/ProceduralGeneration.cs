@@ -7,9 +7,6 @@ using UnityEngine.Events;
 
 public class ProceduralGeneration : MonoBehaviour
 {
-    //This script uses a modified version of poisson disc sampling. I split the map into 4 equal parts, i picked a random point in that section and added it to a list. 
-    //I then chose a random point in the other sections and made sure that it wasnt too close to all other points. its essensially how poisson disc sampling works, just modified a bit to suit my game more.
-    //the cell size in the grid doesnt need to be accurate to the real one used in the game as only the coordinates will be used outside of this algorithm.
 
     //Then i used a flood fill algorithm to assign each tile a biome.
     HexGrid hexGrid;
@@ -27,9 +24,6 @@ public class ProceduralGeneration : MonoBehaviour
     [Tooltip("area around the poisson disc sample where another sample cant be placed")]
     [SerializeField]int PoissonRadius = 10;
     [HideInInspector] public List<Vector2Int> points = new List<Vector2Int>();
-
-    //---------------------------------------------------------------------------------------------------Voronoi
-
 
     //---------------------------------------------------------------------------------------------------Perlin Noise
     //perlin noise
