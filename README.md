@@ -22,8 +22,8 @@ Athena Hex utilises a variety of different procedural generation techniques to a
 ## Features
 
  - Poisson Disc Sampling used to get the spawn locations of players
- - Flood Fill used to create biomes
- - Perlin Noise to create height
+ - Voronoi noise used for biomes
+ - Perlin Noise to create height layers
  - Fog of War
  - Turn-based combat
 
