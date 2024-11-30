@@ -15,6 +15,8 @@ public class ProceduralGeneration : MonoBehaviour
     HexGrid hexGrid;
     [BoxGroup("Assignables")]
     [SerializeField] GameObject TilesParent;
+    [BoxGroup("Assignables")]
+    [SerializeField] Material[] biomeMaterials;
     [BoxGroup("Assignables/Prefabs")]
     [SerializeField] GameObject OceanPrefab;
     [BoxGroup("Assignables/Prefabs")]
@@ -24,23 +26,26 @@ public class ProceduralGeneration : MonoBehaviour
     [BoxGroup("Poisson Disc Sampling")]
     [Tooltip("area around the poisson disc sample where another sample cant be placed")]
     [SerializeField]int PoissonRadius = 10;
-    public List<Vector2Int> points = new List<Vector2Int>();
+    [HideInInspector] public List<Vector2Int> points = new List<Vector2Int>();
+
+    //---------------------------------------------------------------------------------------------------Voronoi
+
 
     //---------------------------------------------------------------------------------------------------Perlin Noise
     //perlin noise
-    [BoxGroup("Procedural Generation/Noise")]
+
+    [BoxGroup("Noise")]
     [SerializeField] float noiseScale = 0.1f;
-    [BoxGroup("Procedural Generation/Noise")]
+    [BoxGroup("Noise")]
     [SerializeField] float heightThreshold = 0.5f; // Threshold to decide when it will go to a new layer
-    [BoxGroup("Procedural Generation/Noise")]
+    [BoxGroup("Noise")]
     [SerializeField] float oceanThreshold = 0.2f; 
     float lowerLayerHeight = 0;
     float upperLayerHeight = 0.5f;
 
-    [BoxGroup("Procedural Generation")]
-    [SerializeField] Material[] biomeMaterials;
     Vector2 seedOffset;  // Random offset for noise generation
-    public List<GameObject> potentialCoastTiles = new List<GameObject>();
+
+    //---------------------------------------------------------------------------------------------------
     [HideInInspector] public UnityEvent OnMapGenerated = new UnityEvent();
     void Awake(){
         seedOffset = new Vector2(UnityEngine.Random.Range(0f, 1000f), UnityEngine.Random.Range(0f, 1000f)); //generates a random seed for procedural generation
@@ -51,7 +56,7 @@ public class ProceduralGeneration : MonoBehaviour
     }
     //lists
 
-    //---------------------------------------------------------------------------------------------------POISSON DISC SAMPLING
+#region Poisson Disc Sampling
     bool isValidPoint(Vector2Int point, List<Vector2Int> points, int minDistance){
         //gets the tile height
         //checks if it will be an ocean tile,
@@ -61,7 +66,6 @@ public class ProceduralGeneration : MonoBehaviour
         
         float TileHeight = GetHeightFromPerlinNoise(point.x, point.y);
         if(getPerlinNoiseHeight(point.x, point.y) < oceanThreshold){
-            Debug.Log("IS OCEAN");
             return false;
         }
 
@@ -115,8 +119,44 @@ public class ProceduralGeneration : MonoBehaviour
         }
         return points;
     }
-    
-    //---------------------------------------------------------------------------------------------------Perlin Noise
+#endregion
+
+#region Voronoi
+    int Voronoi(Vector2Int tileCords){
+        Vector2Int temp = closestPoint(tileCords);
+        int pointNumber = getPointNumber(temp);
+        return pointNumber;
+    }
+    int getPointNumber(Vector2Int point){
+        if(point == points[0]){
+            return 0;
+        }else if(point == points[1]){
+            return 1;
+        }else if(point == points[2]){
+            return 2;
+        }else {
+            return 3;
+        }
+        
+    }
+    Vector2Int closestPoint(Vector2Int nextPoint){
+        int closestDistance = 999999999; //just a big number so it triggers the if statement below
+        Vector2Int closestPoint = new Vector2Int(0, 0);
+
+        //goes through each spawn point, gets the distance to it, and returns the spawn point closest to the tile
+        foreach(Vector2Int point in points){
+            int distance = hexGrid.DistanceBetweenTiles(nextPoint, point);
+            if(distance < closestDistance){
+                closestDistance = distance;
+                closestPoint = point;
+            }
+        }
+        return closestPoint;
+    }
+
+#endregion
+
+#region Perlin Noise (height and placing map)
     public async Task MakeMapGrid(int mapWidth, int mapHeight, Dictionary<GameObject, TileScript> Tiles, int tileSize){
         for (int x = 0; x < mapWidth; x++)
         {
@@ -124,6 +164,7 @@ public class ProceduralGeneration : MonoBehaviour
             {
                 await Task.Yield();
 
+                int biome = Voronoi(new Vector2Int(x, z));//get the biome number
                 //calculate height from perlin noise
                 Vector2 hexCoords = GetHexCoords(x, z, tileSize);
                 float height = GetHeightFromPerlinNoise(x, z);
@@ -150,6 +191,8 @@ public class ProceduralGeneration : MonoBehaviour
                     //potentialCoastTiles.Add(instantiated);
                 }
                 GameObjectUtility.SetStaticEditorFlags(instantiated, StaticEditorFlags.BatchingStatic);
+
+                instantiated.GetComponent<MeshRenderer> ().material = biomeMaterials[biome];
 
                 var tileInstScript = instantiated.AddComponent<TileScript>();
 
@@ -188,4 +231,5 @@ public class ProceduralGeneration : MonoBehaviour
         // Use the threshold to decide between two layers
         return noiseValue > heightThreshold ? upperLayerHeight : lowerLayerHeight;
     }
+#endregion
 }

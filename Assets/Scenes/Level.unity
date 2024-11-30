@@ -1837,6 +1837,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TilesParent: {fileID: 788511299}
+  biomeMaterials:
+  - {fileID: 2100000, guid: 55e6e9d4e1e9701409e76f8921510254, type: 2}
+  - {fileID: 2100000, guid: 01b1bc802f97dc24090a9c98c7929c4b, type: 2}
+  - {fileID: 2100000, guid: 958ae798dc002f743b86fc6da43e9c83, type: 2}
+  - {fileID: 2100000, guid: 7d450b3ecd35a814c98d1cc0207cc250, type: 2}
   OceanPrefab: {fileID: 8915860225429779445, guid: ab9401ec53655714e96c10afe411568e,
     type: 3}
   GrassPrefab: {fileID: 1507458499070482203, guid: 7fab3dd7e3a172847aef60dc7422a2b9,
@@ -1846,8 +1851,6 @@ MonoBehaviour:
   noiseScale: 0.1
   heightThreshold: 0.5
   oceanThreshold: 0.3
-  biomeMaterials: []
-  potentialCoastTiles: []
   OnMapGenerated:
     m_PersistentCalls:
       m_Calls: []
