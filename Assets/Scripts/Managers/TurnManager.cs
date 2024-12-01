@@ -54,9 +54,9 @@ public class TurnManager : MonoBehaviour
         unitManager.unitSelected = false;
     }
     private void ChangeCamera(int team){
-        Vector2Int Cords = unitManager.startPositions[team];
-        Vector3 pos = new Vector3(hexGrid.GetTileFromIntCoords(Cords).transform.position.x,cameraTransform.position.y, hexGrid.GetTileFromIntCoords(Cords).transform.position.z);
-        cameraTransform.position = pos;
+        // Vector2Int Cords = unitManager.startPositions[team];
+        // Vector3 pos = new Vector3(hexGrid.GetTileFromIntCoords(Cords).transform.position.x,cameraTransform.position.y, hexGrid.GetTileFromIntCoords(Cords).transform.position.z);
+        // cameraTransform.position = pos;
     }
     private void ChangeFOW(List<Vector2Int> RevealedTiles, List<Vector2Int> TilesToBlock){
         foreach(Vector2Int tileCords in RevealedTiles){

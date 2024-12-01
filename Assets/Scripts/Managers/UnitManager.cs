@@ -78,6 +78,7 @@ public class UnitManager : MonoBehaviour
                 return;
             }else{
                 // If the tile is walkable and empty, move the unit
+                
                 if(hexGrid.DistanceBetweenTiles(startCoords, targetCoords) > SelectedUnit.GetComponent<Units>().maxMovement){return;}
 
                 //reveal tiles
@@ -122,19 +123,20 @@ public class UnitManager : MonoBehaviour
 
         var walkableTiles = GetAllWalkableTiles(playerController.selectedTile.GetComponent<TileScript>().occupiedUnit.transform.position, playerController.selectedTile.GetComponent<TileScript>().occupiedUnit.GetComponent<Units>().maxMovement);
         
+        //for testing, just changes the color of the tiles detected by walkable tiles
         foreach(Renderer meshRenderer in colouredTiles){
             meshRenderer.material.SetColor("_BaseColor", Color.white);
         }
         colouredTiles.Clear();
-        //for testing, just changes the color of the tiles detected by walkable tiles
+
         foreach(GameObject GO in walkableTiles){
             
             var meshRenderer = GO.GetComponent<Renderer>();
 
             colouredTiles.Add(meshRenderer);
 
-            //meshRenderer.material.SetColor("_BaseColor", Color.red);
         }
+
         foreach(Renderer meshRenderer in colouredTiles){
             meshRenderer.material.SetColor("_BaseColor", Color.red);
         }

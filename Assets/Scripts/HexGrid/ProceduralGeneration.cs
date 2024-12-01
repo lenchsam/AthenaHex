@@ -23,7 +23,7 @@ public class ProceduralGeneration : MonoBehaviour
     [BoxGroup("Poisson Disc Sampling")]
     [Tooltip("area around the poisson disc sample where another sample cant be placed")]
     [SerializeField]int PoissonRadius = 10;
-    [HideInInspector] public List<Vector2Int> points = new List<Vector2Int>();
+    public List<Vector2Int> points = new List<Vector2Int>();
 
     //---------------------------------------------------------------------------------------------------Perlin Noise
     //perlin noise
@@ -47,6 +47,7 @@ public class ProceduralGeneration : MonoBehaviour
     void Start(){
         hexGrid = FindAnyObjectByType<HexGrid>(); 
         points = poissonDiscSampling(hexGrid.mapWidth, hexGrid.mapHeight, PoissonRadius);
+        points = randomisePoints(points);
     }
     //lists
 
@@ -111,7 +112,22 @@ public class ProceduralGeneration : MonoBehaviour
             }
             break;
         }
+        
+        //points = randomisePoints(points);
         return points;
+    }
+    //done so players and biomes arent always in the same quarter of the map
+    List<Vector2Int> randomisePoints(List<Vector2Int> list){
+        List<Vector2Int> random = new List<Vector2Int>();
+        
+        int count = points.Count;
+        for(int i = 0; i <= count - 1; i++){
+            var rand = Random.Range(0, list.Count);
+            random.Add(list[rand]);
+            points.RemoveAt(rand);
+
+        }
+        return random;
     }
 #endregion
 
