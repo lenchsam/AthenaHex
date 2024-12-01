@@ -20,12 +20,12 @@ public class Building : MonoBehaviour
         
         TileScript tileScript = hit.transform.gameObject.GetComponent<TileScript>();
         tileScript.occupiedBuilding = GO;
-        tileScript.occupiedBy = OccupiedBy.wall;
+        tileScript.occupiedBy = eOccupiedBy.wall;
         tileScript.isWalkable = false;
     }
     public void rotateBuilding(){
         //if the tile
-        if(playerController.selectedTile.GetComponent<TileScript>().occupiedBy == OccupiedBy.None){return;}//if nothing is on the tile do nothing
+        if(playerController.selectedTile.GetComponent<TileScript>().occupiedBy == eOccupiedBy.None){return;}//if nothing is on the tile do nothing
 
         //get the gameobject on the tile, then rotate it
         GameObject buildingToRotate = playerController.selectedTile.GetComponent<TileScript>().occupiedBuilding;

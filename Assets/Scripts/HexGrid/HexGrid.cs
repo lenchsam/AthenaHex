@@ -143,13 +143,13 @@ public class HexGrid : MonoBehaviour
         }
     }
 }
-public enum OccupiedBy{
+public enum eOccupiedBy{
     None,
     wall,
     farm,
     barracks
 }
-public enum TileType{
+public enum eTileType{
     Ocean,
     Grass,
     Coast,

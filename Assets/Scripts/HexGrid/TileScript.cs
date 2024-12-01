@@ -10,13 +10,14 @@ public class TileScript : MonoBehaviour
     public bool isCityCentre = false;
     public district districts;
     public CitiesScriptableObject SO_Cities;
-    public OccupiedBy occupiedBy;
+    public eOccupiedBy occupiedBy;
     public GameObject occupiedBuilding;
     public GameObject occupiedUnit;
     public GameObject fow;
-    public TileType tileType;
+    public eTileType tileType;
     public TurnManager turnManager;
     public UnitManager unitManager;
+    public eBiomes biome;
     private void Awake(){
         turnManager = FindAnyObjectByType<TurnManager>();
         unitManager = FindAnyObjectByType<UnitManager>();
@@ -61,11 +62,12 @@ public class TileScript : MonoBehaviour
         fow.gameObject.SetActive(true);
         if(occupiedUnit){occupiedUnit.SetActive(false);}
     }
-    public void Constructor(bool _isWalkable, Vector2Int _intCords, TileType _tileType){
+    public void Constructor(bool _isWalkable, Vector2Int _intCords, eTileType _tileType, eBiomes _biome){
         isWalkable = _isWalkable;
         intCoords = _intCords;
         tileType = _tileType;
-        if(tileType == TileType.Ocean){
+        biome = _biome;
+        if(tileType == eTileType.Ocean){
             isWalkable = false;
         }
     }

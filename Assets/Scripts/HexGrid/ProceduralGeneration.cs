@@ -181,15 +181,15 @@ public class ProceduralGeneration : MonoBehaviour
                 Vector3 position = new Vector3(hexCoords.x, height, hexCoords.y);
 
                 GameObject instantiated;
-                TileType tileType;
+                eTileType tileType;
 
                 // If the tile is an ocean (at the lower layer), instantiate the ocean prefab
                 if (height == lowerLayerHeight && getPerlinNoiseHeight(x, z) < oceanThreshold) {
                     instantiated = Instantiate(OceanPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
-                    tileType = TileType.Ocean;
+                    tileType = eTileType.Ocean;
                 } else if (height == upperLayerHeight) {//if its the upper layer
                     instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
-                    tileType = TileType.Grass;
+                    tileType = eTileType.Grass;
 
                     // Instantiate a base object under the upper layer at the lower layer's height
                     Vector3 basePosition = new Vector3(hexCoords.x, lowerLayerHeight, hexCoords.y);
@@ -197,7 +197,7 @@ public class ProceduralGeneration : MonoBehaviour
                     //GameObjectUtility.SetStaticEditorFlags(baseInst, StaticEditorFlags.BatchingStatic);
                 }else {//if not ocean, or upper layer, it must be the normal grass layer
                     instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
-                    tileType = TileType.Grass;
+                    tileType = eTileType.Grass;
                     //potentialCoastTiles.Add(instantiated);
                 }
                 GameObjectUtility.SetStaticEditorFlags(instantiated, StaticEditorFlags.BatchingStatic);
@@ -206,8 +206,8 @@ public class ProceduralGeneration : MonoBehaviour
 
                 var tileInstScript = instantiated.AddComponent<TileScript>();
 
-                tileInstScript.Constructor(true, new Vector2Int(x, z), tileType);
-
+                tileInstScript.Constructor(true, new Vector2Int(x, z), tileType, (eBiomes) biome);
+                
                 Tiles.Add(instantiated, instantiated.GetComponent<TileScript>());
 
                 //if(showFOW){AddFogOfWar(tileInstScript);}
@@ -216,7 +216,6 @@ public class ProceduralGeneration : MonoBehaviour
         //ConvertGrassToCoastTiles();
         // Fire the UnityEvent once the map is generated
         OnMapGenerated?.Invoke();
-
         //Debug.Log("RANANNANS");
         StaticBatchingUtility.Combine(TilesParent);//enables static batching for optimisation
         return;
@@ -242,4 +241,10 @@ public class ProceduralGeneration : MonoBehaviour
         return noiseValue > heightThreshold ? upperLayerHeight : lowerLayerHeight;
     }
 #endregion
+}
+public enum eBiomes{
+    Desert,
+    Savannah,
+    Forest,
+    Snow
 }
