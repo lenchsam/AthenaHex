@@ -7,7 +7,10 @@ Hi! This project shows **Procedural Generation** in **C#** using **Unity**. This
   * [Useful Links](#useful-links)
   * [Features](#features)
   * [Getting Started](#getting-started)
+    + [Requirements](#requirements)
+    + [Setup](#setup)
     + [Changing Variables](#changing-variables)
+    + [Common Issues](#common-issues)
   * [Future Features](#future-features)
 - [Contact](#contact)
 
@@ -42,6 +45,9 @@ Athena Hex utilises a variety of different procedural generation techniques to a
 ### Changing Variables
 The variables that you'll probably want to have fun with are located in the ----GridManager---- game object. This manages all of the [procedural generation](https://github.com/lenchsam/AthenaHex/blob/main/Assets/Scripts/HexGrid/ProceduralGeneration.cs) and the [grid functions](https://github.com/lenchsam/AthenaHex/blob/main/Assets/Scripts/HexGrid/).
 
+### Common Issues
+ - make sure to also lower poisson-disc radius when making map size smaller in editor. If this isn't done, it can freeze the editor.
+
 ## Future Features
 
  - Resource farming
@@ -54,5 +60,7 @@ The variables that you'll probably want to have fun with are located in the ----
  - Reworked battle system to have more interactive battles when a unit attacks another unit
 # Contact
 [LinkedIn](https://www.linkedin.com/in/sam-lench-8586b6279/)
+
 [X](https://x.com/SamLenchGameDev)
+
 Email - samlenchgamedev@gmail.com
