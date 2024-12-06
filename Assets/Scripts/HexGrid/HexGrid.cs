@@ -131,7 +131,7 @@ public class HexGrid : MonoBehaviour
     public void AddFogOfWar(TileScript tile){
         GameObject fow = Instantiate(fogOfWarPrefab, transform);
         fow.name = "FOW " + tile.gameObject.name;
-        fow.transform.position = tile.transform.position;
+        fow.transform.position = new Vector3(tile.transform.position.x, 0, tile.transform.position.z);
         fow.GetComponent<TileScript>().intCoords = tile.intCoords;
         tile.fow = fow;
         tile.gameObject.layer = LayerMask.NameToLayer("Hidden");

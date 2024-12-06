@@ -1808,7 +1808,7 @@ MonoBehaviour:
     type: 3}
   mapWidth: 30
   mapHeight: 30
-  showFOW: 0
+  showFOW: 1
 --- !u!4 &1379350119
 Transform:
   m_ObjectHideFlags: 0
@@ -1846,11 +1846,11 @@ MonoBehaviour:
     type: 3}
   GrassPrefab: {fileID: 1507458499070482203, guid: 7fab3dd7e3a172847aef60dc7422a2b9,
     type: 3}
-  PoissonRadius: 14
+  PoissonRadius: 8
   points: []
   noiseScale: 0.1
   heightThreshold: 0.5
-  oceanThreshold: 0.3
+  oceanThreshold: 0.4
   OnMapGenerated:
     m_PersistentCalls:
       m_Calls: []
@@ -1922,7 +1922,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1417880797
 MonoBehaviour:
   m_ObjectHideFlags: 0

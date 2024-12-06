@@ -23,7 +23,7 @@ public class ProceduralGeneration : MonoBehaviour
     [BoxGroup("Poisson Disc Sampling")]
     [Tooltip("area around the poisson disc sample where another sample cant be placed")]
     [SerializeField]int PoissonRadius = 10;
-    public List<Vector2Int> points = new List<Vector2Int>();
+    [HideInInspector] public List<Vector2Int> points = new List<Vector2Int>();
 
     //---------------------------------------------------------------------------------------------------Perlin Noise
     //perlin noise
@@ -210,7 +210,7 @@ public class ProceduralGeneration : MonoBehaviour
                 
                 Tiles.Add(instantiated, instantiated.GetComponent<TileScript>());
 
-                //if(showFOW){AddFogOfWar(tileInstScript);}
+                if(hexGrid.showFOW){hexGrid.AddFogOfWar(tileInstScript);}
             }
         }
         //ConvertGrassToCoastTiles();
