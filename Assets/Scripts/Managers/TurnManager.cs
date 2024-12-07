@@ -60,10 +60,10 @@ public class TurnManager : MonoBehaviour
     }
     private void ChangeFOW(List<Vector2Int> RevealedTiles, List<Vector2Int> TilesToBlock){
         foreach(Vector2Int tileCords in RevealedTiles){
-            hexGrid.GetTileFromIntCoords(tileCords).GetComponent<TileScript>().Reveal();
+            hexGrid.GetTileScriptFromIntCords(tileCords).Reveal();
         }
         foreach(Vector2Int tileCords in TilesToBlock){
-            hexGrid.GetTileFromIntCoords(tileCords).GetComponent<TileScript>().ReBlock();
+            hexGrid.GetTileScriptFromIntCords(tileCords).ReBlock();
         }
     }
 }

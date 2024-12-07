@@ -25,8 +25,8 @@ public class PathFinding : MonoBehaviour
         // Dictionary to store the parent of each tile (used to reconstruct the path)
         Dictionary<TileScript, TileScript> cameFrom = new Dictionary<TileScript, TileScript>();
 
-        TileScript startTile = hexGrid.GetTileFromIntCoords(startCoords).GetComponent<TileScript>();
-        TileScript targetTile = hexGrid.GetTileFromIntCoords(targetCoords).GetComponent<TileScript>();
+        TileScript startTile = hexGrid.GetTileScriptFromIntCords(startCoords);
+        TileScript targetTile = hexGrid.GetTileScriptFromIntCords(targetCoords);
 
         openList.Add(startTile);
         gCost[startTile] = 0;

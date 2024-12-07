@@ -48,7 +48,7 @@ public class CitiesManager : MonoBehaviour
         AllCities.Add(CitySO); //add it to the list of city scriptable objects
 
         //get tile script, then assign the city centre
-        var tileScript = gridManager.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y)).GetComponent<TileScript>();
+        var tileScript = gridManager.GetTileScriptFromPosition(new Vector2(tileCords.x, tileCords.y));
         tileScript.isCityCentre = true;
         tileScript.districts = district.CityCentre;
         tileScript.transform.gameObject.AddComponent<CityCentre>();

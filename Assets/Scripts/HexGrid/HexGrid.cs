@@ -30,29 +30,39 @@ public class HexGrid : MonoBehaviour
     }
     // Call this function to start generating the map asynchronously
 
-    public TileScript GetTileScript(Vector2 coords){
+    public TileScript GetTileScriptFromPosition(Vector2 cords){
         foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
-            if(new Vector2(TS.Key.transform.position.x, TS.Key.transform.position.z) == coords){
+            if(new Vector2(TS.Key.transform.position.x, TS.Key.transform.position.z) == cords){
+                return TS.Value;
+            }
+        }
+        return null;
+    }
+    public TileScript GetTileScriptFromIntCords(Vector2Int cords){
+        foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
+            if(TS.Value.intCoords == cords){
                 return TS.Value;
             }
         }
         return null;
     }
     public void BlockTile(Vector2 coords){
-        var tileScript = GetTileScript(coords);
+        var tileScript = GetTileScriptFromPosition(coords);
         tileScript.isWalkable = false;
     }
     public void UnblockTile(Vector2 coords){
-        var tileScript = GetTileScript(coords);
+        var tileScript = GetTileScriptFromPosition(coords);
         tileScript.isWalkable = true;
     }
     public GameObject GetTileFromPosition(Vector2 cords){
-        //Debug.Log(cords.ToString() + "  asdf");
-        //Debug.Log(TilesParent.transform.Find(cords.ToString()).gameObject);
-
-        return TilesParent.transform.Find(cords.ToString()).gameObject;
+        foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
+            if(new Vector2(TS.Key.transform.position.x, TS.Key.transform.position.z) == cords){
+                return TS.Key;
+            }
+        }
+        return null;;
     }
-    public GameObject GetTileFromIntCoords(Vector2 cords) {
+    public GameObject GetTileFromIntCords(Vector2 cords) {
         foreach (Transform child in TilesParent.transform) {
             TileScript tileScript = child.GetComponent<TileScript>();
             if (tileScript != null && tileScript.intCoords == cords) {
@@ -72,28 +82,28 @@ public class HexGrid : MonoBehaviour
         
         Vector2 tileCords = tileGO.GetComponent<TileScript>().intCoords;
 
-        connecting.Add(GetTileFromIntCoords(tileCords));
+        connecting.Add(GetTileFromIntCords(tileCords));
 
         if(tileCords.x % 2 != 0){//if the tile is on an odd row
             //check each possible tile surrounding it to see if its there, if it is there add it to the list
-            if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1)));} //Top
-            if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1)));} //Bottom
+            if(GetTileFromIntCords(new Vector2(tileCords.x, tileCords.y - 1))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x, tileCords.y - 1)));} //Top
+            if(GetTileFromIntCords(new Vector2(tileCords.x, tileCords.y + 1))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x, tileCords.y + 1)));} //Bottom
 
-            if(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y + 1)));}//Left Top
-            if(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y)));}//Left Bottom
+            if(GetTileFromIntCords(new Vector2(tileCords.x - 1, tileCords.y + 1))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x - 1, tileCords.y + 1)));}//Left Top
+            if(GetTileFromIntCords(new Vector2(tileCords.x - 1, tileCords.y))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x - 1, tileCords.y)));}//Left Bottom
 
-            if(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y + 1)));} //Right Top
-            if(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y)));} //Right Bottom  
+            if(GetTileFromIntCords(new Vector2(tileCords.x + 1, tileCords.y + 1))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x + 1, tileCords.y + 1)));} //Right Top
+            if(GetTileFromIntCords(new Vector2(tileCords.x + 1, tileCords.y))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x + 1, tileCords.y)));} //Right Bottom  
         }else{//if the tile is on an even row
             //check each possible tile surrounding it to see if its there, if it is there add it to the list
-            if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y - 1)));} //Top
-            if(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x, tileCords.y + 1)));} //Bottom
+            if(GetTileFromIntCords(new Vector2(tileCords.x, tileCords.y - 1))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x, tileCords.y - 1)));} //Top
+            if(GetTileFromIntCords(new Vector2(tileCords.x, tileCords.y + 1))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x, tileCords.y + 1)));} //Bottom
 
-            if(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y - 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y - 1)));} //Left Top
-            if(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x - 1, tileCords.y)));} //Left Bottom
+            if(GetTileFromIntCords(new Vector2(tileCords.x - 1, tileCords.y - 1))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x - 1, tileCords.y - 1)));} //Left Top
+            if(GetTileFromIntCords(new Vector2(tileCords.x - 1, tileCords.y))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x - 1, tileCords.y)));} //Left Bottom
 
-            if(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y - 1))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y - 1)));} //Right Top
-            if(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y))){connecting.Add(GetTileFromIntCoords(new Vector2(tileCords.x + 1, tileCords.y)));} //Right Bottom
+            if(GetTileFromIntCords(new Vector2(tileCords.x + 1, tileCords.y - 1))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x + 1, tileCords.y - 1)));} //Right Top
+            if(GetTileFromIntCords(new Vector2(tileCords.x + 1, tileCords.y))){connecting.Add(GetTileFromIntCords(new Vector2(tileCords.x + 1, tileCords.y)));} //Right Bottom
         }
         //Debug.Log(connecting.Count);
 
@@ -125,7 +135,7 @@ public class HexGrid : MonoBehaviour
         return new Vector3Int(x, y, z);
     }
     public Vector2Int GetIntCordsFromPosition(Vector2 pos){
-        TileScript TS = GetTileScript(pos);
+        TileScript TS = GetTileScriptFromPosition(pos);
         return TS.intCoords;
     }
     public void AddFogOfWar(TileScript tile){

@@ -22,8 +22,8 @@ public class Warrior : Melee, IAttacking
     }
     public void attack(GameObject thingToAttack){
         //if thing is x tiles away then attack
-        Vector2Int startCords = hexGrid.GetTileScript(new Vector2(gameObject.transform.position.x, gameObject.transform.position.z)).intCoords;
-        Vector2Int targetCords = hexGrid.GetTileScript(new Vector2(thingToAttack.transform.position.x, thingToAttack.transform.position.z)).intCoords;
+        Vector2Int startCords = hexGrid.GetTileScriptFromPosition(new Vector2(gameObject.transform.position.x, gameObject.transform.position.z)).intCoords;
+        Vector2Int targetCords = hexGrid.GetTileScriptFromPosition(new Vector2(thingToAttack.transform.position.x, thingToAttack.transform.position.z)).intCoords;
 
         //Debug.Log();
         

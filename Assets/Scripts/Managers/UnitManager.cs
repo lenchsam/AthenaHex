@@ -41,7 +41,7 @@ public class UnitManager : MonoBehaviour
             List<GameObject> path;// = pathFinding.FindPath(startCoords, targetCoords);
             //pass the tile node the reference to the unit that is stood on it
             TileScript targetNode = hit.transform.gameObject.GetComponent<TileScript>();
-            targetNode = hexGrid.GetTileFromIntCoords(targetNode.intCoords).GetComponent<TileScript>();
+            targetNode = hexGrid.GetTileScriptFromIntCords(targetNode.intCoords);
             GameObject targetUnit = targetNode.occupiedUnit; 
             //if target tile is occupied by an enemy/check for attacked this turn. if true return
             if(targetUnit != null){
@@ -55,7 +55,7 @@ public class UnitManager : MonoBehaviour
                     SelectedUnit.GetComponent<IAttacking>().attack(targetUnit);
 
                     path = pathFinding.FindPath(startCoords, targetCoords);
-                    if(path[path.Count - 1] == hexGrid.GetTileFromIntCoords(targetCoords)){
+                    if(path[path.Count - 1] == hexGrid.GetTileFromIntCords(targetCoords)){
                         StartCoroutine(lerpToPosition(SelectedUnit.transform.position, path, pathFinding.unitMovementSpeed, SelectedUnit.gameObject));
                     }
 
@@ -82,7 +82,7 @@ public class UnitManager : MonoBehaviour
                 if(hexGrid.DistanceBetweenTiles(startCoords, targetCoords) > SelectedUnit.GetComponent<Units>().maxMovement){return;}
 
                 //reveal tiles
-                if(hexGrid.showFOW){hexGrid.RevealTile(hexGrid.GetTileFromIntCoords(new Vector2(targetCoords.x, targetCoords.y)).GetComponent<TileScript>());}
+                if(hexGrid.showFOW){hexGrid.RevealTile(hexGrid.GetTileScriptFromIntCords(new Vector2Int(targetCoords.x, targetCoords.y)).GetComponent<TileScript>());}
 
                 //pathfinding
                 path = pathFinding.FindPath(startCoords, targetCoords);
@@ -95,7 +95,7 @@ public class UnitManager : MonoBehaviour
                 hexGrid.UnblockTile(startCords);//sets the current tile as walkable
 
                 //reseting variables
-                TileScript startNode = hexGrid.GetTileScript(startCords);
+                TileScript startNode = hexGrid.GetTileScriptFromPosition(startCords);
                 startNode.occupiedUnit = null;
                 SelectedUnit = null;
                 unitSelected = false;
@@ -179,7 +179,7 @@ public class UnitManager : MonoBehaviour
         Team currentTeam = Team.Team1;
         turnManager.playerTeam = Team.Team1;
         foreach(Vector2Int tilePos in TilePositions){
-            TileScript tileScript = hexGrid.GetTileFromIntCoords(tilePos).GetComponent<TileScript>();
+            TileScript tileScript = hexGrid.GetTileScriptFromIntCords(tilePos);
             tileScript.isWalkable = false;
             tileScript.occupiedUnit = Instantiate(unitPrefab, new Vector3(tileScript.gameObject.transform.position.x, tileScript.gameObject.transform.position.y + 1, tileScript.gameObject.transform.position.z), Quaternion.identity);
             PlayerScriptableObject SO = Instantiate(playerSO);
@@ -201,7 +201,7 @@ public class UnitManager : MonoBehaviour
         foreach(PlayerScriptableObject SO in SO_Players){
             if(SO.Team != Team.Team1){
                 foreach(Vector2Int vInt in SO.RevealedTiles){
-                    hexGrid.GetTileFromIntCoords(vInt).GetComponent<TileScript>().ReBlock();
+                    hexGrid.GetTileScriptFromIntCords(vInt).ReBlock();
                 }
             }
         }

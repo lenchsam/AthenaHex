@@ -28,7 +28,7 @@ public class Labeller : MonoBehaviour
     }
     void Start(){
 
-        intCords = gridManager.GetTileScript(cords).intCoords;
+        intCords = gridManager.GetTileScriptFromPosition(cords).intCoords;
         //Debug.Log(intCords);
         label.text = $"{intCords.x}, {intCords.y}";
                 if(!displayName){
