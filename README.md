@@ -50,13 +50,14 @@ The variables that you'll probably want to have fun with are located in the ----
 
 ## Future Features
 
+ - Cities
+ - Districts
  - Resource farming
  - Updated camera system
- - Districts
  - System to buy/make units, districts and potentially more
  - UI
  - SFX
- - Code optimisations
+ - Code optimisations: HexGrid functions, pathfinding etc
  - Reworked battle system to have more interactive battles when a unit attacks another unit
 # Contact
 [LinkedIn](https://www.linkedin.com/in/sam-lench-8586b6279/)
