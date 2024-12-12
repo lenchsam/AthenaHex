@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class CitiesManager : MonoBehaviour
 {
-    HexGrid gridManager;
+    HexGrid hexGrid;
     TurnManager turnManager;
-    private CitiesScriptableObject CitiesSOBase;
+    [SerializeField] private CitiesScriptableObject CitiesSOBase;
     [SerializeField] List<CitiesScriptableObject> AllCities = new List<CitiesScriptableObject>();
     [HideInInspector] public int numberOfCities;
     private Barracks selectedCity;
     [SerializeField] GameObject CityCentrePrefab;
     void Start(){
-        gridManager = FindAnyObjectByType<HexGrid>();
+        hexGrid = FindAnyObjectByType<HexGrid>();
         turnManager = FindAnyObjectByType<TurnManager>();
     }
     public void expandBorder(GameObject tileToExpand, CitiesScriptableObject SO_Cities){
@@ -23,7 +23,7 @@ public class CitiesManager : MonoBehaviour
         //Debug.Log(tileToExpand);
     }
     public void initialiseCity(CitiesScriptableObject citiesSO, GameObject CityCentre){
-        List<GameObject> tiles = gridManager.GetSurroundingTiles(CityCentre); //creates a list of every connecting tile
+        List<GameObject> tiles = hexGrid.GetSurroundingTiles(CityCentre); //creates a list of every connecting tile
         //Debug.Log(tiles.Count);
 
         //loop through the list and add them to the city scriptable object
@@ -41,21 +41,21 @@ public class CitiesManager : MonoBehaviour
         rend.material.color = Color.black;
     }
     public void MakeNewCity(Vector3 positionToInstantiate){
-        Vector2 tileCords = gridManager.GetCoordinatesFromPosition(positionToInstantiate); //get the tileCords to make the city at
+        Vector2 tileCords = hexGrid.GetCoordinatesFromPosition(positionToInstantiate); //get the tileCords to make the city at
         CitiesScriptableObject CitySO = Instantiate(CitiesSOBase); //create a new scriptable object for the city
         CitySO.constructor(("City: " + numberOfCities).ToString(), numberOfCities, turnManager.playerTeam, tileCords);
         numberOfCities++;
         AllCities.Add(CitySO); //add it to the list of city scriptable objects
 
         //get tile script, then assign the city centre
-        var tileScript = gridManager.GetTileScriptFromPosition(new Vector2(tileCords.x, tileCords.y));
+        var tileScript = hexGrid.GetTileScriptFromPosition(new Vector2(tileCords.x, tileCords.y));
         tileScript.isCityCentre = true;
-        tileScript.districts = district.CityCentre;
+        tileScript.districts = eDistrict.CityCentre;
         tileScript.transform.gameObject.AddComponent<CityCentre>();
 
         Instantiate(CityCentrePrefab,tileScript.gameObject.transform.position, Quaternion.Euler(0, 90, 0));//instantiate castle.
 
-        initialiseCity(CitySO, gridManager.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y))); //make the city
+        initialiseCity(CitySO, hexGrid.GetTileFromPosition(new Vector2(tileCords.x, tileCords.y))); //make the city
     }
     public CitiesScriptableObject GetCitySOFromTile(GameObject tile){
         if(tile.GetComponent<TileScript>().SO_Cities == null){

@@ -1213,6 +1213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2056e2c1cbce5458089030342532b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CitiesSOBase: {fileID: 11400000, guid: ce5264350a2c20b4099566c39feb4cd9, type: 2}
   AllCities: []
   numberOfCities: 0
   CityCentrePrefab: {fileID: 919132149155446097, guid: 78c8e027b1c5f694aa8919568361933d,
@@ -1261,7 +1262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d6f08e06e99844796be19954eda2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartUnit: {fileID: 7490754498245591511, guid: e40e44638ad4fba4c8ad5b46286d2cfc,
+  StartUnit: {fileID: 7490754498245591511, guid: 047a6d85c0b4a44448b62e0378943f81,
     type: 3}
   SelectedUnit: {fileID: 0}
   unitSelected: 0
@@ -1808,7 +1809,7 @@ MonoBehaviour:
     type: 3}
   mapWidth: 30
   mapHeight: 30
-  showFOW: 1
+  showFOW: 0
 --- !u!4 &1379350119
 Transform:
   m_ObjectHideFlags: 0
@@ -1903,7 +1904,7 @@ MonoBehaviour:
   waitingForClick: 0
   BarracksPrefab: {fileID: 919132149155446097, guid: 6c48008f7a8dd8f43be3a9a8f9e0e32c,
     type: 3}
-  citiesScriptableObject: {fileID: 0}
+  selectedCitiesScriptableObject: {fileID: 0}
 --- !u!1 &1417880795
 GameObject:
   m_ObjectHideFlags: 0
@@ -2733,7 +2734,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1

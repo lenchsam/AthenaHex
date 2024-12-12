@@ -10,7 +10,7 @@ public class CitiesScriptableObject : ScriptableObject
     public Vector2 cityCentreCords;
     public Team ownedBy;
     public List<GameObject> CityTiles = new List<GameObject>();
-    public List<district> containedDistricts = new List<district>();
+    public List<eDistrict> containedDistricts = new List<eDistrict>();
     //public Dictionary<districts, Vector2Int> Districts = new Dictionary<districts, Vector2Int>();
     public void constructor (string _cityName, int _cityNumber, Team _ownedBy, Vector2 _cityCentreCords){
         cityName = _cityName;

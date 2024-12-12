@@ -8,7 +8,7 @@ public class TileScript : MonoBehaviour
     public bool isWalkable;
     public Vector2Int intCoords;
     public bool isCityCentre = false;
-    public district districts;
+    public eDistrict districts;
     public CitiesScriptableObject SO_Cities;
     public eOccupiedBy occupiedBy;
     public GameObject occupiedBuilding;

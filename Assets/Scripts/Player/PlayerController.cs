@@ -79,10 +79,10 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
         
         //assigns the correct scriptable object for the district manager. used for checking placing defences in the correct city
         var tileScript = hit.transform.gameObject.GetComponent<TileScript>();
-        if(tileScript.districts == district.CityCentre){
-            districtManager.citiesScriptableObject = tileScript.SO_Cities;
+        if(tileScript.districts == eDistrict.CityCentre){
+            districtManager.selectedCitiesScriptableObject = tileScript.SO_Cities;
         }else{
-            districtManager.citiesScriptableObject = null;
+            districtManager.selectedCitiesScriptableObject = null;
         }
 
         //--------------------------------------------------------------------------------------------------

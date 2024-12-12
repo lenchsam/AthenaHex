@@ -10,9 +10,10 @@ public class DistrictManager : MonoBehaviour
     public GameObject UI_Barracks;
     private GameObject currentlyEnabled;
     private Barracks selectedBarracks;
+    private eOccupiedBy selectedBuilding;
     [HideInInspector] public bool waitingForClick = false;
     [SerializeField] GameObject BarracksPrefab;
-    [HideInInspector] public CitiesScriptableObject citiesScriptableObject;
+    public CitiesScriptableObject selectedCitiesScriptableObject;
     //-------------------------------------------------------------------------
     void Start(){
         citiesManager = FindAnyObjectByType<CitiesManager>();
@@ -23,13 +24,15 @@ public class DistrictManager : MonoBehaviour
     public void BuildBarracks(RaycastHit hit){
         TileScript tileScript = hit.transform.gameObject.GetComponent<TileScript>();
 
-        if(checkCitiesSOForDistrict(citiesScriptableObject, district.Barrack)){return;}
+        //if the city already contains this district then return.
+        if(checkCitiesSOForDistrict(selectedCitiesScriptableObject, eDistrict.Barrack)){return;}
         
-        if(citiesScriptableObject == citiesManager.GetCitySOFromTile(hit.transform.gameObject)){
-            //Debug.Log("IS PART OF THE CITY");
+        //if the tile the player hit is part of the city
+        if(selectedCitiesScriptableObject == citiesManager.GetCitySOFromTile(hit.transform.gameObject)){
             tileScript.gameObject.AddComponent<Barracks>();
+            tileScript.occupiedBy = eOccupiedBy.barracks;
             Instantiate(BarracksPrefab,tileScript.gameObject.transform.position, Quaternion.Euler(0, 90, 0));//instantiate barracks.
-            citiesScriptableObject.containedDistricts.Add(district.Barrack);
+            selectedCitiesScriptableObject.containedDistricts.Add(eDistrict.Barrack);
             //instantiate the barracks GO
         }
     }
@@ -54,8 +57,8 @@ public class DistrictManager : MonoBehaviour
             selectedBarracks.SpawnEnemy(enemyPrefab);  // Only spawn enemy at the selected barracks
         }
     }
-    private bool checkCitiesSOForDistrict(CitiesScriptableObject citiesScriptableObject, district _district){
-        foreach(district dist in citiesScriptableObject.containedDistricts){
+    private bool checkCitiesSOForDistrict(CitiesScriptableObject citiesScriptableObject, eDistrict _district){
+        foreach(eDistrict dist in citiesScriptableObject.containedDistricts){
             if(dist == _district){
                 return true;
             }
@@ -63,7 +66,7 @@ public class DistrictManager : MonoBehaviour
         return false;
     }
 }
-public enum district{
+public enum eDistrict{
     None,
     CityCentre,
     Barrack
