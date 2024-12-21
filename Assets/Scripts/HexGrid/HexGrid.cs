@@ -8,30 +8,30 @@ public class HexGrid : MonoBehaviour
 {
     
     [BoxGroup("Assignables")]
-    [SerializeField] GameObject TilesParent;
+    [SerializeField] GameObject _tilesParent;
     [BoxGroup("Assignables")]
-    [SerializeField] GameObject fogOfWarPrefab;
+    [SerializeField] GameObject _fogOfWarPrefab;
     [BoxGroup("Map Settings")]
-    public int mapWidth;
+    public int MapWidth;
     [BoxGroup("Map Settings")]
-    public int mapHeight;
+    public int MapHeight;
     [BoxGroup("Map Settings")]
-    public bool showFOW;
+    public bool ShowFOW;
     [BoxGroup("Map Settings")]
-    int tileSize = 1; 
-    [SerializeField] Dictionary<GameObject, TileScript> Tiles = new Dictionary<GameObject, TileScript>();
+    int _tileSize = 1; 
+    [SerializeField] Dictionary<GameObject, TileScript> _tiles = new Dictionary<GameObject, TileScript>();
 
-    ProceduralGeneration proceduralGeneration;
+    ProceduralGeneration _proceduralGeneration;
     
-    Vector2 seedOffset;  // Random offset for noise generation
+    Vector2 _seedOffset;  // Random offset for noise generation
 
     private async void Start()
     {
-        proceduralGeneration = FindAnyObjectByType<ProceduralGeneration>();
-        await proceduralGeneration.MakeMapGrid(mapWidth, mapHeight, Tiles, tileSize);
+        _proceduralGeneration = FindAnyObjectByType<ProceduralGeneration>();
+        await _proceduralGeneration.MakeMapGrid(MapWidth, MapHeight, _tiles, _tileSize);
     }
     public TileScript GetTileScriptFromPosition(Vector2 cords){
-        foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
+        foreach(KeyValuePair<GameObject, TileScript> TS in _tiles){
             if(new Vector2(TS.Key.transform.position.x, TS.Key.transform.position.z) == cords){
                 return TS.Value;
             }
@@ -39,8 +39,8 @@ public class HexGrid : MonoBehaviour
         return null;
     }
     public TileScript GetTileScriptFromIntCords(Vector2Int cords){
-        foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
-            if(TS.Value.intCoords == cords){
+        foreach(KeyValuePair<GameObject, TileScript> TS in _tiles){
+            if(TS.Value.IntCoords == cords){
                 return TS.Value;
             }
         }
@@ -48,14 +48,14 @@ public class HexGrid : MonoBehaviour
     }
     public void BlockTile(Vector2 coords){
         var tileScript = GetTileScriptFromPosition(coords);
-        tileScript.isWalkable = false;
+        tileScript.IsWalkable = false;
     }
     public void UnblockTile(Vector2 coords){
         var tileScript = GetTileScriptFromPosition(coords);
-        tileScript.isWalkable = true;
+        tileScript.IsWalkable = true;
     }
     public GameObject GetTileFromPosition(Vector2 cords){
-        foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
+        foreach(KeyValuePair<GameObject, TileScript> TS in _tiles){
             if(new Vector2(TS.Key.transform.position.x, TS.Key.transform.position.z) == cords){
                 return TS.Key;
             }
@@ -63,8 +63,8 @@ public class HexGrid : MonoBehaviour
         return null;;
     }
     public GameObject GetTileFromIntCords(Vector2Int cords) {
-        foreach(KeyValuePair<GameObject, TileScript> TS in Tiles){
-            if(TS.Value.intCoords == cords){
+        foreach(KeyValuePair<GameObject, TileScript> TS in _tiles){
+            if(TS.Value.IntCoords == cords){
                 return TS.Key;
             }
         }
@@ -77,7 +77,7 @@ public class HexGrid : MonoBehaviour
     public List<GameObject> GetSurroundingTiles(GameObject tileGO){
         List<GameObject> connecting = new List<GameObject>();
         
-        Vector2Int tileCords = tileGO.GetComponent<TileScript>().intCoords;
+        Vector2Int tileCords = tileGO.GetComponent<TileScript>().IntCoords;
 
         connecting.Add(GetTileFromIntCords(tileCords));
 
@@ -133,14 +133,14 @@ public class HexGrid : MonoBehaviour
     }
     public Vector2Int GetIntCordsFromPosition(Vector2 pos){
         TileScript TS = GetTileScriptFromPosition(pos);
-        return TS.intCoords;
+        return TS.IntCoords;
     }
     public void AddFogOfWar(TileScript tile){
-        GameObject fow = Instantiate(fogOfWarPrefab, transform);
+        GameObject fow = Instantiate(_fogOfWarPrefab, transform);
         fow.name = "FOW " + tile.gameObject.name;
         fow.transform.position = new Vector3(tile.transform.position.x, 0, tile.transform.position.z);
-        fow.GetComponent<TileScript>().intCoords = tile.intCoords;
-        tile.fow = fow;
+        fow.GetComponent<TileScript>().IntCoords = tile.IntCoords;
+        tile.Fow = fow;
         tile.gameObject.layer = LayerMask.NameToLayer("Hidden");
     }
     public void RevealTile(TileScript tile){

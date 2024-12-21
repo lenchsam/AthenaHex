@@ -6,36 +6,36 @@ using TMPro;
 //used https://www.youtube.com/watch?v=4JaHSLA2CKs for this
 public class Labeller : MonoBehaviour
 {
-    [SerializeField] TextMeshPro label;
-    public Vector2 cords = new Vector2();
-    public Vector2Int intCords = new Vector2Int();
-    HexGrid gridManager;
+    [SerializeField] TextMeshPro _label;
+    public Vector2 Cords = new Vector2();
+    public Vector2Int IntCords = new Vector2Int();
+    HexGrid _gridManager;
 
-    [SerializeField] private bool displayName = false;
+    [SerializeField] private bool _displayName = false;
 
     void Awake()
     {
-        gridManager = FindAnyObjectByType<HexGrid>();
+        _gridManager = FindAnyObjectByType<HexGrid>();
         
-        label = GetComponentInChildren<TextMeshPro>();
+        _label = GetComponentInChildren<TextMeshPro>();
 
         DisplayCords();
-        transform.name = cords.ToString();
+        transform.name = Cords.ToString();
 
-        if(!displayName){
-            label.text = "";
+        if(!_displayName){
+            _label.text = "";
         }
     }
     void Start(){
 
-        intCords = gridManager.GetTileScriptFromPosition(cords).intCoords;
+        IntCords = _gridManager.GetTileScriptFromPosition(Cords).IntCoords;
         //Debug.Log(intCords);
-        label.text = $"{intCords.x}, {intCords.y}";
-                if(!displayName){
-            label.text = "";
+        _label.text = $"{IntCords.x}, {IntCords.y}";
+                if(!_displayName){
+            _label.text = "";
         }else{
             DisplayCords();
-            transform.name = cords.ToString();
+            transform.name = Cords.ToString();
         }
 
         //Destroy(label.gameObject);
@@ -44,9 +44,9 @@ public class Labeller : MonoBehaviour
 
     private void DisplayCords()
     {
-        if (!gridManager) { return; }
-        cords.x = transform.position.x;
-        cords.y = transform.position.z;
+        if (!_gridManager) { return; }
+        Cords.x = transform.position.x;
+        Cords.y = transform.position.z;
 
         //label.text = $"{cords.x}, {cords.y}";
     }

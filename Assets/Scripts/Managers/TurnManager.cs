@@ -4,54 +4,54 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    [HideInInspector] public Team playerTeam;
-    private UnitManager unitManager;
-    private HexGrid hexGrid;
-    [SerializeField] Transform cameraTransform;
+    [HideInInspector] public e_Team PlayerTeam;
+    private UnitManager _unitManager;
+    private HexGrid _hexGrid;
+    [SerializeField] Transform _cameraTransform;
     //public List<Vector2Int> RevealedTilesP2 = new List<Vector2Int>();
     //public List<Vector2Int> RevealedTilesP3 = new List<Vector2Int>();
     //public List<Vector2Int> RevealedTilesP4 = new List<Vector2Int>();
     private void Start(){
-        unitManager = FindAnyObjectByType<UnitManager>();
-        hexGrid = FindAnyObjectByType<HexGrid>();
+        _unitManager = FindAnyObjectByType<UnitManager>();
+        _hexGrid = FindAnyObjectByType<HexGrid>();
     }
     public void EndTurn()
     {
-        switch (playerTeam)
+        switch (PlayerTeam)
         {
-            case Team.Team1:
-                playerTeam = Team.Team2;
+            case e_Team.Team1:
+                PlayerTeam = e_Team.Team2;
                 ChangeCamera(1);
-                ChangeFOW(unitManager.SO_Players[1].RevealedTiles, unitManager.SO_Players[0].RevealedTiles);
+                ChangeFOW(_unitManager.SO_Players[1].RevealedTiles, _unitManager.SO_Players[0].RevealedTiles);
                 //hide all p1 units. 
                 //reveal all p2 units
                 break;
-            case Team.Team2:
-                playerTeam = Team.Team3;
+            case e_Team.Team2:
+                PlayerTeam = e_Team.Team3;
                 ChangeCamera(2);
-                ChangeFOW(unitManager.SO_Players[2].RevealedTiles, unitManager.SO_Players[1].RevealedTiles);
+                ChangeFOW(_unitManager.SO_Players[2].RevealedTiles, _unitManager.SO_Players[1].RevealedTiles);
                 //hide all p2 units. 
                 //reveal all p3 units
                 break;
 
-            case Team.Team3:
-                playerTeam = Team.Team4;
+            case e_Team.Team3:
+                PlayerTeam = e_Team.Team4;
                 ChangeCamera(3);
-                ChangeFOW(unitManager.SO_Players[3].RevealedTiles, unitManager.SO_Players[2].RevealedTiles);
+                ChangeFOW(_unitManager.SO_Players[3].RevealedTiles, _unitManager.SO_Players[2].RevealedTiles);
                 //hide all p3 units. 
                 //reveal all p4 units
                 break;
 
-            case Team.Team4:
-                playerTeam = Team.Team1;
+            case e_Team.Team4:
+                PlayerTeam = e_Team.Team1;
                 ChangeCamera(0);
-                ChangeFOW(unitManager.SO_Players[0].RevealedTiles, unitManager.SO_Players[3].RevealedTiles);
+                ChangeFOW(_unitManager.SO_Players[0].RevealedTiles, _unitManager.SO_Players[3].RevealedTiles);
                 //hide all p4 units. 
                 //reveal all p1 units
                 break;
         }
-        unitManager.SelectedUnit = null;
-        unitManager.unitSelected = false;
+        _unitManager.SelectedUnit = null;
+        _unitManager.UnitSelected = false;
     }
     private void ChangeCamera(int team){
         // Vector2Int Cords = unitManager.startPositions[team];
@@ -60,10 +60,10 @@ public class TurnManager : MonoBehaviour
     }
     private void ChangeFOW(List<Vector2Int> RevealedTiles, List<Vector2Int> TilesToBlock){
         foreach(Vector2Int tileCords in RevealedTiles){
-            hexGrid.GetTileScriptFromIntCords(tileCords).Reveal();
+            _hexGrid.GetTileScriptFromIntCords(tileCords).Reveal();
         }
         foreach(Vector2Int tileCords in TilesToBlock){
-            hexGrid.GetTileScriptFromIntCords(tileCords).ReBlock();
+            _hexGrid.GetTileScriptFromIntCords(tileCords).ReBlock();
         }
     }
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Districts : MonoBehaviour
 {
-    [SerializeField] protected TileScript tileScript;
-    [SerializeField] protected DistrictManager districtManager;
+    [SerializeField] protected TileScript _tileScript;
+    [SerializeField] protected DistrictManager _districtManager;
     public void Start(){
-        tileScript = gameObject.GetComponent<TileScript>();
-        districtManager = FindAnyObjectByType<DistrictManager>();
+        _tileScript = gameObject.GetComponent<TileScript>();
+        _districtManager = FindAnyObjectByType<DistrictManager>();
     }
 }

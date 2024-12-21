@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-    private HexGrid hexGrid;
-    public int unitMovementSpeed;
+    private HexGrid _hexGrid;
+    public int UnitMovementSpeed;
     void Start(){
-        hexGrid = FindAnyObjectByType<HexGrid>();
+        _hexGrid = FindAnyObjectByType<HexGrid>();
     }
     public List<GameObject> FindPath(Vector2Int startCoords, Vector2Int targetCoords)
     {
@@ -25,12 +25,12 @@ public class PathFinding : MonoBehaviour
         // Dictionary to store the parent of each tile (used to reconstruct the path)
         Dictionary<TileScript, TileScript> cameFrom = new Dictionary<TileScript, TileScript>();
 
-        TileScript startTile = hexGrid.GetTileScriptFromIntCords(startCoords);
-        TileScript targetTile = hexGrid.GetTileScriptFromIntCords(targetCoords);
+        TileScript startTile = _hexGrid.GetTileScriptFromIntCords(startCoords);
+        TileScript targetTile = _hexGrid.GetTileScriptFromIntCords(targetCoords);
 
         openList.Add(startTile);
         gCost[startTile] = 0;
-        fCost[startTile] = hexGrid.DistanceBetweenTiles(startCoords, targetCoords);
+        fCost[startTile] = _hexGrid.DistanceBetweenTiles(startCoords, targetCoords);
 
         while (openList.Count > 0)
         {
@@ -65,25 +65,25 @@ public class PathFinding : MonoBehaviour
             closedList.Add(currentTile);
 
             // Loop through each neighbor of the current tile
-            foreach (GameObject neighborGO in hexGrid.GetSurroundingTiles(currentTile.gameObject))
+            foreach (GameObject neighborGO in _hexGrid.GetSurroundingTiles(currentTile.gameObject))
             {
                 TileScript neighbor = neighborGO.GetComponent<TileScript>();
 
                 // Skip this neighbor if it's not walkable or it's already in the closed list
-                if (!neighbor.isWalkable || closedList.Contains(neighbor))
+                if (!neighbor.IsWalkable || closedList.Contains(neighbor))
                 {
                     continue;
                 }
 
                 // Calculate the tentative gCost for this neighbor
-                int tentativeGCost = gCost[currentTile] + hexGrid.DistanceBetweenTiles(currentTile.intCoords, neighbor.intCoords);
+                int tentativeGCost = gCost[currentTile] + _hexGrid.DistanceBetweenTiles(currentTile.IntCoords, neighbor.IntCoords);
 
                 // If this is a new node or we found a better path, update gCost, fCost and cameFrom
                 if (!openList.Contains(neighbor) || tentativeGCost < gCost[neighbor])
                 {
                     cameFrom[neighbor] = currentTile;
                     gCost[neighbor] = tentativeGCost;
-                    fCost[neighbor] = gCost[neighbor] + hexGrid.DistanceBetweenTiles(neighbor.intCoords, targetCoords);
+                    fCost[neighbor] = gCost[neighbor] + _hexGrid.DistanceBetweenTiles(neighbor.IntCoords, targetCoords);
 
                     // Add this neighbor to the open list if it's not already there
                     if (!openList.Contains(neighbor))

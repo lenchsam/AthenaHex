@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09edae8cc8f87284482bfa5b2630738f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitMovementSpeed: 2
+  UnitMovementSpeed: 1
 --- !u!4 &10382277
 Transform:
   m_ObjectHideFlags: 0
@@ -499,7 +499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdb29122c281d5b47bf61a028a1c5ef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hexLayerMask:
+  _hexLayerMask:
     serializedVersion: 2
     m_Bits: 64
 --- !u!4 &311156341
@@ -791,11 +791,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7630e319975128f4183c904baef8b618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileUI: {fileID: 100759699}
+  TileUI: {fileID: 100759699}
   OnUnitMove:
     m_PersistentCalls:
       m_Calls: []
-  selectedTile: {fileID: 0}
+  SelectedTile: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1213,10 +1213,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2056e2c1cbce5458089030342532b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CitiesSOBase: {fileID: 11400000, guid: ce5264350a2c20b4099566c39feb4cd9, type: 2}
-  AllCities: []
-  numberOfCities: 0
-  CityCentrePrefab: {fileID: 919132149155446097, guid: 78c8e027b1c5f694aa8919568361933d,
+  _citiesSOBase: {fileID: 0}
+  _allCities: []
+  NumberOfCities: 0
+  _cityCentrePrefab: {fileID: 919132149155446097, guid: 78c8e027b1c5f694aa8919568361933d,
     type: 3}
 --- !u!4 &919203970
 Transform:
@@ -1262,19 +1262,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d6f08e06e99844796be19954eda2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartUnit: {fileID: 7490754498245591511, guid: 047a6d85c0b4a44448b62e0378943f81,
+  _startUnit: {fileID: 7490754498245591511, guid: 047a6d85c0b4a44448b62e0378943f81,
     type: 3}
   SelectedUnit: {fileID: 0}
-  unitSelected: 0
-  attackedThisTurn: 0
+  UnitSelected: 0
+  AttackedThisTurn: 0
   SO_Players: []
-  playerSO: {fileID: 11400000, guid: 5545720bf46ef964cbb1c2a0f744b52a, type: 2}
-  proceduralGeneration: {fileID: 0}
-  startPositions:
-  - {x: 5, y: 5}
-  - {x: 8, y: 8}
-  - {x: 1, y: 1}
-  - {x: 2, y: 2}
+  _playerSO: {fileID: 11400000, guid: 5545720bf46ef964cbb1c2a0f744b52a, type: 2}
 --- !u!4 &946201873
 Transform:
   m_ObjectHideFlags: 0
@@ -1589,9 +1583,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3cd8f5f2b10f446a259bab287f897e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToInstantiate: {fileID: 919132149155446097, guid: ad6007c83d4d0e84584ad8737797d24f,
-    type: 3}
-  isBuilding: 0
+  _objectToInstantiate: {fileID: 0}
+  _isBuilding: 0
 --- !u!4 &1144289744
 Transform:
   m_ObjectHideFlags: 0
@@ -1804,12 +1797,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d84e4cd96cece6f42a619e66af816ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TilesParent: {fileID: 788511299}
-  fogOfWarPrefab: {fileID: 7825728450542590104, guid: 6b1f1a2907845974dbe0f80fc5310369,
+  _tilesParent: {fileID: 788511299}
+  _fogOfWarPrefab: {fileID: 7825728450542590104, guid: 6b1f1a2907845974dbe0f80fc5310369,
     type: 3}
-  mapWidth: 30
-  mapHeight: 30
-  showFOW: 0
+  MapWidth: 50
+  MapHeight: 50
+  ShowFOW: 0
 --- !u!4 &1379350119
 Transform:
   m_ObjectHideFlags: 0
@@ -1837,15 +1830,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 190eda872a4c3f843a6479662f831264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TilesParent: {fileID: 788511299}
-  biomeMaterials:
+  _tilesParent: {fileID: 788511299}
+  _biomeMaterials:
   - {fileID: 2100000, guid: 55e6e9d4e1e9701409e76f8921510254, type: 2}
   - {fileID: 2100000, guid: 01b1bc802f97dc24090a9c98c7929c4b, type: 2}
   - {fileID: 2100000, guid: 958ae798dc002f743b86fc6da43e9c83, type: 2}
   - {fileID: 2100000, guid: 7d450b3ecd35a814c98d1cc0207cc250, type: 2}
-  OceanPrefab: {fileID: 8915860225429779445, guid: ab9401ec53655714e96c10afe411568e,
+  _oceanPrefab: {fileID: 8915860225429779445, guid: ab9401ec53655714e96c10afe411568e,
     type: 3}
-  GrassPrefab: {fileID: 1507458499070482203, guid: 7fab3dd7e3a172847aef60dc7422a2b9,
+  _grassPrefab: {fileID: 1507458499070482203, guid: 7fab3dd7e3a172847aef60dc7422a2b9,
     type: 3}
   PoissonRadius: 8
   points: []
@@ -1901,10 +1894,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UI_CityCentre: {fileID: 1716337098}
   UI_Barracks: {fileID: 1813165769}
-  waitingForClick: 0
-  BarracksPrefab: {fileID: 919132149155446097, guid: 6c48008f7a8dd8f43be3a9a8f9e0e32c,
+  WaitingForClick: 0
+  _barracksPrefab: {fileID: 919132149155446097, guid: 6c48008f7a8dd8f43be3a9a8f9e0e32c,
     type: 3}
-  selectedCitiesScriptableObject: {fileID: 0}
+  SelectedCitiesScriptableObject: {fileID: 0}
 --- !u!1 &1417880795
 GameObject:
   m_ObjectHideFlags: 0
@@ -2054,16 +2047,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e913a7be848ce3e4cade2bf00b33985c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controls: {fileID: -944628639613478452, guid: fdc5c586210db7c4384ca3c024383008,
+  _controls: {fileID: -944628639613478452, guid: fdc5c586210db7c4384ca3c024383008,
     type: 3}
-  Acceleration: 0.3
-  maxMoveSpeed: 18
-  minMoveSpeed: 0
-  virtualCamera: {fileID: 893672767}
-  activateZoom: 0
-  zoomSpeed: 4.94
-  minFOV: 15
-  maxFOV: 75
+  _acceleration: 0.5
+  _maxMoveSpeed: 25
+  _minMoveSpeed: 10
+  _virtualCamera: {fileID: 893672767}
+  _activateZoom: 0
+  _zoomSpeed: 1
+  _minFOV: 0
+  _maxFOV: 0
 --- !u!1 &1527476384
 GameObject:
   m_ObjectHideFlags: 0
@@ -2844,8 +2837,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a24584340520844a817b2bbb0ba30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTeam: 0
-  cameraTransform: {fileID: 1484089483}
+  PlayerTeam: 0
+  _cameraTransform: {fileID: 330585546}
 --- !u!1 &2056489521
 GameObject:
   m_ObjectHideFlags: 0

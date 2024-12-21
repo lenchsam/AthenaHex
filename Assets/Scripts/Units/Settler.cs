@@ -6,26 +6,26 @@ using UnityEngine.InputSystem;
 public class Settler : Units, IAttacking
 {
     //input variables
-    [SerializeField] private InputActionAsset controls;
-    private InputAction foundCity;
+    [SerializeField] private InputActionAsset _controls;
+    private InputAction _foundCity;
     private InputActionMap _inputActionMap;
 
-    private CitiesManager citiesManager;
+    private CitiesManager _citiesManager;
 
     protected override void Start(){
         base.Start();
 
-        citiesManager = FindAnyObjectByType<CitiesManager>();
+        _citiesManager = FindAnyObjectByType<CitiesManager>();
 
-        _inputActionMap = controls.FindActionMap("Player");
-        foundCity = _inputActionMap.FindAction("Ability");
-        foundCity.performed += startCity;
+        _inputActionMap = _controls.FindActionMap("Player");
+        _foundCity = _inputActionMap.FindAction("Ability");
+        _foundCity.performed += startCity;
     }
     private void startCity(InputAction.CallbackContext obj){
-        if(unitManager.SelectedUnit != gameObject.transform){return;} //if they havent selected this settler return
+        if(_unitManager.SelectedUnit != gameObject.transform){return;} //if they havent selected this settler return
         //if this tile is already part of a city
 
-        citiesManager.MakeNewCity(transform.position);
+        _citiesManager.MakeNewCity(transform.position);
     }
     public void attack(GameObject thingToAttack){
         Debug.Log("This unit cannot attack");

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CityCentre : Districts, IInteractable
 {
     public void OnClick(){
-        districtManager.UIToggle(districtManager.UI_CityCentre);
+        _districtManager.UIToggle(_districtManager.UI_CityCentre);
         //Debug.Log("clicked cityCentre");
     }
 }

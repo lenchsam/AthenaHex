@@ -9,15 +9,15 @@ public class ProceduralGeneration : MonoBehaviour
 {
 
     //Then i used a flood fill algorithm to assign each tile a biome.
-    HexGrid hexGrid;
+    HexGrid _hexGrid;
     [BoxGroup("Assignables")]
-    [SerializeField] GameObject TilesParent;
+    [SerializeField] GameObject _tilesParent;
     [BoxGroup("Assignables")]
-    [SerializeField] Material[] biomeMaterials;
+    [SerializeField] Material[] _biomeMaterials;
     [BoxGroup("Assignables/Prefabs")]
-    [SerializeField] GameObject OceanPrefab;
+    [SerializeField] GameObject _oceanPrefab;
     [BoxGroup("Assignables/Prefabs")]
-    [SerializeField] GameObject GrassPrefab;
+    [SerializeField] GameObject _grassPrefab;
 
     //---------------------------------------------------------------------------------------------------POISSON DISC SAMPLING
     [BoxGroup("Poisson Disc Sampling")]
@@ -45,8 +45,8 @@ public class ProceduralGeneration : MonoBehaviour
         seedOffset = new Vector2(UnityEngine.Random.Range(0f, 1000f), UnityEngine.Random.Range(0f, 1000f)); //generates a random seed for procedural generation
     }
     void Start(){
-        hexGrid = FindAnyObjectByType<HexGrid>(); 
-        points = poissonDiscSampling(hexGrid.mapWidth, hexGrid.mapHeight, PoissonRadius);
+        _hexGrid = FindAnyObjectByType<HexGrid>(); 
+        points = poissonDiscSampling(_hexGrid.MapWidth, _hexGrid.MapHeight, PoissonRadius);
         points = randomisePoints(points);
     }
     //lists
@@ -66,7 +66,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         //check if tile is too close to other tiles
         foreach(Vector2Int coord in points){
-            int distance = hexGrid.DistanceBetweenTiles(point, coord);
+            int distance = _hexGrid.DistanceBetweenTiles(point, coord);
             if(distance < minDistance){
                 return false;
             }
@@ -155,7 +155,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         //goes through each spawn point, gets the distance to it, and returns the spawn point closest to the tile
         foreach(Vector2Int point in points){
-            int distance = hexGrid.DistanceBetweenTiles(nextPoint, point);
+            int distance = _hexGrid.DistanceBetweenTiles(nextPoint, point);
             if(distance < closestDistance){
                 closestDistance = distance;
                 closestPoint = point;
@@ -185,10 +185,10 @@ public class ProceduralGeneration : MonoBehaviour
 
                 // If the tile is an ocean (at the lower layer), instantiate the ocean prefab
                 if (height == lowerLayerHeight && getPerlinNoiseHeight(x, z) < oceanThreshold) {
-                    instantiated = Instantiate(OceanPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                    instantiated = Instantiate(_oceanPrefab, position, Quaternion.Euler(0, 90, 0), _tilesParent.transform);
                     tileType = eTileType.Ocean;
                 } else if (height == upperLayerHeight) {//if its the upper layer
-                    instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                    instantiated = Instantiate(_grassPrefab, position, Quaternion.Euler(0, 90, 0), _tilesParent.transform);
                     tileType = eTileType.Grass;
 
                     // Instantiate a base object under the upper layer at the lower layer's height
@@ -196,13 +196,13 @@ public class ProceduralGeneration : MonoBehaviour
                     //var baseInst = Instantiate(TopBasePrefab, basePosition, Quaternion.Euler(0, 90, 0), TilesParent.transform);
                     //GameObjectUtility.SetStaticEditorFlags(baseInst, StaticEditorFlags.BatchingStatic);
                 }else {//if not ocean, or upper layer, it must be the normal grass layer
-                    instantiated = Instantiate(GrassPrefab, position, Quaternion.Euler(0, 90, 0), TilesParent.transform);
+                    instantiated = Instantiate(_grassPrefab, position, Quaternion.Euler(0, 90, 0), _tilesParent.transform);
                     tileType = eTileType.Grass;
                     //potentialCoastTiles.Add(instantiated);
                 }
                 GameObjectUtility.SetStaticEditorFlags(instantiated, StaticEditorFlags.BatchingStatic);
 
-                instantiated.GetComponent<MeshRenderer> ().material = biomeMaterials[biome];
+                instantiated.GetComponent<MeshRenderer> ().material = _biomeMaterials[biome];
 
                 var tileInstScript = instantiated.AddComponent<TileScript>();
 
@@ -210,14 +210,14 @@ public class ProceduralGeneration : MonoBehaviour
                 
                 Tiles.Add(instantiated, instantiated.GetComponent<TileScript>());
 
-                if(hexGrid.showFOW){hexGrid.AddFogOfWar(tileInstScript);}
+                if(_hexGrid.ShowFOW){_hexGrid.AddFogOfWar(tileInstScript);}
             }
         }
         //ConvertGrassToCoastTiles();
         // Fire the UnityEvent once the map is generated
         OnMapGenerated?.Invoke();
         //Debug.Log("RANANNANS");
-        StaticBatchingUtility.Combine(TilesParent);//enables static batching for optimisation
+        StaticBatchingUtility.Combine(_tilesParent);//enables static batching for optimisation
         return;
     }
     private Vector2 GetHexCoords(int x, int z, int tileSize){

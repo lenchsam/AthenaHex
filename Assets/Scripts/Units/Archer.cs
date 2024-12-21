@@ -5,14 +5,11 @@ using UnityEngine;
 
 public class Archer : Ranged, IAttacking
 {
-    [BoxGroup("Health")]
-    [SerializeField] protected float maximumHealth = 25.0f;
-    HexGrid hexGrid;
+    HexGrid _hexGrid;
     protected override void Awake()
     {
         base.Awake();
-        initialise(maximumHealth);
-        hexGrid = FindAnyObjectByType<HexGrid>();
+        _hexGrid = FindAnyObjectByType<HexGrid>();
     }
 
     // Update is called once per frame
@@ -22,15 +19,15 @@ public class Archer : Ranged, IAttacking
     }
     public void attack(GameObject thingToAttack){
         //if thing is x tiles away then attack
-        Vector2Int startCords = hexGrid.GetTileScriptFromPosition(new Vector2(gameObject.transform.position.x, gameObject.transform.position.z)).intCoords;
-        Vector2Int targetCords = hexGrid.GetTileScriptFromPosition(new Vector2(thingToAttack.transform.position.x, thingToAttack.transform.position.z)).intCoords;
+        Vector2Int startCords = _hexGrid.GetTileScriptFromPosition(new Vector2(gameObject.transform.position.x, gameObject.transform.position.z)).IntCoords;
+        Vector2Int targetCords = _hexGrid.GetTileScriptFromPosition(new Vector2(thingToAttack.transform.position.x, thingToAttack.transform.position.z)).IntCoords;
 
         //Debug.Log();
         
 
-        int tileDistance = hexGrid.DistanceBetweenTiles(startCords, targetCords);
-        if(tileDistance <= MaxAttackDistance){
-            thingToAttack.GetComponent<IDamageable>().takeDamage(damage);
+        int tileDistance = _hexGrid.DistanceBetweenTiles(startCords, targetCords);
+        if(tileDistance <= _maxAttackDistance){
+            thingToAttack.GetComponent<IDamageable>().takeDamage(_damage);
         }else{
             Debug.Log("too far away");
         }

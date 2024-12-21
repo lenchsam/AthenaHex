@@ -4,24 +4,24 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEngine.Events;
 
-public class Units : ACDefence
+public class Units : MonoBehaviour
 {
-    public int maxMovement = 1;
+    public int MaxMovement = 1;
     [BoxGroup("Attacking")]
-    [SerializeField] protected int MaxAttackDistance = 1;
+    [SerializeField] protected int _maxAttackDistance = 1;
 
-    protected PlayerController playerController;
-    protected UnitManager unitManager;
-    protected unitTypes defenceType;
+    protected PlayerController _playerController;
+    protected UnitManager _unitManager;
+    protected unitTypes e_defenceType;
     [BoxGroup("Attacking")]
-    [SerializeField] public int damage;
-    [HideInInspector] public bool tookTurn;
+    [SerializeField] protected int _damage;
+    [HideInInspector] public bool TookTurn;
 
-    [SerializeField] protected List<GameObject> walkableTiles = new List<GameObject>();
+    [SerializeField] protected List<GameObject> _walkableTiles = new List<GameObject>();
 
     protected virtual void Start(){
-        playerController = FindAnyObjectByType<PlayerController>();
-        unitManager = FindAnyObjectByType<UnitManager>();
+        _playerController = FindAnyObjectByType<PlayerController>();
+        _unitManager = FindAnyObjectByType<UnitManager>();
     }
     protected UnityEvent<int> DamagedEvent  = new UnityEvent<int>();
 }

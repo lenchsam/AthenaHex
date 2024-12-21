@@ -4,57 +4,57 @@ using UnityEngine;
 
 public class DistrictManager : MonoBehaviour
 {
-    List<CitiesScriptableObject> AllCities = new List<CitiesScriptableObject>();
-    private CitiesManager citiesManager;
+    List<CitiesScriptableObject> _allCities = new List<CitiesScriptableObject>();
+    private CitiesManager _citiesManager;
     public GameObject UI_CityCentre;
     public GameObject UI_Barracks;
-    private GameObject currentlyEnabled;
-    private Barracks selectedBarracks;
-    private eOccupiedBy selectedBuilding;
-    [HideInInspector] public bool waitingForClick = false;
-    [SerializeField] GameObject BarracksPrefab;
-    public CitiesScriptableObject selectedCitiesScriptableObject;
+    private GameObject _currentlyEnabled;
+    private Barracks _selectedBarracks;
+    private eOccupiedBy _selectedBuilding;
+    [HideInInspector] public bool WaitingForClick = false;
+    [SerializeField] GameObject _barracksPrefab;
+    public CitiesScriptableObject SelectedCitiesScriptableObject;
     //-------------------------------------------------------------------------
     void Start(){
-        citiesManager = FindAnyObjectByType<CitiesManager>();
+        _citiesManager = FindAnyObjectByType<CitiesManager>();
     }
     public void waitForClick(){
-        waitingForClick = true;
+        WaitingForClick = true;
     }
     public void BuildBarracks(RaycastHit hit){
         TileScript tileScript = hit.transform.gameObject.GetComponent<TileScript>();
 
         //if the city already contains this district then return.
-        if(checkCitiesSOForDistrict(selectedCitiesScriptableObject, eDistrict.Barrack)){return;}
+        if(checkCitiesSOForDistrict(SelectedCitiesScriptableObject, eDistrict.Barrack)){return;}
         
         //if the tile the player hit is part of the city
-        if(selectedCitiesScriptableObject == citiesManager.GetCitySOFromTile(hit.transform.gameObject)){
+        if(SelectedCitiesScriptableObject == _citiesManager.GetCitySOFromTile(hit.transform.gameObject)){
             tileScript.gameObject.AddComponent<Barracks>();
-            tileScript.occupiedBy = eOccupiedBy.barracks;
-            Instantiate(BarracksPrefab,tileScript.gameObject.transform.position, Quaternion.Euler(0, 90, 0));//instantiate barracks.
-            selectedCitiesScriptableObject.containedDistricts.Add(eDistrict.Barrack);
+            tileScript.OccupiedBy = eOccupiedBy.barracks;
+            Instantiate(_barracksPrefab,tileScript.gameObject.transform.position, Quaternion.Euler(0, 90, 0));//instantiate barracks.
+            SelectedCitiesScriptableObject.containedDistricts.Add(eDistrict.Barrack);
             //instantiate the barracks GO
         }
     }
     public void UIToggle(GameObject uiToEnable){
         //set the currently activeUI to inactive
-        if(currentlyEnabled != null)
-            currentlyEnabled.SetActive(false);
+        if(_currentlyEnabled != null)
+            _currentlyEnabled.SetActive(false);
 
         //enable UI
         uiToEnable.SetActive(true); 
-        currentlyEnabled = uiToEnable;
+        _currentlyEnabled = uiToEnable;
     }
     public void SetSelectedBarracks(Barracks barracks)
     {
-        selectedBarracks = barracks;  // Set the selected barracks
+        _selectedBarracks = barracks;  // Set the selected barracks
     }
     public void SpawnEnemyButtonClicked(GameObject enemyPrefab)
     {
-        if (selectedBarracks == null){return;}
+        if (_selectedBarracks == null){return;}
 
-        if(selectedBarracks.gameObject.GetComponent<TileScript>().occupiedUnit == null){
-            selectedBarracks.SpawnEnemy(enemyPrefab);  // Only spawn enemy at the selected barracks
+        if(_selectedBarracks.gameObject.GetComponent<TileScript>().OccupiedUnit == null){
+            _selectedBarracks.SpawnEnemy(enemyPrefab);  // Only spawn enemy at the selected barracks
         }
     }
     private bool checkCitiesSOForDistrict(CitiesScriptableObject citiesScriptableObject, eDistrict _district){

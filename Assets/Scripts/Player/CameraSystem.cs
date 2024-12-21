@@ -7,46 +7,46 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class CameraSystem : MonoBehaviour
 {
-    [SerializeField] private InputActionAsset controls;
-    [SerializeField] private float Acceleration = 0.5f;
-    [SerializeField] float maxMoveSpeed = 25f;
-    [SerializeField] float minMoveSpeed = 10f;
-    [SerializeField] CinemachineCamera virtualCamera;
+    [SerializeField] private InputActionAsset _controls;
+    [SerializeField] private float _acceleration = 0.5f;
+    [SerializeField] float _maxMoveSpeed = 25f;
+    [SerializeField] float _minMoveSpeed = 10f;
+    [SerializeField] CinemachineCamera _virtualCamera;
     [BoxGroup("Zoom")]
-    [SerializeField] bool activateZoom = false;
+    [SerializeField] bool _activateZoom = false;
     [BoxGroup("Zoom")]
-    [SerializeField][Range(1, 10)] float zoomSpeed;
+    [SerializeField][Range(1, 10)] float _zoomSpeed;
     [BoxGroup("Zoom")]
-    [SerializeField] int minFOV;
+    [SerializeField] int _minFOV;
     [BoxGroup("Zoom")]
-    [SerializeField] int maxFOV;
+    [SerializeField] int _maxFOV;
     private InputActionMap _inputActionMap;
-    private InputAction cameraMovement;
-    private InputAction cameraZoom;
-    float moveSpeed;
+    private InputAction _cameraMovement;
+    private InputAction _cameraZoom;
+    float _moveSpeed;
     float t = 0.0f;
-    private float targetFOV;
+    private float _targetFOV;
 
     void Awake(){
-        _inputActionMap = controls.FindActionMap("Player");
-        cameraMovement = _inputActionMap.FindAction("Camera");
-        cameraZoom = _inputActionMap.FindAction("CameraZoom");
+        _inputActionMap = _controls.FindActionMap("Player");
+        _cameraMovement = _inputActionMap.FindAction("Camera");
+        _cameraZoom = _inputActionMap.FindAction("CameraZoom");
 
-        cameraMovement.canceled += resetMovement;
-        targetFOV = virtualCamera.Lens.FieldOfView;
+        _cameraMovement.canceled += resetMovement;
+        _targetFOV = _virtualCamera.Lens.FieldOfView;
     }
     void Update()
     {
-        if(cameraMovement.IsPressed()){ //when the player pressed WASD
-            Vector2 inputVector = cameraMovement.ReadValue<Vector2>();//reads how much the camera moved;
-            moveSpeed = Mathf.Lerp(minMoveSpeed, maxMoveSpeed, t);
-            t += Acceleration;
-            transform.position += new Vector3(inputVector.x, 0, inputVector.y)  * moveSpeed * Time.deltaTime;
+        if(_cameraMovement.IsPressed()){ //when the player pressed WASD
+            Vector2 inputVector = _cameraMovement.ReadValue<Vector2>();//reads how much the camera moved;
+            _moveSpeed = Mathf.Lerp(_minMoveSpeed, _maxMoveSpeed, t);
+            t += _acceleration;
+            transform.position += new Vector3(inputVector.x, 0, inputVector.y)  * _moveSpeed * Time.deltaTime;
         }
 
-        if (cameraZoom.IsPressed() && activateZoom)//when the use uses scroll wheel
+        if (_cameraZoom.IsPressed() && _activateZoom)//when the use uses scroll wheel
         {
-            Vector2 scrollInput = cameraZoom.ReadValue<Vector2>();
+            Vector2 scrollInput = _cameraZoom.ReadValue<Vector2>();
             AdjustCameraZoom(scrollInput.y);
         }
         
@@ -58,14 +58,14 @@ public class CameraSystem : MonoBehaviour
     private void AdjustCameraZoom(float increment)
     {
         // Calculate new target FOV based on scroll input
-        targetFOV -= increment * zoomSpeed;
-        targetFOV = Mathf.Clamp(targetFOV, minFOV, maxFOV);
+        _targetFOV -= increment * _zoomSpeed;
+        _targetFOV = Mathf.Clamp(_targetFOV, _minFOV, _maxFOV);
     }
 
     private void LateUpdate()
     {
 
         // Smoothly interpolate to the target FOV using Lerp
-        virtualCamera.Lens.FieldOfView = Mathf.Lerp(virtualCamera.Lens.FieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
+        _virtualCamera.Lens.FieldOfView = Mathf.Lerp(_virtualCamera.Lens.FieldOfView, _targetFOV, Time.deltaTime * _zoomSpeed);
     }
 }

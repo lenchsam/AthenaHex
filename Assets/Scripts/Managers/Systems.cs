@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class Systems : MonoBehaviour
 {
-    private static Systems instance;
+    private static Systems _instance;
 
     void Awake()
     {
         // If an instance already exists and it's not this, destroy this GameObject
-        if (instance != null && instance != this)
+        if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
-        instance = this;
+        _instance = this;
 
         DontDestroyOnLoad(gameObject);
     }

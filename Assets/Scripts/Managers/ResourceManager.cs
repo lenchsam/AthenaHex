@@ -3,18 +3,18 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
-    [SerializeField] int woodAmountPerTurn;
-    [SerializeField] int[] woodAmount; //array should be the equal to the amout of players playing
+    [SerializeField] int _woodAmountPerTurn;
+    [SerializeField] int[] _woodAmount; //array should be the equal to the amout of players playing
     //------------------------------------------------------------------------------------------------------- RESOURCE PRODUCTION AND COLLECTION
-    void AddResource(Resources resourceType, int amountm, Team team){
+    void AddResource(Resources resourceType, int amountm, e_Team team){
 
     }
     //calculates total production rate of a resource per turn
-    int CalculateProductionRate(Resources resourceType, Team team){
+    int CalculateProductionRate(Resources resourceType, e_Team team){
         return 0;
     }
     //collects all resources from all resource types and adds them to the total
-    void CollectResources(Team team){
+    void CollectResources(e_Team team){
 
     }
     //------------------------------------------------------------------------------------------------------- RESOURCE CONSUMPTION

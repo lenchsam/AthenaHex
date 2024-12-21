@@ -6,7 +6,7 @@ public class Melee : Units
 {
     protected virtual void Awake()
     {
-        defenceType = unitTypes.Melee;
+        e_defenceType = unitTypes.Melee;
     }
     protected override void Start()
     {

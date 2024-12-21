@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class AssignTeam : MonoBehaviour
 {
-    public Team defenceTeam;
+    public e_Team DefenceTeam;
 }
-public enum Team
+public enum e_Team
 {
     Team1,
     Team2,

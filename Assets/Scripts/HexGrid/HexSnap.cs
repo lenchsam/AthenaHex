@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class HexSnap : MonoBehaviour
 {
-    private float tileSize = 1f;
-    [SerializeField] private LayerMask hexLayerMask;
+    private float _tileSize = 1f;
+    [SerializeField] private LayerMask _hexLayerMask;
 
-    private GameObject snappedHex;
-    private int currentEdgeIndex = 0; // Keep track of which edge the object is snapped to
+    private GameObject _snappedHex;
+    private int _currentEdgeIndex = 0; // Keep track of which edge the object is snapped to
 
     public void SnapToEdge(GameObject goToSnap)
     {
@@ -16,13 +16,13 @@ public class HexSnap : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, hexLayerMask))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, _hexLayerMask))
         {
-            snappedHex = hit.collider.gameObject;
+            _snappedHex = hit.collider.gameObject;
             Vector3 hitPosition = hit.point;
 
             // Get the hex tile's center position
-            Vector3 hexCenter = snappedHex.transform.position;
+            Vector3 hexCenter = _snappedHex.transform.position;
 
             // Calculate the closest edge to the hit point
             Vector3 snappedPosition = FindClosestEdge(hexCenter, hitPosition);
@@ -31,7 +31,7 @@ public class HexSnap : MonoBehaviour
             goToSnap.transform.position = snappedPosition;
 
             // Set the initial edge index (the one closest to the clicked position)
-            currentEdgeIndex = GetClosestEdgeIndex(hexCenter, hitPosition);
+            _currentEdgeIndex = GetClosestEdgeIndex(hexCenter, hitPosition);
 
         }
     }
@@ -79,7 +79,7 @@ public class HexSnap : MonoBehaviour
     }
     private Vector3[] GetHexVertices(Vector3 hexCenter)
     {
-        float hexRadius = tileSize;
+        float hexRadius = _tileSize;
         Vector3[] vertices = new Vector3[6];
 
         for (int i = 0; i < 6; i++)

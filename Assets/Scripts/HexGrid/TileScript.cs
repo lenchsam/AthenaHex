@@ -4,71 +4,71 @@ using UnityEngine;
 
 public class TileScript : MonoBehaviour
 {
-    public bool isFog = false;
-    public bool isWalkable;
-    public Vector2Int intCoords;
-    public bool isCityCentre = false;
-    public eDistrict districts;
+    public bool IsFog = false;
+    public bool IsWalkable;
+    public Vector2Int IntCoords;
+    public bool IsCityCentre = false;
+    public eDistrict Districts;
     public CitiesScriptableObject SO_Cities;
-    public eOccupiedBy occupiedBy;
-    public GameObject occupiedBuilding;
-    public GameObject occupiedUnit;
-    public GameObject fow;
-    public eTileType tileType;
-    public TurnManager turnManager;
-    public UnitManager unitManager;
-    public eBiomes biome;
+    public eOccupiedBy OccupiedBy;
+    public GameObject OccupiedBuilding;
+    public GameObject OccupiedUnit;
+    public GameObject Fow;
+    public eTileType TileType;
+    private TurnManager _turnManager;
+    private UnitManager _unitManager;
+    public eBiomes Biome;
     private void Awake(){
-        turnManager = FindAnyObjectByType<TurnManager>();
-        unitManager = FindAnyObjectByType<UnitManager>();
+        _turnManager = FindAnyObjectByType<TurnManager>();
+        _unitManager = FindAnyObjectByType<UnitManager>();
     }
 
     public void Reveal(){
         gameObject.layer = LayerMask.NameToLayer("Tile");
 
         //if it isnt already in the revealed list, add it to the list
-        switch (turnManager.playerTeam)
+        switch (_turnManager.PlayerTeam)
         {
-            case Team.Team1:
-                if(!unitManager.SO_Players[0].RevealedTiles.Contains(intCoords)){
-                    unitManager.SO_Players[0].RevealedTiles.Add(intCoords);
+            case e_Team.Team1:
+                if(!_unitManager.SO_Players[0].RevealedTiles.Contains(IntCoords)){
+                    _unitManager.SO_Players[0].RevealedTiles.Add(IntCoords);
                 }
                 break;
-            case Team.Team2:
-                if(!unitManager.SO_Players[1].RevealedTiles.Contains(intCoords)){
-                    unitManager.SO_Players[1].RevealedTiles.Add(intCoords);
-                }
-                break;
-
-            case Team.Team3:
-                if(!unitManager.SO_Players[2].RevealedTiles.Contains(intCoords)){
-                    unitManager.SO_Players[2].RevealedTiles.Add(intCoords);
+            case e_Team.Team2:
+                if(!_unitManager.SO_Players[1].RevealedTiles.Contains(IntCoords)){
+                    _unitManager.SO_Players[1].RevealedTiles.Add(IntCoords);
                 }
                 break;
 
-            case Team.Team4:
-                if(!unitManager.SO_Players[3].RevealedTiles.Contains(intCoords)){
-                    unitManager.SO_Players[3].RevealedTiles.Add(intCoords);
+            case e_Team.Team3:
+                if(!_unitManager.SO_Players[2].RevealedTiles.Contains(IntCoords)){
+                    _unitManager.SO_Players[2].RevealedTiles.Add(IntCoords);
+                }
+                break;
+
+            case e_Team.Team4:
+                if(!_unitManager.SO_Players[3].RevealedTiles.Contains(IntCoords)){
+                    _unitManager.SO_Players[3].RevealedTiles.Add(IntCoords);
                 }
                 break;
         }
         
-        fow.gameObject.SetActive(false);
-        if(occupiedUnit){occupiedUnit.SetActive(true);}
+        Fow.gameObject.SetActive(false);
+        if(OccupiedUnit){OccupiedUnit.SetActive(true);}
     }
     public void ReBlock(){
         gameObject.layer = LayerMask.NameToLayer("Hidden");
 
-        fow.gameObject.SetActive(true);
-        if(occupiedUnit){occupiedUnit.SetActive(false);}
+        Fow.gameObject.SetActive(true);
+        if(OccupiedUnit){OccupiedUnit.SetActive(false);}
     }
     public void Constructor(bool _isWalkable, Vector2Int _intCords, eTileType _tileType, eBiomes _biome){
-        isWalkable = _isWalkable;
-        intCoords = _intCords;
-        tileType = _tileType;
-        biome = _biome;
-        if(tileType == eTileType.Ocean){
-            isWalkable = false;
+        IsWalkable = _isWalkable;
+        IntCoords = _intCords;
+        TileType = _tileType;
+        Biome = _biome;
+        if(TileType == eTileType.Ocean){
+            IsWalkable = false;
         }
     }
 }

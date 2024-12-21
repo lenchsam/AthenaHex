@@ -6,7 +6,7 @@ public class Ranged : Units
 {
     protected virtual void Awake()
     {
-        defenceType = unitTypes.Ranged;
+        e_defenceType = unitTypes.Ranged;
     }
     protected override void Start()
     {

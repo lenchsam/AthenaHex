@@ -5,34 +5,32 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
 {
-    public GameObject tileUI;
+    public GameObject TileUI;
     [HideInInspector] public UnityEvent<Vector2, GameObject> OnUnitMove = new UnityEvent<Vector2, GameObject>();
-    TurnManager turnManager;
-    int LM;
-    private UnitManager unitManager;
-    private DistrictManager districtManager;
-    private Building building;
+    int _LM;
+    private UnitManager _unitManager;
+    private DistrictManager _districtManager;
+    private Building _building;
 
-    public GameObject selectedTile;
+    public GameObject SelectedTile;
 
-    bool pointerOverUI = false;
+    bool _pointerOverUI = false;
 
     //private variables
-    private HexGrid hexGrid;
+    private HexGrid _hexGrid;
     void Start()
     {
-        turnManager = FindAnyObjectByType<TurnManager>();
-        unitManager = FindAnyObjectByType<UnitManager>();
-        hexGrid = FindAnyObjectByType<HexGrid>();
-        districtManager = FindAnyObjectByType<DistrictManager>();
-        building = FindAnyObjectByType<Building>();
+        _unitManager = FindAnyObjectByType<UnitManager>();
+        _hexGrid = FindAnyObjectByType<HexGrid>();
+        _districtManager = FindAnyObjectByType<DistrictManager>();
+        _building = FindAnyObjectByType<Building>();
 
-        LM = LayerMask.GetMask("Tile");
+        _LM = LayerMask.GetMask("Tile");
     }
 
     void Update()
     {
-        pointerOverUI = EventSystem.current.IsPointerOverGameObject();
+        _pointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
     public void Clicked(InputAction.CallbackContext context){
         if (!context.performed){return;}
@@ -41,7 +39,7 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
         //CHECKING IF PLAYER CLICKED UI
 
         // Initialize PointerEventData with current mouse position
-        if(pointerOverUI){
+        if(_pointerOverUI){
             //Debug.Log("ponter is over UI");
             return;
         }
@@ -49,12 +47,12 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
         //--------------------------------------------------------------------------------------------------
         //raycast
 
-        tileUI.SetActive(false);
+        TileUI.SetActive(false);
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        bool hasHit = Physics.Raycast(ray, out hit, Mathf.Infinity, LM);
+        bool hasHit = Physics.Raycast(ray, out hit, Mathf.Infinity, _LM);
         
 
         if(!hasHit){return;} //return if its hit nothing
@@ -65,24 +63,24 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
         //     return;
         // }
         
-        selectedTile = hit.transform.gameObject;
-        tileUI.SetActive(true);
+        SelectedTile = hit.transform.gameObject;
+        TileUI.SetActive(true);
 
         //--------------------------------------------------------------------------------------------------
         //if waiting for placing barracks placement
 
-        if(districtManager.waitingForClick){
-            districtManager.BuildBarracks(hit);
-            districtManager.waitingForClick = false;
+        if(_districtManager.WaitingForClick){
+            _districtManager.BuildBarracks(hit);
+            _districtManager.WaitingForClick = false;
             return;
         }
         
         //assigns the correct scriptable object for the district manager. used for checking placing defences in the correct city
         var tileScript = hit.transform.gameObject.GetComponent<TileScript>();
-        if(tileScript.districts == eDistrict.CityCentre){
-            districtManager.selectedCitiesScriptableObject = tileScript.SO_Cities;
+        if(tileScript.Districts == eDistrict.CityCentre){
+            _districtManager.SelectedCitiesScriptableObject = tileScript.SO_Cities;
         }else{
-            districtManager.selectedCitiesScriptableObject = null;
+            _districtManager.SelectedCitiesScriptableObject = null;
         }
 
         //--------------------------------------------------------------------------------------------------
@@ -91,7 +89,7 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
             interactable.OnClick();
         }
 
-        unitManager.unitController(hit);
+        _unitManager.unitController(hit);
         //building.PlaceDown(hit);
         //cityCheck(hasHit, hit);
     }
@@ -99,7 +97,7 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
     private void cityCheck(bool hasHit, RaycastHit hit){
         if(hit.transform.tag != "Tile"){return;}
 
-        if(hit.transform.gameObject.GetComponent<TileScript>().isCityCentre == true){
+        if(hit.transform.gameObject.GetComponent<TileScript>().IsCityCentre == true){
             Debug.Log("trueeeeee");
         }
     }
