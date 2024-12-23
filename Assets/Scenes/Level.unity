@@ -307,7 +307,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -1213,7 +1213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2056e2c1cbce5458089030342532b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _citiesSOBase: {fileID: 0}
+  _citiesSOBase: {fileID: 11400000, guid: ce5264350a2c20b4099566c39feb4cd9, type: 2}
   _allCities: []
   NumberOfCities: 0
   _cityCentrePrefab: {fileID: 919132149155446097, guid: 78c8e027b1c5f694aa8919568361933d,
@@ -1262,11 +1262,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d6f08e06e99844796be19954eda2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startUnit: {fileID: 7490754498245591511, guid: 047a6d85c0b4a44448b62e0378943f81,
+  _startUnit: {fileID: 7490754498245591511, guid: e40e44638ad4fba4c8ad5b46286d2cfc,
     type: 3}
   SelectedUnit: {fileID: 0}
-  UnitSelected: 0
-  AttackedThisTurn: 0
+  HasUnitSelected: 0
   SO_Players: []
   _playerSO: {fileID: 11400000, guid: 5545720bf46ef964cbb1c2a0f744b52a, type: 2}
 --- !u!4 &946201873
@@ -1390,7 +1389,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
-  m_ActiveFontFeatures: 00000000
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -2053,10 +2052,10 @@ MonoBehaviour:
   _maxMoveSpeed: 25
   _minMoveSpeed: 10
   _virtualCamera: {fileID: 893672767}
-  _activateZoom: 0
+  _activateZoom: 1
   _zoomSpeed: 1
-  _minFOV: 0
-  _maxFOV: 0
+  _minFOV: 15
+  _maxFOV: 100
 --- !u!1 &1527476384
 GameObject:
   m_ObjectHideFlags: 0
@@ -2837,8 +2836,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97a24584340520844a817b2bbb0ba30d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NextTurn:
+    m_PersistentCalls:
+      m_Calls: []
   PlayerTeam: 0
-  _cameraTransform: {fileID: 330585546}
+  _cameraTransform: {fileID: 1484089483}
 --- !u!1 &2056489521
 GameObject:
   m_ObjectHideFlags: 0
@@ -2857,7 +2859,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2056489522
 RectTransform:
   m_ObjectHideFlags: 0

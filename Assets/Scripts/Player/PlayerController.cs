@@ -66,6 +66,11 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
         SelectedTile = hit.transform.gameObject;
         TileUI.SetActive(true);
 
+        //if tile has a unit on it, select that unit.
+        if(SelectedTile.GetComponent<TileScript>().OccupiedUnit != null){
+            _unitManager.SelectUnit();
+        }
+
         //--------------------------------------------------------------------------------------------------
         //if waiting for placing barracks placement
 
@@ -89,7 +94,9 @@ using UnityEngine.EventSystems;public class PlayerController : MonoBehaviour
             interactable.OnClick();
         }
 
-        _unitManager.unitController(hit);
+        if(_unitManager.SelectedUnit != null && !_unitManager.SelectedUnit.GetComponent<Units>().TookTurn){
+            _unitManager.unitController(hit);
+        }
         //building.PlaceDown(hit);
         //cityCheck(hasHit, hit);
     }

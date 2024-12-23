@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fb945811be1929468847d0656fcbb7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defenceTeam: 0
+  DefenceTeam: 0
 --- !u!114 &8831358069822467854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,13 +138,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6978b23ded68d448c38ff1d250165d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
-  maxMovement: 1
-  MaxAttackDistance: 1
-  damage: 50
-  tookTurn: 0
-  walkableTiles: []
-  maximumHealth: 50
+  MaxMovement: 1
+  _maxAttackDistance: 1
+  _damage: 25
+  TookTurn: 0
+  _walkableTiles: []
 --- !u!1001 &7569976993912177737
 PrefabInstance:
   m_ObjectHideFlags: 0

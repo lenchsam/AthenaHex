@@ -62,11 +62,11 @@ public class TileScript : MonoBehaviour
         Fow.gameObject.SetActive(true);
         if(OccupiedUnit){OccupiedUnit.SetActive(false);}
     }
-    public void Constructor(bool _isWalkable, Vector2Int _intCords, eTileType _tileType, eBiomes _biome){
-        IsWalkable = _isWalkable;
-        IntCoords = _intCords;
-        TileType = _tileType;
-        Biome = _biome;
+    public void Constructor(bool isWalkable, Vector2Int intCords, eTileType tileType, eBiomes biome){
+        IsWalkable = isWalkable;
+        IntCoords = intCords;
+        TileType = tileType;
+        Biome = biome;
         if(TileType == eTileType.Ocean){
             IsWalkable = false;
         }

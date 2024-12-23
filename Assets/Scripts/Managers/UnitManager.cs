@@ -1,14 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 public class UnitManager : MonoBehaviour
 {
     private PlayerController _playerController;
     [SerializeField] GameObject _startUnit;
     [HideInInspector] public Transform SelectedUnit;
-    [HideInInspector] public bool UnitSelected = false;
-    [HideInInspector] public bool AttackedThisTurn = false;
+    [HideInInspector] public bool HasUnitSelected = false;
     private HexGrid _hexGrid;
     TurnManager _turnManager;
     PathFinding _pathFinding;
@@ -28,7 +28,7 @@ public class UnitManager : MonoBehaviour
         //SetupStartUnits(StartUnit, startPositions);
     }
     public void unitController(RaycastHit hit){
-        if (hit.transform.tag == "Tile" && UnitSelected){ //if hit a tile and already have a unit selected
+        if (hit.transform.tag == "Tile" && HasUnitSelected){ //if hit a tile and already have a unit selected
             Vector2 targetCords = new Vector2(hit.transform.GetComponent<TileScript>().transform.position.x, hit.transform.GetComponent<TileScript>().transform.position.z);
             Vector2 startCords = new Vector2(SelectedUnit.position.x, SelectedUnit.position.z);
             //get the path to the target position
@@ -51,6 +51,7 @@ public class UnitManager : MonoBehaviour
                 if (targetUnit.GetComponent<AssignTeam>().DefenceTeam != SelectedUnit.GetComponent<AssignTeam>().DefenceTeam) {
                     
                     SelectedUnit.GetComponent<IAttacking>().attack(targetUnit);
+                    SelectedUnit.GetComponent<Units>().TookTurn = true;
 
                     path = _pathFinding.FindPath(startCoords, targetCoords);
                     if(path[path.Count - 1] == _hexGrid.GetTileFromIntCords(targetCoords)){
@@ -58,16 +59,9 @@ public class UnitManager : MonoBehaviour
                     }
 
                     SelectedUnit = null;
-                    UnitSelected = false;
+                    HasUnitSelected = false;
                     targetUnit = null;
                 }
-
-                // Prevent movement after attacking
-                if (AttackedThisTurn) {
-                    AttackedThisTurn = false;
-                    return;  // Stop further movement
-                }
-                
             }else if (!targetNode.IsWalkable) {
                 //Debug.Log("Tile not walkable");
                 // If the target tile is not walkable and doesn't have an enemy, return early
@@ -88,6 +82,7 @@ public class UnitManager : MonoBehaviour
 
                 //set the node you moved to as occupied
                 targetNode.OccupiedUnit = SelectedUnit.gameObject; 
+                SelectedUnit.GetComponent<Units>().TookTurn = true;
                 
                 _hexGrid.BlockTile(targetCords);//set the tile that the unit will travel to as none walkable
                 _hexGrid.UnblockTile(startCords);//sets the current tile as walkable
@@ -96,7 +91,7 @@ public class UnitManager : MonoBehaviour
                 TileScript startNode = _hexGrid.GetTileScriptFromPosition(startCords);
                 startNode.OccupiedUnit = null;
                 SelectedUnit = null;
-                UnitSelected = false;
+                HasUnitSelected = false;
                 _playerController.SelectedTile = null;
                 _playerController.TileUI.SetActive(false);
             }
@@ -117,7 +112,7 @@ public class UnitManager : MonoBehaviour
         //selectes the unit
         //Debug.Log("selected Unit");
         SelectedUnit = _playerController.SelectedTile.GetComponent<TileScript>().OccupiedUnit.transform;
-        UnitSelected = true;
+        HasUnitSelected = true;
 
         var walkableTiles = GetAllWalkableTiles(_playerController.SelectedTile.GetComponent<TileScript>().OccupiedUnit.transform.position, _playerController.SelectedTile.GetComponent<TileScript>().OccupiedUnit.GetComponent<Units>().MaxMovement);
         
@@ -171,7 +166,7 @@ public class UnitManager : MonoBehaviour
         }
     }
     private void startUnits(){
-        SetupStartUnits(_startUnit, _proceduralGeneration.points.ToArray());
+        SetupStartUnits(_startUnit, _proceduralGeneration.Points.ToArray());
     }
     private void SetupStartUnits(GameObject unitPrefab, Vector2Int[] TilePositions){
         e_Team currentTeam = e_Team.Team1;

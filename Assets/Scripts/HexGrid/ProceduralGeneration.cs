@@ -23,7 +23,7 @@ public class ProceduralGeneration : MonoBehaviour
     [BoxGroup("Poisson Disc Sampling")]
     [Tooltip("area around the poisson disc sample where another sample cant be placed")]
     [SerializeField]int PoissonRadius = 10;
-    [HideInInspector] public List<Vector2Int> points = new List<Vector2Int>();
+    [HideInInspector] public List<Vector2Int> Points = new List<Vector2Int>();
 
     //---------------------------------------------------------------------------------------------------Perlin Noise
     //perlin noise
@@ -46,8 +46,8 @@ public class ProceduralGeneration : MonoBehaviour
     }
     void Start(){
         _hexGrid = FindAnyObjectByType<HexGrid>(); 
-        points = poissonDiscSampling(_hexGrid.MapWidth, _hexGrid.MapHeight, PoissonRadius);
-        points = randomisePoints(points);
+        Points = poissonDiscSampling(_hexGrid.MapWidth, _hexGrid.MapHeight, PoissonRadius);
+        Points = randomisePoints(Points);
     }
     //lists
 
@@ -120,11 +120,11 @@ public class ProceduralGeneration : MonoBehaviour
     List<Vector2Int> randomisePoints(List<Vector2Int> list){
         List<Vector2Int> random = new List<Vector2Int>();
         
-        int count = points.Count;
+        int count = Points.Count;
         for(int i = 0; i <= count - 1; i++){
             var rand = Random.Range(0, list.Count);
             random.Add(list[rand]);
-            points.RemoveAt(rand);
+            Points.RemoveAt(rand);
 
         }
         return random;
@@ -138,11 +138,11 @@ public class ProceduralGeneration : MonoBehaviour
         return pointNumber;
     }
     int getPointNumber(Vector2Int point){
-        if(point == points[0]){
+        if(point == Points[0]){
             return 0;
-        }else if(point == points[1]){
+        }else if(point == Points[1]){
             return 1;
-        }else if(point == points[2]){
+        }else if(point == Points[2]){
             return 2;
         }else {
             return 3;
@@ -154,7 +154,7 @@ public class ProceduralGeneration : MonoBehaviour
         Vector2Int closestPoint = new Vector2Int(0, 0);
 
         //goes through each spawn point, gets the distance to it, and returns the spawn point closest to the tile
-        foreach(Vector2Int point in points){
+        foreach(Vector2Int point in Points){
             int distance = _hexGrid.DistanceBetweenTiles(nextPoint, point);
             if(distance < closestDistance){
                 closestDistance = distance;
