@@ -16,11 +16,10 @@ Hi! This project shows **Procedural Generation** in **C#** using **Unity**. This
 
 ## About
 
-Athena Hex utilises a variety of different procedural generation techniques to achieve a hexagon grid-based map. These include poisson disc sampling, perlin noise, and more. It was originally inspired by a mobile game called *The Battle of Polytopia*; I wanted to replicate this in my own way. It's currently just a programming adventure for me, but I aim to add some unique and well designed mechanics in the future.
+Athena Hex utilises a variety of different procedural generation techniques to achieve a hexagon grid-based map. These include poisson disc sampling, perlin noise, and more. It was originally inspired by a mobile game called *The Battle of Polytopia*; I wanted to replicate this in my own way. It's currently just a programming adventure for me, but I aim to add some unique and well designed mechanics in the future. It has some basic features like unit movement, and city placement. This is just intended as a project for me to learn different things like saving to files, algorithms etc. For that reason, it is not intended to be a full featured, polished game.
 ## Useful Links
-
  - [Procedural Generation Class](https://github.com/lenchsam/AthenaHex/blob/main/Assets/Scripts/HexGrid/ProceduralGeneration.cs)
- - [Grid Functions Class](https://github.com/lenchsam/AthenaHex/blob/main/Assets/Scripts/HexGrid/)
+ - [Grid Functions Class](https://github.com/lenchsam/AthenaHex/blob/main/Assets/Scripts/HexGrid/HexGrid.cs)
 
 ## Features
 
@@ -46,18 +45,14 @@ Athena Hex utilises a variety of different procedural generation techniques to a
 The variables that you'll probably want to have fun with are located in the ----GridManager---- game object. This manages all of the [procedural generation](https://github.com/lenchsam/AthenaHex/blob/main/Assets/Scripts/HexGrid/ProceduralGeneration.cs) and the [grid functions](https://github.com/lenchsam/AthenaHex/blob/main/Assets/Scripts/HexGrid/).
 
 ### Common Issues
- - make sure to also lower poisson-disc radius when making map size smaller in editor. If this isn't done, it can freeze the editor.
+ - make sure to also lower poisson-disc radius when making map size smaller in editor. If this isn't done, it may freeze the editor.
 
-## Future Features
-
- - Cities
+## Potential Future Features
  - Districts
  - Resource farming
- - Updated camera system
  - System to buy/make units, districts and potentially more
  - UI
  - SFX
- - Code optimisations: HexGrid functions, pathfinding etc
  - Reworked battle system to have more interactive battles when a unit attacks another unit
 # Contact
 [LinkedIn](https://www.linkedin.com/in/sam-lench-8586b6279/)
